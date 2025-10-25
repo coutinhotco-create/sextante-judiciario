@@ -1,0 +1,2417 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JurisCalc - Cálculos Judiciais com Inteligência e Precisão</title>
+    <style>
+        :root {
+            --primary-color: #1e3a8a;
+            --primary-hover: #1e40af;
+            --secondary-color: #3b82f6;
+            --accent-color: #60a5fa;
+            --success-color: #10b981;
+            --error-color: #ef4444;
+            --warning-color: #f59e0b;
+            --text-dark: #1f2937;
+            --text-medium: #4b5563;
+            --text-light: #6b7280;
+            --bg-light: #f9fafb;
+            --bg-white: #ffffff;
+            --border-color: #e5e7eb;
+            --shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1);
+            --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+            --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: var(--text-dark);
+            background-color: var(--bg-light);
+        }
+
+        /* Header Styles */
+        .header {
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+            color: white;
+            padding: 2rem 1rem;
+            box-shadow: var(--shadow-lg);
+        }
+
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .header h1 {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+        }
+
+        .header p {
+            font-size: 1.1rem;
+            opacity: 0.95;
+        }
+
+        /* Container */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem 1rem;
+        }
+
+        /* Welcome Section */
+        .welcome-section {
+            background: var(--bg-white);
+            border-radius: 12px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: var(--shadow);
+            border-left: 4px solid var(--primary-color);
+        }
+
+        .welcome-section h2 {
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+            font-size: 1.5rem;
+        }
+
+        .welcome-section p {
+            color: var(--text-medium);
+            line-height: 1.8;
+        }
+
+        /* Tools Grid */
+        .tools-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .tool-card {
+            background: var(--bg-white);
+            border-radius: 12px;
+            padding: 1.5rem;
+            box-shadow: var(--shadow);
+            transition: all 0.3s ease;
+            cursor: pointer;
+            border: 2px solid transparent;
+        }
+
+        .tool-card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-lg);
+            border-color: var(--secondary-color);
+        }
+
+        .tool-card.disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        .tool-card.disabled:hover {
+            transform: none;
+            border-color: transparent;
+        }
+
+        .tool-card-icon {
+            width: 48px;
+            height: 48px;
+            background: linear-gradient(135deg, var(--secondary-color), var(--accent-color));
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1rem;
+            font-size: 1.5rem;
+        }
+
+        .tool-card.disabled .tool-card-icon {
+            background: #9ca3af;
+        }
+
+        .tool-card h3 {
+            color: var(--primary-color);
+            margin-bottom: 0.5rem;
+            font-size: 1.2rem;
+        }
+
+        .tool-card p {
+            color: var(--text-medium);
+            font-size: 0.95rem;
+        }
+
+        .tool-card .status-badge {
+            display: inline-block;
+            background: var(--warning-color);
+            color: white;
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            margin-top: 0.5rem;
+            font-weight: 500;
+        }
+
+        /* Calculator Section */
+        .calculator-section {
+            display: none;
+            background: var(--bg-white);
+            border-radius: 12px;
+            padding: 2rem;
+            box-shadow: var(--shadow-md);
+        }
+
+        .calculator-section.active {
+            display: block;
+        }
+
+        .back-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: var(--bg-light);
+            color: var(--text-dark);
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+            cursor: pointer;
+            font-size: 0.95rem;
+            margin-bottom: 1.5rem;
+            transition: all 0.2s;
+        }
+
+        .back-button:hover {
+            background: var(--border-color);
+        }
+
+        .calculator-header {
+            margin-bottom: 2rem;
+        }
+
+        .calculator-header h2 {
+            color: var(--primary-color);
+            font-size: 1.8rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .calculator-header p {
+            color: var(--text-medium);
+        }
+
+        /* Form Styles */
+        .form-section {
+            margin-bottom: 2rem;
+        }
+
+        .form-section h3 {
+            color: var(--primary-color);
+            font-size: 1.2rem;
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid var(--border-color);
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: var(--text-dark);
+            font-weight: 500;
+        }
+
+        .form-group input[type="number"],
+        .form-group input[type="date"],
+        .form-group input[type="text"],
+        .form-group select {
+            width: 100%;
+            padding: 0.75rem;
+            border: 2px solid var(--border-color);
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: border-color 0.2s;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: var(--secondary-color);
+        }
+
+        .helper-text {
+            font-size: 0.85rem;
+            color: var(--text-light);
+            margin-top: 0.25rem;
+        }
+
+        .error-text {
+            font-size: 0.85rem;
+            color: var(--error-color);
+            margin-top: 0.25rem;
+            display: none;
+        }
+
+        .error-text.show {
+            display: block;
+        }
+
+        /* Radio Group */
+        .radio-group {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .radio-option {
+            display: flex;
+            align-items: center;
+            padding: 1rem;
+            border: 2px solid var(--border-color);
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .radio-option:hover {
+            border-color: var(--secondary-color);
+            background: var(--bg-light);
+        }
+
+        .radio-option input[type="radio"] {
+            margin-right: 0.75rem;
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+        }
+
+        .radio-option.selected {
+            border-color: var(--secondary-color);
+            background: #eff6ff;
+        }
+
+        .conditional-input {
+            display: none;
+            margin-top: 1rem;
+        }
+
+        .conditional-input.show {
+            display: block;
+        }
+
+        /* Buttons */
+        .button-group {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+            margin-top: 2rem;
+        }
+
+        .btn {
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .btn-primary {
+            background: var(--primary-color);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: var(--primary-hover);
+        }
+
+        .btn-secondary {
+            background: var(--bg-light);
+            color: var(--text-dark);
+            border: 2px solid var(--border-color);
+        }
+
+        .btn-secondary:hover {
+            background: var(--border-color);
+        }
+
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        /* Results Section */
+        .results-section {
+            display: none;
+            margin-top: 2rem;
+            padding: 2rem;
+            background: #f0f9ff;
+            border: 2px solid var(--secondary-color);
+            border-radius: 12px;
+        }
+
+        .results-section.show {
+            display: block;
+        }
+
+        .results-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid var(--secondary-color);
+        }
+
+        .results-header h3 {
+            color: var(--primary-color);
+            font-size: 1.5rem;
+        }
+
+        .result-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 1rem;
+            margin-bottom: 0.5rem;
+            background: white;
+            border-radius: 8px;
+            border-left: 4px solid var(--secondary-color);
+        }
+
+        .result-label {
+            color: var(--text-medium);
+            font-weight: 500;
+        }
+
+        .result-value {
+            color: var(--text-dark);
+            font-weight: 600;
+            font-size: 1.1rem;
+        }
+
+        .result-total {
+            background: var(--primary-color);
+            color: white;
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin-top: 1rem;
+            text-align: center;
+        }
+
+        .result-total .label {
+            font-size: 1rem;
+            margin-bottom: 0.5rem;
+            opacity: 0.9;
+        }
+
+        .result-total .value {
+            font-size: 2rem;
+            font-weight: 700;
+        }
+
+        /* Legal References */
+        .legal-references {
+            margin-top: 2rem;
+            padding: 1.5rem;
+            background: white;
+            border-radius: 8px;
+            border-left: 4px solid var(--success-color);
+        }
+
+        .legal-references h4 {
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+        }
+
+        .legal-ref-item {
+            margin-bottom: 1rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .legal-ref-item:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+
+        .legal-ref-item strong {
+            color: var(--primary-color);
+        }
+
+        .legal-ref-item p {
+            color: var(--text-medium);
+            margin-top: 0.25rem;
+            font-size: 0.95rem;
+        }
+
+        /* Help Section */
+        .help-section {
+            margin-top: 2rem;
+            background: white;
+            border-radius: 12px;
+            border: 2px solid var(--border-color);
+            overflow: hidden;
+        }
+
+        .help-header {
+            background: var(--bg-light);
+            padding: 1rem 1.5rem;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-weight: 600;
+            color: var(--primary-color);
+        }
+
+        .help-header:hover {
+            background: var(--border-color);
+        }
+
+        .help-content {
+            display: none;
+            padding: 1.5rem;
+        }
+
+        .help-content.show {
+            display: block;
+        }
+
+        .help-example {
+            background: var(--bg-light);
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+        }
+
+        .help-example h4 {
+            color: var(--primary-color);
+            margin-bottom: 0.5rem;
+        }
+
+        /* History Section */
+        .history-section {
+            margin-top: 2rem;
+            background: white;
+            border-radius: 12px;
+            padding: 1.5rem;
+            border: 2px solid var(--border-color);
+            display: none;
+        }
+
+        .history-section.show {
+            display: block;
+        }
+
+        .history-section h3 {
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+        }
+
+        .history-item {
+            padding: 1rem;
+            background: var(--bg-light);
+            border-radius: 8px;
+            margin-bottom: 0.75rem;
+            border-left: 4px solid var(--accent-color);
+        }
+
+        .history-item-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.5rem;
+        }
+
+        .history-item-time {
+            color: var(--text-light);
+            font-size: 0.85rem;
+        }
+
+        .history-item-details {
+            color: var(--text-medium);
+            font-size: 0.9rem;
+        }
+
+        /* Footer */
+        .footer {
+            background: var(--primary-color);
+            color: white;
+            text-align: center;
+            padding: 2rem 1rem;
+            margin-top: 3rem;
+        }
+
+        .footer p {
+            opacity: 0.9;
+        }
+
+        /* Print Styles */
+        @media print {
+            body * {
+                visibility: hidden;
+            }
+            .results-section, .results-section * {
+                visibility: visible;
+            }
+            .results-section {
+                position: absolute;
+                left: 0;
+                top: 0;
+                width: 100%;
+            }
+            .button-group {
+                display: none;
+            }
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 1.5rem;
+            }
+            
+            .header p {
+                font-size: 1rem;
+            }
+
+            .tools-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .button-group {
+                flex-direction: column;
+            }
+
+            .btn {
+                width: 100%;
+                justify-content: center;
+            }
+
+            .result-item {
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+
+            .results-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 1rem;
+            }
+        }
+
+        /* Certificate Section */
+        .certificate-section {
+            animation: slideIn 0.3s ease-out;
+        }
+        
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .certificate-section .form-control {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        /* Alert Box */
+        .alert {
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+            display: none;
+        }
+
+        .alert.show {
+            display: block;
+        }
+
+        .alert-error {
+            background: #fee2e2;
+            border: 1px solid var(--error-color);
+            color: #991b1b;
+        }
+
+        .alert-success {
+            background: #d1fae5;
+            border: 1px solid var(--success-color);
+            color: #065f46;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-content">
+            <h1>⚖️ JurisCalc</h1>
+            <p>Cálculos Judiciais com Inteligência e Precisão</p>
+        </div>
+    </header>
+
+    <div class="container">
+        <!-- Main Portal View -->
+        <div id="mainView">
+            <!-- Welcome Section -->
+            <section class="welcome-section">
+                <h2>Bem-vindo ao JurisCalc</h2>
+                <p>
+                    Este portal foi desenvolvido para auxiliar magistrados na realização de cálculos e procedimentos comuns da atividade jurisdicional. 
+                    Atualmente, disponibilizamos a Calculadora de Multa Criminal, com mais ferramentas sendo adicionadas em breve.
+                </p>
+                <p style="margin-top: 1rem;">
+                    Todas as ferramentas são baseadas na legislação brasileira vigente e foram desenvolvidas para garantir precisão e facilidade de uso.
+                </p>
+            </section>
+
+            <!-- Tools Grid -->
+            <h2 style="color: var(--primary-color); margin-bottom: 1.5rem; font-size: 1.8rem;">Ferramentas Disponíveis</h2>
+            <div class="tools-grid">
+                <!-- Active Tool -->
+                <div class="tool-card" onclick="showCalculator()">
+                    <div class="tool-card-icon">💰</div>
+                    <h3>Calculadora de Multa Criminal</h3>
+                    <p>Calcule multas criminais baseadas no sistema de dias-multa (Art. 49 e 50 do Código Penal)</p>
+                </div>
+
+                <!-- Future Tools -->
+                <div class="tool-card disabled">
+                    <div class="tool-card-icon">⚖️</div>
+                    <h3>Calculadora de Dosimetria de Pena</h3>
+                    <p>Cálculo trifásico da pena (pena-base, agravantes/atenuantes, causas de aumento/diminuição)</p>
+                    <span class="status-badge">Em breve</span>
+                </div>
+
+                <div class="tool-card disabled">
+                    <div class="tool-card-icon">👨‍⚖️</div>
+                    <h3>Calculadora de Honorários Advocatícios</h3>
+                    <p>Cálculo de honorários sucumbenciais conforme CPC (10-20% com tabelas específicas)</p>
+                    <span class="status-badge">Em breve</span>
+                </div>
+
+                <div class="tool-card disabled">
+                    <div class="tool-card-icon">📅</div>
+                    <h3>Calculadora de Prazos Processuais</h3>
+                    <p>Contagem de prazos processuais (CPC, CPP, CLT)</p>
+                    <span class="status-badge">Em breve</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Calculator View -->
+        <div id="calculatorView" class="calculator-section">
+            <button class="back-button" onclick="showMainView()">
+                <span>←</span> Voltar ao Portal
+            </button>
+
+            <div class="calculator-header">
+                <h2>💰 Calculadora de Multa Criminal</h2>
+                <p>Sistema de dias-multa conforme Arts. 49 e 50 do Código Penal Brasileiro</p>
+            </div>
+
+            <!-- Alert Box -->
+            <div id="alertBox" class="alert"></div>
+
+            <!-- Calculator Form -->
+            <form id="calculatorForm">
+                <!-- Fine Days Section -->
+                <div class="form-section">
+                    <h3>1. Quantidade de Dias-Multa</h3>
+                    <div class="form-group">
+                        <label>
+                            <input type="checkbox" id="specialLaw" name="specialLaw" style="width: auto; margin-right: 0.5rem;">
+                            Lei Especial (permite valores diferentes do Código Penal)
+                        </label>
+                        <span class="helper-text" style="display: block; margin-top: 0.5rem;">Marque se o crime é previsto em lei especial com quantidades diferentes (ex: Lei 11.343/2006 - Drogas)</span>
+                    </div>
+                    <div class="form-group">
+                        <label for="fineDays">Número de dias-multa *</label>
+                        <input type="number" id="fineDays" name="fineDays" min="10" max="360" required>
+                        <span class="helper-text" id="fineDaysHelper">Código Penal: mínimo 10, máximo 360 dias-multa</span>
+                        <span class="error-text" id="fineDaysError"></span>
+                    </div>
+                </div>
+
+                <!-- Crime Date Section -->
+                <div class="form-section" style="background: #fef3c7; padding: 1.5rem; border-radius: 8px; border: 2px solid var(--warning-color);">
+                    <h3 style="color: var(--warning-color); margin-bottom: 1rem;">📅 Data do Crime (OBRIGATÓRIO)</h3>
+                    <div class="form-group" style="margin-bottom: 0;">
+                        <label for="crimeDate">Data do crime *</label>
+                        <input type="date" id="crimeDate" name="crimeDate" required>
+                        <span class="helper-text">Esta data determina o salário mínimo aplicável</span>
+                        <div id="minimumWageDisplay" style="display: none; margin-top: 1rem; padding: 1rem; background: white; border-radius: 8px; border-left: 4px solid var(--success-color);">
+                            <strong style="color: var(--primary-color);">Salário mínimo vigente na data do crime:</strong>
+                            <span id="minimumWageValue" style="font-size: 1.2rem; font-weight: 700; color: var(--success-color); margin-left: 0.5rem;"></span>
+                        </div>
+                        <span class="error-text" id="crimeDateError"></span>
+                    </div>
+                </div>
+
+                <!-- Calculation Method Section -->
+                <div class="form-section">
+                    <h3>2. Valor do Dia-Multa</h3>
+                    <div class="radio-group">
+                        <label class="radio-option" id="methodAOption">
+                            <input type="radio" name="calculationMethod" value="fraction" checked>
+                            <div>
+                                <strong>Método A: Fração do Salário Mínimo</strong>
+                                <p style="font-size: 0.9rem; color: var(--text-medium); margin-top: 0.25rem;">
+                                    Escolha uma fração do salário mínimo (ex: 1/3, 1/2, etc.)
+                                </p>
+                            </div>
+                        </label>
+                        <div class="conditional-input show" id="fractionInput">
+                            <div class="form-group">
+                                <label for="fractionSelect">Fração do salário mínimo *</label>
+                                <select id="fractionSelect" name="fractionSelect">
+                                    <option value="">Selecione uma fração...</option>
+                                </select>
+                                <span class="helper-text" id="fractionHelper">Limite: 1/30 (mínimo) até 5x (máximo) do salário mínimo</span>
+                                <span class="error-text" id="fractionError"></span>
+                            </div>
+                        </div>
+
+                        <label class="radio-option" id="methodBOption">
+                            <input type="radio" name="calculationMethod" value="direct">
+                            <div>
+                                <strong>Método B: Valor Direto em Reais</strong>
+                                <p style="font-size: 0.9rem; color: var(--text-medium); margin-top: 0.25rem;">
+                                    Informe o valor em reais por dia-multa
+                                </p>
+                            </div>
+                        </label>
+                        <div class="conditional-input" id="directValueInput">
+                            <div class="form-group">
+                                <label for="directValue">Valor por dia-multa (R$) *</label>
+                                <input type="number" id="directValue" name="directValue" step="0.01">
+                                <span class="helper-text" id="directValueHelper">Baseado no salário mínimo da data do crime</span>
+                                <span class="error-text" id="directValueError"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Monetary Correction Section -->
+                <div class="form-section">
+                    <h3>3. Correção Monetária e Juros</h3>
+                    <div style="background: #d1fae5; padding: 1.5rem; border-radius: 8px; margin-bottom: 1.5rem; border: 2px solid var(--success-color);">
+                        <h4 style="color: var(--success-color); margin-bottom: 1rem; font-size: 1.1rem;">📊 TABELAS ATUALIZADAS: OUTUBRO/2025 (TJSP)</h4>
+                        <p style="margin: 0; color: var(--text-dark); font-size: 0.95rem; line-height: 1.6;">
+                            Esta calculadora utiliza as Tabelas Práticas do Tribunal de Justiça de São Paulo (TJSP) para cálculos de IPCA-E e SELIC.
+                        </p>
+                        <ul style="margin: 0.75rem 0 0 1.5rem; color: var(--text-dark); font-size: 0.95rem; line-height: 1.8;">
+                            <li>✓ Tabelas oficiais TJSP - Outubro/2025</li>
+                            <li>✓ Cálculos automáticos baseados nas tabelas</li>
+                            <li>✓ Atualização mensal das tabelas</li>
+                        </ul>
+                        <p style="margin: 0.75rem 0 0 0; font-size: 0.85rem; color: var(--text-medium);">
+                            💡 Envie as tabelas atualizadas mensalmente para manter os cálculos precisos.
+                        </p>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="calculationDate">Data do cálculo *</label>
+                        <input type="date" id="calculationDate" name="calculationDate" required>
+                        <span class="helper-text">Data em que a correção será calculada (padrão: hoje)</span>
+                    </div>
+
+                    <div style="background: white; padding: 1.5rem; border-radius: 8px; border: 2px solid var(--border-color); margin-bottom: 1.5rem;">
+                        <div style="margin-bottom: 1rem;">
+                            <h4 style="color: var(--primary-color); margin: 0 0 0.5rem 0; font-size: 1.1rem;">📈 IPCA-E (Correção Monetária)</h4>
+                            <p style="font-size: 0.85rem; color: var(--text-medium); margin: 0;">Calculado automaticamente conforme Tabela Prática TJSP - Out/2025</p>
+                        </div>
+                        
+                        <div id="ipcaCalculationDisplay" style="display: none; padding: 0.75rem; border-radius: 6px; margin-bottom: 1rem; font-size: 0.9rem; background: #d1fae5; border: 1px solid var(--success-color); color: #065f46;"></div>
+                        
+                        <div class="form-group" style="margin-bottom: 0;">
+                            <label for="ipcaAccumulated">Percentual calculado (%)</label>
+                            <input type="number" id="ipcaAccumulated" name="ipcaAccumulated" step="0.01" readonly style="background: var(--bg-light);">
+                            <span class="helper-text" id="ipcaHelper">Este valor será calculado automaticamente ao selecionar as datas</span>
+                            <div id="ipcaBreakdown" style="display: none; margin-top: 0.75rem; padding: 0.75rem; background: var(--bg-light); border-radius: 6px; font-size: 0.85rem; color: var(--text-medium);"></div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>
+                            <input type="checkbox" id="applyInterest" name="applyInterest" style="width: auto; margin-right: 0.5rem;">
+                            Aplicar juros de mora (SELIC) - após prazo de pagamento voluntário
+                        </label>
+                        <span class="helper-text" style="display: block; margin-top: 0.5rem;">Marque apenas se o prazo de pagamento voluntário (10 dias) já venceu</span>
+                    </div>
+
+                    <div class="conditional-input" id="interestFields" style="margin-top: 1rem;">
+                        <div style="background: white; padding: 1.5rem; border-radius: 8px; border: 2px solid var(--border-color);">
+                            <div class="form-group">
+                                <label for="paymentDeadline">Data do vencimento do prazo de pagamento *</label>
+                                <input type="date" id="paymentDeadline" name="paymentDeadline">
+                                <span class="helper-text">10 dias após a intimação para pagamento (Art. 50, CP)</span>
+                            </div>
+
+                            <div style="margin-bottom: 1rem; margin-top: 1.5rem;">
+                                <h4 style="color: var(--primary-color); margin: 0 0 0.5rem 0; font-size: 1.1rem;">💸 SELIC (Juros de Mora)</h4>
+                                <p style="font-size: 0.85rem; color: var(--text-medium); margin: 0;">Calculado automaticamente conforme Tabela Prática TJSP - Out/2025</p>
+                            </div>
+                            
+                            <div id="selicCalculationDisplay" style="display: none; padding: 0.75rem; border-radius: 6px; margin-bottom: 1rem; font-size: 0.9rem; background: #fef3c7; border: 1px solid var(--warning-color); color: #78350f;"></div>
+
+                            <div class="form-group" style="margin-bottom: 0;">
+                                <label for="selicAccumulated">Percentual calculado (%)</label>
+                                <input type="number" id="selicAccumulated" name="selicAccumulated" step="0.01" readonly style="background: var(--bg-light);">
+                                <span class="helper-text" id="selicHelper">Este valor será calculado automaticamente ao selecionar as datas</span>
+                                <div id="selicBreakdown" style="display: none; margin-top: 0.75rem; padding: 0.75rem; background: var(--bg-light); border-radius: 6px; font-size: 0.85rem; color: var(--text-medium);"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Additional Information Section -->
+                <div class="form-section">
+                    <h3>4. Informações Complementares</h3>
+                    <div class="form-group">
+                        <label for="installments">Número de parcelas</label>
+                        <input type="number" id="installments" name="installments" min="1" max="120" value="1">
+                        <span class="helper-text">Parcelamento conforme Art. 50 do Código Penal</span>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="crimeDescription">Descrição do crime (opcional)</label>
+                        <input type="text" id="crimeDescription" name="crimeDescription" placeholder="Ex: Art. 155 do CP - Furto">
+                        <span class="helper-text">Campo informativo para referência</span>
+                    </div>
+                </div>
+
+                <!-- Buttons -->
+                <div class="button-group">
+                    <button type="submit" class="btn btn-primary">🧮 Calcular Multa</button>
+                    <button type="button" class="btn btn-secondary" onclick="clearForm()">🔄 Limpar Formulário</button>
+                </div>
+            </form>
+
+            <!-- Results Section -->
+            <div id="resultsSection" class="results-section">
+                <div class="results-header">
+                    <h3>📊 Resultado do Cálculo</h3>
+                    <div class="button-group" style="margin: 0;">
+                        <button class="btn btn-secondary" onclick="printResults()">🖨️ Imprimir</button>
+                        <button class="btn btn-secondary" onclick="newCalculation()">➕ Novo Cálculo</button>
+                    </div>
+                </div>
+
+                <div id="resultsContent"></div>
+
+                <!-- Certificate Generation Section -->
+                <div id="certificateSection" class="certificate-section" style="display: none; margin-top: 2rem; padding: 2rem; background: #f0f9ff; border: 2px solid var(--secondary-color); border-radius: 12px;">
+                    <h3 style="color: var(--primary-color); margin-bottom: 1rem; font-size: 1.5rem;">📄 Gerar Certidão Oficial</h3>
+                    <p style="color: var(--text-medium); margin-bottom: 1.5rem;">Preencha os dados abaixo para gerar a Certidão de Apuração de Multa Criminal</p>
+                    
+                    <div class="form-section">
+                        <div class="form-group">
+                            <label for="processNumber">Número do Processo *</label>
+                            <input type="text" id="processNumber" class="form-control" placeholder="Ex: 0000000-00.0000.0.00.0000">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="convictedName">Nome do Apenado *</label>
+                            <input type="text" id="convictedName" class="form-control" placeholder="Nome completo do condenado">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="judicialBody">Órgão Judiciário *</label>
+                            <input type="text" id="judicialBody" class="form-control" placeholder="Ex: 1ª Vara Criminal de Teresina">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="officialName">Nome do Servidor Responsável *</label>
+                            <input type="text" id="officialName" class="form-control" placeholder="Nome completo do servidor">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="officialPosition">Cargo do Servidor *</label>
+                            <input type="text" id="officialPosition" class="form-control" placeholder="Ex: Diretor de Secretaria">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="certificateDate">Data da Certidão</label>
+                            <input type="date" id="certificateDate" class="form-control">
+                            <span class="helper-text">Padrão: data de hoje</span>
+                        </div>
+                        
+                        <div class="button-group" style="margin-top: 1.5rem;">
+                            <button type="button" class="btn btn-primary" onclick="generateCertificate()">📄 Gerar Certidão PDF</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Legal References -->
+                <div class="legal-references">
+                    <h4>📋 FUNDAMENTOS LEGAIS</h4>
+                    <div class="legal-ref-item">
+                        <strong>Art. 49 do Código Penal</strong>
+                        <p>A pena de multa consiste no pagamento ao fundo penitenciário da quantia fixada na sentença e calculada em dias-multa. Será, no mínimo, de 10 (dez) e, no máximo, de 360 (trezentos e sessenta) dias-multa. O valor do dia-multa será fixado pelo juiz não podendo ser inferior a um trigésimo do maior salário mínimo mensal vigente ao tempo do fato, nem superior a 5 (cinco) vezes esse salário.</p>
+                    </div>
+                    <div class="legal-ref-item">
+                        <strong>Art. 50 do Código Penal</strong>
+                        <p>A multa deve ser paga dentro de 10 (dez) dias depois de transitada em julgado a sentença. A requerimento do condenado e conforme as circunstâncias, o juiz pode permitir que o pagamento se realize em parcelas mensais.</p>
+                    </div>
+                    <div class="legal-ref-item">
+                        <strong>STF, AP 1.030/DF, Min. Edson Fachin</strong>
+                        <p>Definição dos índices de correção monetária (IPCA-E) e juros de mora (SELIC) aplicáveis às multas penais.</p>
+                    </div>
+                    <div class="legal-ref-item">
+                        <strong>STJ, EREsp 91.003/RS</strong>
+                        <p>Precedente sobre aplicação de correção monetária e juros em execuções de multas criminais.</p>
+                    </div>
+                    <div class="legal-ref-item">
+                        <strong>Lei 11.343/2006 (Lei de Drogas)</strong>
+                        <p>Exemplo de lei especial: Art. 28 (40 a 100 dias-multa), Art. 33 (500 a 1.500 dias-multa para tráfico).</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Help Section -->
+            <div class="help-section">
+                <div class="help-header" onclick="toggleHelp()">
+                    <span>❓ Ajuda e Exemplos</span>
+                    <span id="helpToggle">▼</span>
+                </div>
+                <div class="help-content" id="helpContent">
+                    <h4 style="color: var(--primary-color); margin-bottom: 1rem;">Como usar a calculadora:</h4>
+                    <ol style="color: var(--text-medium); line-height: 1.8; margin-bottom: 2rem;">
+                        <li>Informe o número de dias-multa fixado na sentença (entre 10 e 360 dias)</li>
+                        <li>Escolha o método de cálculo:
+                            <ul style="margin-top: 0.5rem;">
+                                <li><strong>Método A:</strong> Use o divisor do salário mínimo (ex: 3 para 1/3 do SM)</li>
+                                <li><strong>Método B:</strong> Informe diretamente o valor em reais por dia-multa</li>
+                            </ul>
+                        </li>
+                        <li>Preencha os campos adicionais (data, parcelas, descrição) se desejar</li>
+                        <li>Clique em "Calcular Multa" para obter o resultado</li>
+                    </ol>
+
+                    <h4 style="color: var(--primary-color); margin-bottom: 1rem;">Exemplos de Cálculo:</h4>
+                    
+                    <div class="help-example">
+                        <h4>Exemplo 1: Crime do Código Penal</h4>
+                        <p><strong>Situação:</strong> Furto simples - 30 dias-multa, 1/3 do salário mínimo</p>
+                        <p><strong>Dados:</strong> Crime em 15/03/2020 (SM: R$ 1.045,00), IPCA-E: 28,5%</p>
+                        <p><strong>Cálculo:</strong></p>
+                        <ul style="margin-left: 1.5rem; color: var(--text-medium);">
+                            <li>Valor base: 30 × (R$ 1.045,00 / 3) = R$ 10.450,00</li>
+                            <li>Correção IPCA-E: R$ 10.450,00 × 1,285 = <strong>R$ 13.428,25</strong></li>
+                        </ul>
+                    </div>
+
+                    <div class="help-example">
+                        <h4>Exemplo 2: Lei de Drogas - Tráfico</h4>
+                        <p><strong>Situação:</strong> Tráfico de drogas - 500 dias-multa, 1 SM integral</p>
+                        <p><strong>Dados:</strong> Crime em 10/08/2022 (SM: R$ 1.212,00), IPCA-E: 15,8%, SELIC: 8,2%</p>
+                        <p><strong>Cálculo:</strong></p>
+                        <ul style="margin-left: 1.5rem; color: var(--text-medium);">
+                            <li>Valor base: 500 × R$ 1.212,00 = R$ 606.000,00</li>
+                            <li>Correção IPCA-E: R$ 606.000,00 × 1,158 = R$ 701.748,00</li>
+                            <li>Juros SELIC: R$ 701.748,00 × 1,082 = <strong>R$ 759.291,54</strong></li>
+                        </ul>
+                    </div>
+
+                    <div class="help-example">
+                        <h4>Leis Especiais - Exemplos de Quantidades</h4>
+                        <p><strong>Lei 11.343/2006 (Drogas):</strong></p>
+                        <ul style="margin-left: 1.5rem; color: var(--text-medium);">
+                            <li>Art. 28 (porte para consumo): 40 a 100 dias-multa</li>
+                            <li>Art. 33 (tráfico): 500 a 1.500 dias-multa</li>
+                            <li>Art. 33, §3º (uso compartilhado): 700 a 1.500 dias-multa</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- History Section -->
+            <div id="historySection" class="history-section">
+                <h3>📜 Histórico de Cálculos</h3>
+                <div id="historyContent"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <p>&copy; 2025 JurisCalc - Cálculos Judiciais com Inteligência e Precisão</p>
+        <p style="margin-top: 0.5rem; font-size: 0.9rem;">Desenvolvido para auxiliar magistrados na atividade jurisdicional</p>
+    </footer>
+
+    <script>
+        // Constants
+        const MIN_FINE_DAYS_STANDARD = 10;
+        const MAX_FINE_DAYS_STANDARD = 360;
+
+        // Historical Minimum Wage Database
+        const MINIMUM_WAGE_HISTORY = [
+            { date: '2025-01-01', value: 1518.00 },
+            { date: '2024-01-01', value: 1412.00 },
+            { date: '2023-05-01', value: 1320.00 },
+            { date: '2023-01-01', value: 1302.00 },
+            { date: '2022-01-01', value: 1212.00 },
+            { date: '2021-01-01', value: 1100.00 },
+            { date: '2020-02-01', value: 1045.00 },
+            { date: '2020-01-01', value: 1039.00 },
+            { date: '2019-01-01', value: 998.00 },
+            { date: '2018-01-01', value: 954.00 },
+            { date: '2017-01-01', value: 937.00 },
+            { date: '2016-01-01', value: 880.00 },
+            { date: '2015-01-01', value: 788.00 },
+            { date: '2014-01-01', value: 724.00 },
+            { date: '2013-01-01', value: 678.00 },
+            { date: '2012-01-01', value: 622.00 },
+            { date: '2011-03-01', value: 545.00 },
+            { date: '2011-01-01', value: 540.00 },
+            { date: '2010-01-01', value: 510.00 },
+            { date: '2009-02-01', value: 465.00 },
+            { date: '2008-03-01', value: 415.00 },
+            { date: '2007-04-01', value: 380.00 },
+            { date: '2006-04-01', value: 350.00 },
+            { date: '2005-05-01', value: 300.00 },
+            { date: '2004-05-01', value: 260.00 },
+            { date: '2003-06-01', value: 240.00 },
+            { date: '2002-06-01', value: 200.00 },
+            { date: '2001-06-01', value: 180.00 },
+            { date: '2000-06-01', value: 151.00 },
+            { date: '1999-05-01', value: 136.00 },
+            { date: '1998-05-01', value: 130.00 },
+            { date: '1997-05-01', value: 120.00 },
+            { date: '1996-05-01', value: 112.00 },
+            { date: '1995-05-01', value: 100.00 },
+            { date: '1994-09-01', value: 70.00 },
+            { date: '1994-07-01', value: 64.79 }
+        ];
+
+        // Fraction Options
+        const FRACTION_OPTIONS = [
+            { label: '1/30 do salário mínimo (valor mínimo legal)', num: 1, den: 30 },
+            { label: '1/29 do salário mínimo', num: 1, den: 29 },
+            { label: '1/28 do salário mínimo', num: 1, den: 28 },
+            { label: '1/27 do salário mínimo', num: 1, den: 27 },
+            { label: '1/26 do salário mínimo', num: 1, den: 26 },
+            { label: '1/25 do salário mínimo', num: 1, den: 25 },
+            { label: '1/24 do salário mínimo', num: 1, den: 24 },
+            { label: '1/23 do salário mínimo', num: 1, den: 23 },
+            { label: '1/22 do salário mínimo', num: 1, den: 22 },
+            { label: '1/21 do salário mínimo', num: 1, den: 21 },
+            { label: '1/20 do salário mínimo', num: 1, den: 20 },
+            { label: '1/19 do salário mínimo', num: 1, den: 19 },
+            { label: '1/18 do salário mínimo', num: 1, den: 18 },
+            { label: '1/17 do salário mínimo', num: 1, den: 17 },
+            { label: '1/16 do salário mínimo', num: 1, den: 16 },
+            { label: '1/15 do salário mínimo', num: 1, den: 15 },
+            { label: '1/14 do salário mínimo', num: 1, den: 14 },
+            { label: '1/13 do salário mínimo', num: 1, den: 13 },
+            { label: '1/12 do salário mínimo', num: 1, den: 12 },
+            { label: '1/11 do salário mínimo', num: 1, den: 11 },
+            { label: '1/10 do salário mínimo', num: 1, den: 10 },
+            { label: '1/9 do salário mínimo', num: 1, den: 9 },
+            { label: '1/8 do salário mínimo', num: 1, den: 8 },
+            { label: '1/7 do salário mínimo', num: 1, den: 7 },
+            { label: '1/6 do salário mínimo', num: 1, den: 6 },
+            { label: '1/5 do salário mínimo', num: 1, den: 5 },
+            { label: '1/4 do salário mínimo', num: 1, den: 4 },
+            { label: '1/3 do salário mínimo', num: 1, den: 3 },
+            { label: '1/2 do salário mínimo', num: 1, den: 2 },
+            { label: '1 salário mínimo (integral)', num: 1, den: 1 },
+            { label: '2x o salário mínimo', num: 2, den: 1 },
+            { label: '3x o salário mínimo', num: 3, den: 1 },
+            { label: '4x o salário mínimo', num: 4, den: 1 },
+            { label: '5x o salário mínimo (valor máximo legal)', num: 5, den: 1 }
+        ];
+
+        // State
+        let calculationHistory = [];
+        let currentMinimumWage = null;
+        let currentCalculationResult = null;
+        
+        // TJSP Tables Data
+        const IPCA_E_FACTORS = {
+            2020: { 1: 5.955176, 2: 5.997457, 3: 6.010651, 4: 6.011853, 5: 6.011251, 6: 5.975784, 7: 5.976979, 8: 5.994909, 9: 6.008697, 10: 6.035736, 11: 6.092471, 12: 6.141820 },
+            2021: { 1: 6.206923, 2: 6.255336, 3: 6.285361, 4: 6.343814, 5: 6.381876, 6: 6.409956, 7: 6.463158, 8: 6.509692, 9: 6.567628, 10: 6.642498, 11: 6.722207, 12: 6.800856 },
+            2022: { 1: 6.853902, 2: 6.893654, 3: 6.961901, 4: 7.028039, 5: 7.149624, 6: 7.191806, 7: 7.241429, 8: 7.250842, 9: 7.197910, 10: 7.171277, 11: 7.182751, 12: 7.220819 },
+            2023: { 1: 7.258367, 2: 7.298288, 3: 7.353754, 4: 7.404494, 5: 7.446699, 6: 7.484677, 7: 7.487670, 8: 7.482428, 9: 7.503378, 10: 7.529639, 11: 7.545451, 12: 7.570350 },
+            2024: { 1: 7.600631, 2: 7.624192, 3: 7.683660, 4: 7.711321, 5: 7.727514, 6: 7.761515, 7: 7.791784, 8: 7.815159, 9: 7.830007, 10: 7.840186, 11: 7.882523, 12: 7.931394 },
+            2025: { 1: 7.958360, 2: 7.967114, 3: 8.065109, 4: 8.116725, 5: 8.151626, 6: 8.180971, 7: 8.202241, 8: 8.229308, 9: 8.217786, 10: 8.257231 }
+        };
+        
+        const SELIC_ACCUMULATED = {
+            2022: { 1: 0.77, 2: 1.50, 3: 2.26, 4: 3.19, 5: 4.02, 6: 5.05, 7: 6.07, 8: 7.10, 9: 8.27, 10: 9.34, 11: 10.36, 12: 11.38 },
+            2023: { 1: 12.50, 2: 13.62, 3: 14.54, 4: 15.71, 5: 16.63, 6: 17.75, 7: 18.82, 8: 19.89, 9: 21.03, 10: 22.00, 11: 23.00, 12: 23.92 },
+            2024: { 1: 24.81, 2: 25.78, 3: 26.58, 4: 27.41, 5: 28.30, 6: 29.13, 7: 29.92, 8: 30.83, 9: 31.70, 10: 32.54, 11: 33.47, 12: 34.26 },
+            2025: { 1: 35.19, 2: 36.20, 3: 37.19, 4: 38.15, 5: 39.21, 6: 40.35, 7: 41.45, 8: 42.73, 9: 43.89, 10: 44.95 }
+        };
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            // Set today's date as default for calculation date
+            document.getElementById('calculationDate').valueAsDate = new Date();
+            
+            // Setup radio button listeners
+            const radioButtons = document.querySelectorAll('input[name="calculationMethod"]');
+            radioButtons.forEach(radio => {
+                radio.addEventListener('change', handleMethodChange);
+            });
+
+            // Setup special law checkbox
+            document.getElementById('specialLaw').addEventListener('change', handleSpecialLawChange);
+
+            // Setup crime date change
+            document.getElementById('crimeDate').addEventListener('change', handleCrimeDateChange);
+
+            // Setup apply interest checkbox
+            document.getElementById('applyInterest').addEventListener('change', handleApplyInterestChange);
+
+            // Setup form submission
+            document.getElementById('calculatorForm').addEventListener('submit', handleCalculation);
+            
+            // Set certificate date to today
+            document.getElementById('certificateDate').valueAsDate = new Date();
+
+            // Calculate IPCA on date changes
+            document.getElementById('crimeDate').addEventListener('change', calculateIPCAE);
+            document.getElementById('calculationDate').addEventListener('change', calculateIPCAE);
+            
+            // Calculate SELIC on date changes
+            document.getElementById('paymentDeadline').addEventListener('change', calculateSELIC);
+            document.getElementById('calculationDate').addEventListener('change', calculateSELIC);
+
+            // Populate fraction select
+            populateFractionSelect();
+        });
+
+        // Populate Fraction Select
+        function populateFractionSelect() {
+            const select = document.getElementById('fractionSelect');
+            FRACTION_OPTIONS.forEach(option => {
+                const opt = document.createElement('option');
+                opt.value = JSON.stringify({ num: option.num, den: option.den });
+                opt.textContent = option.label;
+                select.appendChild(opt);
+            });
+        }
+
+        // Get Minimum Wage for Date
+        function getMinimumWageForDate(dateString) {
+            const crimeDate = new Date(dateString + 'T00:00:00');
+            
+            for (let i = 0; i < MINIMUM_WAGE_HISTORY.length; i++) {
+                const entry = MINIMUM_WAGE_HISTORY[i];
+                const entryDate = new Date(entry.date + 'T00:00:00');
+                
+                if (crimeDate >= entryDate) {
+                    return entry.value;
+                }
+            }
+            
+            // If before all records, return the oldest
+            return MINIMUM_WAGE_HISTORY[MINIMUM_WAGE_HISTORY.length - 1].value;
+        }
+
+        // Handle Special Law Change
+        function handleSpecialLawChange(e) {
+            const helper = document.getElementById('fineDaysHelper');
+            const input = document.getElementById('fineDays');
+            
+            if (e.target.checked) {
+                helper.textContent = 'Exemplos: Lei 11.343/2006 (Drogas): 40-100 (usuário), 500-1500 (tráfico)';
+                helper.style.color = 'var(--warning-color)';
+                input.removeAttribute('min');
+                input.removeAttribute('max');
+                input.setAttribute('min', '1');
+            } else {
+                helper.textContent = 'Código Penal: mínimo 10, máximo 360 dias-multa';
+                helper.style.color = 'var(--text-light)';
+                input.setAttribute('min', '10');
+                input.setAttribute('max', '360');
+            }
+        }
+
+        // Handle Crime Date Change
+        function handleCrimeDateChange(e) {
+            const dateString = e.target.value;
+            if (!dateString) {
+                document.getElementById('minimumWageDisplay').style.display = 'none';
+                currentMinimumWage = null;
+                return;
+            }
+
+            const minimumWage = getMinimumWageForDate(dateString);
+            currentMinimumWage = minimumWage;
+            
+            document.getElementById('minimumWageValue').textContent = formatCurrency(minimumWage);
+            document.getElementById('minimumWageDisplay').style.display = 'block';
+
+            // Update fraction select with calculated values
+            updateFractionSelect();
+
+            // Update direct value limits
+            updateDirectValueLimits();
+        }
+
+        // Update Fraction Select
+        function updateFractionSelect() {
+            if (!currentMinimumWage) return;
+
+            const select = document.getElementById('fractionSelect');
+            // Clear existing options except first
+            select.innerHTML = '<option value="">Selecione uma fração...</option>';
+
+            FRACTION_OPTIONS.forEach(option => {
+                const value = (currentMinimumWage * option.num) / option.den;
+                const opt = document.createElement('option');
+                opt.value = JSON.stringify({ num: option.num, den: option.den, value: value });
+                opt.textContent = `${option.label} (${formatCurrency(value)})`;
+                select.appendChild(opt);
+            });
+        }
+
+        // Update Direct Value Limits
+        function updateDirectValueLimits() {
+            if (!currentMinimumWage) return;
+
+            const minValue = currentMinimumWage / 30;
+            const maxValue = currentMinimumWage * 5;
+
+            document.getElementById('directValue').setAttribute('min', minValue.toFixed(2));
+            document.getElementById('directValue').setAttribute('max', maxValue.toFixed(2));
+            document.getElementById('directValueHelper').textContent = 
+                `Mínimo: ${formatCurrency(minValue)} (1/30 SM) | Máximo: ${formatCurrency(maxValue)} (5× SM)`;
+        }
+
+        // Handle Apply Interest Change
+        function handleApplyInterestChange(e) {
+            const interestFields = document.getElementById('interestFields');
+            if (e.target.checked) {
+                interestFields.classList.add('show');
+            } else {
+                interestFields.classList.remove('show');
+            }
+        }
+
+        // Navigation Functions
+        function showCalculator() {
+            document.getElementById('mainView').style.display = 'none';
+            document.getElementById('calculatorView').classList.add('active');
+            window.scrollTo(0, 0);
+        }
+
+        function showMainView() {
+            document.getElementById('mainView').style.display = 'block';
+            document.getElementById('calculatorView').classList.remove('active');
+            window.scrollTo(0, 0);
+        }
+
+        // Method Change Handler
+        function handleMethodChange(e) {
+            const method = e.target.value;
+            const fractionInput = document.getElementById('fractionInput');
+            const directValueInput = document.getElementById('directValueInput');
+            const methodAOption = document.getElementById('methodAOption');
+            const methodBOption = document.getElementById('methodBOption');
+
+            if (method === 'fraction') {
+                fractionInput.classList.add('show');
+                directValueInput.classList.remove('show');
+                methodAOption.classList.add('selected');
+                methodBOption.classList.remove('selected');
+            } else {
+                fractionInput.classList.remove('show');
+                directValueInput.classList.add('show');
+                methodAOption.classList.remove('selected');
+                methodBOption.classList.add('selected');
+            }
+        }
+
+        // Form Validation
+        function validateForm() {
+            let isValid = true;
+            const fineDays = parseInt(document.getElementById('fineDays').value);
+            const specialLaw = document.getElementById('specialLaw').checked;
+            const method = document.querySelector('input[name="calculationMethod"]:checked').value;
+            const crimeDate = document.getElementById('crimeDate').value;
+            const ipcaAccumulated = parseFloat(document.getElementById('ipcaAccumulated').value);
+            const applyInterest = document.getElementById('applyInterest').checked;
+
+            // Clear previous errors
+            document.querySelectorAll('.error-text').forEach(el => el.classList.remove('show'));
+
+            // Validate crime date
+            if (!crimeDate) {
+                showError('crimeDateError', 'A data do crime é obrigatória.');
+                isValid = false;
+            } else {
+                const today = new Date();
+                const crimeDateObj = new Date(crimeDate + 'T00:00:00');
+                if (crimeDateObj > today) {
+                    showError('crimeDateError', 'A data do crime não pode ser no futuro.');
+                    isValid = false;
+                }
+            }
+
+            // Validate fine days
+            if (!fineDays || fineDays < 1) {
+                showError('fineDaysError', 'O número de dias-multa deve ser positivo.');
+                isValid = false;
+            } else if (!specialLaw && (fineDays < MIN_FINE_DAYS_STANDARD || fineDays > MAX_FINE_DAYS_STANDARD)) {
+                showError('fineDaysError', `Para o Código Penal, o número de dias-multa deve estar entre ${MIN_FINE_DAYS_STANDARD} e ${MAX_FINE_DAYS_STANDARD}. Marque "Lei Especial" se aplicável.`);
+                isValid = false;
+            }
+
+            // Validate IPCA calculation
+            if (!document.getElementById('ipcaAccumulated').value) {
+                showAlert('Por favor, preencha a data do crime e a data do cálculo para calcular o IPCA-E automaticamente.', 'error');
+                return false;
+            }
+            
+            // Validate based on method
+            if (!currentMinimumWage) {
+                showAlert('Por favor, selecione uma data do crime válida primeiro.', 'error');
+                return false;
+            }
+
+            const minValue = currentMinimumWage / 30;
+            const maxValue = currentMinimumWage * 5;
+
+            if (method === 'fraction') {
+                const fractionSelect = document.getElementById('fractionSelect').value;
+                if (!fractionSelect) {
+                    showError('fractionError', 'Selecione uma fração do salário mínimo.');
+                    isValid = false;
+                }
+            } else {
+                const directValue = parseFloat(document.getElementById('directValue').value);
+                if (!directValue || directValue < minValue || directValue > maxValue) {
+                    showError('directValueError', `O valor deve estar entre ${formatCurrency(minValue)} e ${formatCurrency(maxValue)}.`);
+                    isValid = false;
+                }
+            }
+
+            // Validate IPCA-E
+            if (isNaN(ipcaAccumulated)) {
+                showError('ipcaError', 'Informe o percentual de IPCA-E acumulado.');
+                isValid = false;
+            }
+
+            // Validate interest fields if applicable
+            if (applyInterest) {
+                const paymentDeadline = document.getElementById('paymentDeadline').value;
+                const selicAccumulated = parseFloat(document.getElementById('selicAccumulated').value);
+
+                if (!paymentDeadline) {
+                    showAlert('Informe a data do vencimento do prazo de pagamento.', 'error');
+                    isValid = false;
+                }
+
+                if (isNaN(selicAccumulated)) {
+                    showError('selicError', 'Informe o percentual de SELIC acumulada.');
+                    isValid = false;
+                }
+            }
+
+            return isValid;
+        }
+
+        function showError(elementId, message) {
+            const errorEl = document.getElementById(elementId);
+            errorEl.textContent = message;
+            errorEl.classList.add('show');
+        }
+
+        function showAlert(message, type = 'error') {
+            const alertBox = document.getElementById('alertBox');
+            alertBox.textContent = message;
+            alertBox.className = `alert alert-${type} show`;
+            setTimeout(() => {
+                alertBox.classList.remove('show');
+            }, 5000);
+        }
+
+        // Calculation Handler
+        function handleCalculation(e) {
+            e.preventDefault();
+
+            if (!validateForm()) {
+                showAlert('Por favor, corrija os erros no formulário.', 'error');
+                return;
+            }
+
+            // Get form values
+            const fineDays = parseInt(document.getElementById('fineDays').value);
+            const method = document.querySelector('input[name="calculationMethod"]:checked').value;
+            const crimeDate = document.getElementById('crimeDate').value;
+            const calculationDate = document.getElementById('calculationDate').value;
+            const ipcaAccumulated = parseFloat(document.getElementById('ipcaAccumulated').value);
+            const applyInterest = document.getElementById('applyInterest').checked;
+            const installments = parseInt(document.getElementById('installments').value) || 1;
+            const crimeDescription = document.getElementById('crimeDescription').value;
+
+            let valuePerDay;
+            let methodDescription;
+            let fractionDescription = '';
+
+            if (method === 'fraction') {
+                const fractionData = JSON.parse(document.getElementById('fractionSelect').value);
+                valuePerDay = fractionData.value;
+                if (fractionData.den === 1) {
+                    fractionDescription = fractionData.num === 1 ? '1 SM' : `${fractionData.num}× SM`;
+                } else {
+                    fractionDescription = `${fractionData.num}/${fractionData.den} SM`;
+                }
+                methodDescription = `${fractionDescription} = ${formatCurrency(currentMinimumWage)} × ${fractionData.num}/${fractionData.den} = ${formatCurrency(valuePerDay)}`;
+            } else {
+                valuePerDay = parseFloat(document.getElementById('directValue').value);
+                methodDescription = `Valor direto: ${formatCurrency(valuePerDay)}`;
+            }
+
+            // Calculate base value
+            const baseValue = fineDays * valuePerDay;
+
+            // Calculate corrected value (IPCA-E)
+            const ipcaMultiplier = 1 + (ipcaAccumulated / 100);
+            const correctedValue = baseValue * ipcaMultiplier;
+
+            // Calculate final value (with SELIC if applicable)
+            let finalValue = correctedValue;
+            let selicAccumulated = 0;
+            let paymentDeadline = null;
+
+            if (applyInterest) {
+                selicAccumulated = parseFloat(document.getElementById('selicAccumulated').value);
+                paymentDeadline = document.getElementById('paymentDeadline').value;
+                const selicMultiplier = 1 + (selicAccumulated / 100);
+                finalValue = correctedValue * selicMultiplier;
+            }
+
+            const installmentValue = finalValue / installments;
+
+            // Create result object
+            const result = {
+                fineDays,
+                valuePerDay,
+                methodDescription,
+                fractionDescription,
+                crimeDate,
+                minimumWage: currentMinimumWage,
+                calculationDate,
+                baseValue,
+                ipcaAccumulated,
+                correctedValue,
+                applyInterest,
+                paymentDeadline,
+                selicAccumulated,
+                finalValue,
+                installments,
+                installmentValue,
+                crimeDescription,
+                timestamp: new Date().toLocaleString('pt-BR')
+            };
+
+            // Display results
+            displayResults(result);
+
+            // Add to history
+            addToHistory(result);
+
+            // Show success message
+            showAlert('Cálculo realizado com sucesso!', 'success');
+
+            // Scroll to results
+            document.getElementById('resultsSection').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // Calculate IPCA-E using TJSP tables
+        function calculateIPCAE() {
+            const crimeDateStr = document.getElementById('crimeDate').value;
+            const calcDateStr = document.getElementById('calculationDate').value;
+            
+            if (!crimeDateStr || !calcDateStr) {
+                document.getElementById('ipcaAccumulated').value = '';
+                document.getElementById('ipcaCalculationDisplay').style.display = 'none';
+                return;
+            }
+            
+            const crimeDate = new Date(crimeDateStr + 'T00:00:00');
+            const calcDate = new Date(calcDateStr + 'T00:00:00');
+            
+            if (crimeDate >= calcDate) {
+                document.getElementById('ipcaAccumulated').value = '';
+                document.getElementById('ipcaCalculationDisplay').style.display = 'none';
+                return;
+            }
+            
+            const crimeYear = crimeDate.getFullYear();
+            const crimeMonth = crimeDate.getMonth() + 1;
+            const calcYear = calcDate.getFullYear();
+            const calcMonth = calcDate.getMonth() + 1;
+            
+            // Get factors from tables
+            const initialFactor = IPCA_E_FACTORS[crimeYear] && IPCA_E_FACTORS[crimeYear][crimeMonth];
+            const finalFactor = IPCA_E_FACTORS[calcYear] && IPCA_E_FACTORS[calcYear][calcMonth];
+            
+            if (!initialFactor || !finalFactor) {
+                document.getElementById('ipcaCalculationDisplay').innerHTML = '⚠️ Dados não disponíveis para o período selecionado nas tabelas TJSP';
+                document.getElementById('ipcaCalculationDisplay').style.display = 'block';
+                document.getElementById('ipcaCalculationDisplay').style.background = '#fee2e2';
+                document.getElementById('ipcaCalculationDisplay').style.borderColor = 'var(--error-color)';
+                document.getElementById('ipcaCalculationDisplay').style.color = '#991b1b';
+                document.getElementById('ipcaAccumulated').value = '';
+                return;
+            }
+            
+            // Calculate: (finalFactor / initialFactor - 1) * 100
+            const percentual = ((finalFactor / initialFactor) - 1) * 100;
+            
+            document.getElementById('ipcaAccumulated').value = percentual.toFixed(4);
+            
+            const displayMsg = `✓ IPCA-E calculado: ${percentual.toFixed(2)}%<br>` +
+                              `Método: Fator Final ÷ Fator Inicial<br>` +
+                              `Cálculo: ${finalFactor.toFixed(6)} ÷ ${initialFactor.toFixed(6)} = ${(finalFactor/initialFactor).toFixed(6)}<br>` +
+                              `Fonte: Tabela Prática TJSP - Outubro/2025`;
+            
+            document.getElementById('ipcaCalculationDisplay').innerHTML = displayMsg;
+            document.getElementById('ipcaCalculationDisplay').style.display = 'block';
+            document.getElementById('ipcaCalculationDisplay').style.background = '#d1fae5';
+            document.getElementById('ipcaCalculationDisplay').style.borderColor = 'var(--success-color)';
+            document.getElementById('ipcaCalculationDisplay').style.color = '#065f46';
+        }
+        
+        // Calculate SELIC using TJSP tables
+        function calculateSELIC() {
+            const paymentDateStr = document.getElementById('paymentDeadline').value;
+            const calcDateStr = document.getElementById('calculationDate').value;
+            const applyInterest = document.getElementById('applyInterest').checked;
+            
+            if (!applyInterest || !paymentDateStr || !calcDateStr) {
+                document.getElementById('selicAccumulated').value = '';
+                document.getElementById('selicCalculationDisplay').style.display = 'none';
+                return;
+            }
+            
+            const paymentDate = new Date(paymentDateStr + 'T00:00:00');
+            const calcDate = new Date(calcDateStr + 'T00:00:00');
+            
+            if (paymentDate >= calcDate) {
+                document.getElementById('selicAccumulated').value = '';
+                document.getElementById('selicCalculationDisplay').style.display = 'none';
+                return;
+            }
+            
+            const paymentYear = paymentDate.getFullYear();
+            const paymentMonth = paymentDate.getMonth() + 1;
+            const calcYear = calcDate.getFullYear();
+            const calcMonth = calcDate.getMonth() + 1;
+            
+            // Get percentages from tables
+            const initialPercent = SELIC_ACCUMULATED[paymentYear] && SELIC_ACCUMULATED[paymentYear][paymentMonth];
+            const finalPercent = SELIC_ACCUMULATED[calcYear] && SELIC_ACCUMULATED[calcYear][calcMonth];
+            
+            if (initialPercent === undefined || finalPercent === undefined) {
+                document.getElementById('selicCalculationDisplay').innerHTML = '⚠️ Dados não disponíveis para o período selecionado nas tabelas TJSP';
+                document.getElementById('selicCalculationDisplay').style.display = 'block';
+                document.getElementById('selicCalculationDisplay').style.background = '#fee2e2';
+                document.getElementById('selicCalculationDisplay').style.borderColor = 'var(--error-color)';
+                document.getElementById('selicCalculationDisplay').style.color = '#991b1b';
+                document.getElementById('selicAccumulated').value = '';
+                return;
+            }
+            
+            // Calculate: finalPercent - initialPercent
+            const percentual = finalPercent - initialPercent;
+            
+            document.getElementById('selicAccumulated').value = percentual.toFixed(4);
+            
+            const displayMsg = `✓ SELIC calculada: ${percentual.toFixed(2)}%<br>` +
+                              `Método: Subtração dos percentuais acumulados<br>` +
+                              `Cálculo: ${finalPercent.toFixed(2)}% - ${initialPercent.toFixed(2)}% = ${percentual.toFixed(2)}%<br>` +
+                              `Fonte: Tabela Prática TJSP - Outubro/2025`;
+            
+            document.getElementById('selicCalculationDisplay').innerHTML = displayMsg;
+            document.getElementById('selicCalculationDisplay').style.display = 'block';
+            document.getElementById('selicCalculationDisplay').style.background = '#fef3c7';
+            document.getElementById('selicCalculationDisplay').style.borderColor = 'var(--warning-color)';
+            document.getElementById('selicCalculationDisplay').style.color = '#78350f';
+        }
+        
+        // Display Results
+        function displayResults(result) {
+            currentCalculationResult = result;
+            const resultsContent = document.getElementById('resultsContent');
+            
+            let html = `
+                <div style="background: var(--bg-light); padding: 1.5rem; border-radius: 8px; margin-bottom: 1.5rem;">
+                    <h4 style="color: var(--primary-color); margin-bottom: 1rem; font-size: 1.2rem;">💰 VALOR BASE</h4>
+                    <div class="result-item">
+                        <span class="result-label">Número de dias-multa:</span>
+                        <span class="result-value">${result.fineDays} dias</span>
+                    </div>
+                    <div class="result-item">
+                        <span class="result-label">Data do crime:</span>
+                        <span class="result-value">${formatDate(result.crimeDate)}</span>
+                    </div>
+                    <div class="result-item">
+                        <span class="result-label">Salário mínimo vigente:</span>
+                        <span class="result-value">${formatCurrency(result.minimumWage)}</span>
+                    </div>
+                    <div class="result-item">
+                        <span class="result-label">Valor por dia-multa:</span>
+                        <span class="result-value">${formatCurrency(result.valuePerDay)} ${result.fractionDescription ? '(' + result.fractionDescription + ')' : ''}</span>
+                    </div>
+                    <div class="result-item" style="background: #dbeafe; border-left-color: var(--secondary-color);">
+                        <span class="result-label"><strong>Valor base da multa:</strong></span>
+                        <span class="result-value"><strong>${formatCurrency(result.baseValue)}</strong></span>
+                    </div>
+                </div>
+
+                <div style="background: #d1fae5; padding: 1.5rem; border-radius: 8px; margin-bottom: 1.5rem;">
+                    <h4 style="color: var(--success-color); margin-bottom: 1rem; font-size: 1.2rem;">📈 CORREÇÃO MONETÁRIA</h4>
+                    <div class="result-item" style="background: white;">
+                        <span class="result-label">Índice:</span>
+                        <span class="result-value">IPCA-E</span>
+                    </div>
+                    <div class="result-item" style="background: white;">
+                        <span class="result-label">Período:</span>
+                        <span class="result-value">${formatDate(result.crimeDate)} a ${formatDate(result.calculationDate)}</span>
+                    </div>
+                    <div class="result-item" style="background: white;">
+                        <span class="result-label">Percentual acumulado:</span>
+                        <span class="result-value">${result.ipcaAccumulated.toFixed(2)}%</span>
+                    </div>
+                    <div class="result-item" style="background: white; border-left-color: var(--success-color);">
+                        <span class="result-label"><strong>Valor corrigido:</strong></span>
+                        <span class="result-value"><strong>${formatCurrency(result.correctedValue)}</strong></span>
+                    </div>
+                </div>
+            `;
+
+            if (result.applyInterest) {
+                html += `
+                    <div style="background: #fef3c7; padding: 1.5rem; border-radius: 8px; margin-bottom: 1.5rem;">
+                        <h4 style="color: var(--warning-color); margin-bottom: 1rem; font-size: 1.2rem;">💸 JUROS DE MORA</h4>
+                        <div class="result-item" style="background: white;">
+                            <span class="result-label">Índice:</span>
+                            <span class="result-value">SELIC</span>
+                        </div>
+                        <div class="result-item" style="background: white;">
+                            <span class="result-label">Período:</span>
+                            <span class="result-value">${formatDate(result.paymentDeadline)} a ${formatDate(result.calculationDate)}</span>
+                        </div>
+                        <div class="result-item" style="background: white;">
+                            <span class="result-label">Percentual acumulado:</span>
+                            <span class="result-value">${result.selicAccumulated.toFixed(2)}%</span>
+                        </div>
+                        <div class="result-item" style="background: white; border-left-color: var(--warning-color);">
+                            <span class="result-label"><strong>Valor com juros:</strong></span>
+                            <span class="result-value"><strong>${formatCurrency(result.finalValue)}</strong></span>
+                        </div>
+                    </div>
+                `;
+            }
+
+            html += `
+                <div class="result-total" style="background: var(--primary-color); margin-top: 0;">
+                    <div class="label" style="font-size: 1.2rem;">💰 VALOR FINAL ATUALIZADO</div>
+                    <div class="value" style="font-size: 2.5rem; margin-top: 0.5rem;">${formatCurrency(result.finalValue)}</div>
+                </div>
+            `;
+
+            if (result.installments > 1) {
+                html += `
+                    <div style="background: #ede9fe; padding: 1.5rem; border-radius: 8px; margin-top: 1.5rem;">
+                        <h4 style="color: #7c3aed; margin-bottom: 1rem; font-size: 1.2rem;">📋 PARCELAMENTO</h4>
+                        <div class="result-item" style="background: white;">
+                            <span class="result-label">Número de parcelas:</span>
+                            <span class="result-value">${result.installments}x</span>
+                        </div>
+                        <div class="result-item" style="background: white; border-left-color: #7c3aed;">
+                            <span class="result-label"><strong>Valor de cada parcela:</strong></span>
+                            <span class="result-value"><strong>${formatCurrency(result.installmentValue)}</strong></span>
+                        </div>
+                    </div>
+                `;
+            }
+
+            if (result.crimeDescription) {
+                html += `
+                    <div style="background: var(--bg-light); padding: 1rem; border-radius: 8px; margin-top: 1.5rem; border-left: 4px solid var(--accent-color);">
+                        <strong style="color: var(--primary-color);">📌 Descrição:</strong>
+                        <span style="color: var(--text-medium); margin-left: 0.5rem;">${result.crimeDescription}</span>
+                    </div>
+                `;
+            }
+
+            resultsContent.innerHTML = html;
+            document.getElementById('resultsSection').classList.add('show');
+            document.getElementById('certificateSection').style.display = 'block';
+        }
+
+        // History Functions
+        function addToHistory(result) {
+            calculationHistory.unshift(result);
+            if (calculationHistory.length > 5) {
+                calculationHistory.pop();
+            }
+            updateHistoryDisplay();
+        }
+
+        function updateHistoryDisplay() {
+            if (calculationHistory.length === 0) {
+                document.getElementById('historySection').classList.remove('show');
+                return;
+            }
+
+            const historyContent = document.getElementById('historyContent');
+            let html = '';
+
+            calculationHistory.forEach((item, index) => {
+                html += `
+                    <div class="history-item">
+                        <div class="history-item-header">
+                            <strong>Cálculo #${calculationHistory.length - index}</strong>
+                            <span class="history-item-time">${item.timestamp}</span>
+                        </div>
+                        <div class="history-item-details">
+                            ${item.fineDays} dias-multa × ${formatCurrency(item.valuePerDay)} = <strong>${formatCurrency(item.finalValue)}</strong>
+                            <br>📅 Crime: ${formatDate(item.crimeDate)} | SM: ${formatCurrency(item.minimumWage)}
+                            ${item.crimeDescription ? `<br>📌 ${item.crimeDescription}` : ''}
+                        </div>
+                    </div>
+                `;
+            });
+
+            historyContent.innerHTML = html;
+            document.getElementById('historySection').classList.add('show');
+        }
+
+        // Utility Functions
+        function formatCurrency(value) {
+            return new Intl.NumberFormat('pt-BR', {
+                style: 'currency',
+                currency: 'BRL'
+            }).format(value);
+        }
+
+        function formatDate(dateString) {
+            const date = new Date(dateString + 'T00:00:00');
+            return date.toLocaleDateString('pt-BR');
+        }
+
+        function clearForm() {
+            document.getElementById('calculatorForm').reset();
+            document.getElementById('calculationDate').valueAsDate = new Date();
+            document.getElementById('certificateDate').valueAsDate = new Date();
+            document.getElementById('resultsSection').classList.remove('show');
+            document.getElementById('certificateSection').style.display = 'none';
+            document.getElementById('minimumWageDisplay').style.display = 'none';
+            document.getElementById('interestFields').classList.remove('show');
+            document.querySelectorAll('.error-text').forEach(el => el.classList.remove('show'));
+            document.getElementById('alertBox').classList.remove('show');
+            document.getElementById('ipcaCalculationDisplay').style.display = 'none';
+            document.getElementById('selicCalculationDisplay').style.display = 'none';
+            document.getElementById('ipcaAccumulated').value = '';
+            document.getElementById('selicAccumulated').value = '';
+            currentMinimumWage = null;
+            currentCalculationResult = null;
+            
+            // Clear certificate fields
+            document.getElementById('processNumber').value = '';
+            document.getElementById('convictedName').value = '';
+            document.getElementById('judicialBody').value = '';
+            document.getElementById('officialName').value = '';
+            document.getElementById('officialPosition').value = '';
+            
+            // Reset method selection UI
+            document.getElementById('fractionInput').classList.add('show');
+            document.getElementById('directValueInput').classList.remove('show');
+            document.getElementById('methodAOption').classList.add('selected');
+            document.getElementById('methodBOption').classList.remove('selected');
+        }
+
+        function newCalculation() {
+            clearForm();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function printResults() {
+            window.print();
+        }
+
+        function toggleHelp() {
+            const helpContent = document.getElementById('helpContent');
+            const helpToggle = document.getElementById('helpToggle');
+            
+            if (helpContent.classList.contains('show')) {
+                helpContent.classList.remove('show');
+                helpToggle.textContent = '▼';
+            } else {
+                helpContent.classList.add('show');
+                helpToggle.textContent = '▲';
+            }
+        }
+
+        // Update IPCA Helper Text
+        function updateIPCAHelper() {
+            const crimeDate = document.getElementById('crimeDate').value;
+            const calcDate = document.getElementById('calculationDate').value;
+            const helper = document.getElementById('ipcaHelper');
+            
+            if (crimeDate && calcDate) {
+                helper.textContent = `Período: ${formatDate(crimeDate)} a ${formatDate(calcDate)}. Você pode buscar automaticamente ou inserir manualmente.`;
+            } else {
+                helper.textContent = 'Percentual de correção monetária da data do crime até a data do cálculo (ex: 28.5 para 28,5%)';
+            }
+        }
+
+        // Update SELIC Helper Text
+        function updateSELICHelper() {
+            const paymentDate = document.getElementById('paymentDeadline').value;
+            const calcDate = document.getElementById('calculationDate').value;
+            const helper = document.getElementById('selicHelper');
+            
+            if (paymentDate && calcDate) {
+                helper.textContent = `Período: ${formatDate(paymentDate)} a ${formatDate(calcDate)}. Você pode buscar automaticamente ou inserir manualmente.`;
+            } else {
+                helper.textContent = 'Percentual SELIC do dia seguinte ao vencimento até a data do cálculo (ex: 8.2 para 8,2%)';
+            }
+        }
+
+        // Generate Certificate
+        function generateCertificate() {
+            const processNumber = document.getElementById('processNumber').value.trim();
+            const convictedName = document.getElementById('convictedName').value.trim();
+            const judicialBody = document.getElementById('judicialBody').value.trim();
+            const officialName = document.getElementById('officialName').value.trim();
+            const officialPosition = document.getElementById('officialPosition').value.trim();
+            const certificateDate = document.getElementById('certificateDate').value;
+            
+            if (!processNumber || !convictedName || !judicialBody || !officialName || !officialPosition) {
+                alert('⚠️ Por favor, preencha todos os campos obrigatórios da certidão.');
+                return;
+            }
+            
+            if (!currentCalculationResult) {
+                alert('⚠️ Por favor, realize um cálculo antes de gerar a certidão.');
+                return;
+            }
+            
+            const result = currentCalculationResult;
+            const certDate = certificateDate ? new Date(certificateDate + 'T00:00:00') : new Date();
+            const cityName = judicialBody.includes('Teresina') ? 'Teresina' : 'N/A';
+            
+            // Generate certificate HTML
+            const certificateHTML = `
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>Certidão de Apuração de Multa Criminal</title>
+    <style>
+        @page { margin: 2cm; }
+        body {
+            font-family: 'Times New Roman', Times, serif;
+            line-height: 1.6;
+            color: #000;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+            border-bottom: 2px solid #000;
+            padding-bottom: 15px;
+        }
+        .header h1 {
+            font-size: 16px;
+            font-weight: bold;
+            margin: 5px 0;
+        }
+        .header h2 {
+            font-size: 14px;
+            margin: 5px 0;
+        }
+        .title {
+            text-align: center;
+            font-size: 18px;
+            font-weight: bold;
+            margin: 30px 0;
+            text-decoration: underline;
+        }
+        .process-info {
+            margin: 20px 0;
+            font-size: 13px;
+        }
+        .process-info p {
+            margin: 5px 0;
+        }
+        .section {
+            margin: 25px 0;
+        }
+        .section-title {
+            font-size: 14px;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+        .item {
+            margin: 8px 0;
+            font-size: 13px;
+        }
+        .value-highlight {
+            font-weight: bold;
+            font-size: 14px;
+        }
+        .legal-basis {
+            margin-top: 30px;
+            font-size: 12px;
+        }
+        .legal-basis ul {
+            margin-left: 20px;
+        }
+        .footer-note {
+            margin-top: 25px;
+            font-size: 12px;
+            text-align: justify;
+            font-style: italic;
+        }
+        .signature {
+            margin-top: 50px;
+            text-align: center;
+        }
+        .signature-line {
+            border-top: 1px solid #000;
+            width: 400px;
+            margin: 0 auto 10px auto;
+        }
+        .print-button {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 10px 20px;
+            background: #1e3a8a;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+        @media print {
+            .print-button { display: none; }
+        }
+    </style>
+</head>
+<body>
+    <button class="print-button" onclick="window.print()">🖨️ Imprimir / Salvar PDF</button>
+    
+    <div class="header">
+        <h1>PODER JUDICIÁRIO</h1>
+        <h2>${judicialBody}</h2>
+    </div>
+    
+    <div class="title">CERTIDÃO DE APURAÇÃO DE MULTA CRIMINAL</div>
+    
+    <div class="process-info">
+        <p><strong>Processo nº:</strong> ${processNumber}</p>
+        <p><strong>Apenado:</strong> ${convictedName}</p>
+    </div>
+    
+    <p style="text-align: justify; margin: 20px 0; font-size: 13px;">
+        Certifico que, nos termos do art. 49 do Código Penal e conforme determinação judicial nos autos em epígrafe, 
+        foi realizada a apuração do valor atualizado da pena de multa criminal, com os seguintes parâmetros e resultados:
+    </p>
+    
+    <div class="section">
+        <div class="section-title">I - DADOS BÁSICOS DA CONDENAÇÃO</div>
+        <div class="item">Número de dias-multa: <span class="value-highlight">${result.fineDays} dias</span></div>
+        <div class="item">Data do crime: <span class="value-highlight">${formatDate(result.crimeDate)}</span></div>
+        <div class="item">Salário mínimo vigente na data do crime: <span class="value-highlight">${formatCurrency(result.minimumWage)}</span></div>
+        <div class="item">Valor do dia-multa: <span class="value-highlight">${formatCurrency(result.valuePerDay)}</span> ${result.fractionDescription ? '(' + result.fractionDescription + ')' : ''}</div>
+        <div class="item">Valor base da multa: <span class="value-highlight">${formatCurrency(result.baseValue)}</span></div>
+    </div>
+    
+    <div class="section">
+        <div class="section-title">II - CORREÇÃO MONETÁRIA (IPCA-E)</div>
+        <div class="item">Índice aplicado: <span class="value-highlight">IPCA-E</span> (conforme Tabela Prática TJSP - Outubro/2025)</div>
+        <div class="item">Período de correção: <span class="value-highlight">${formatDate(result.crimeDate)} a ${formatDate(result.calculationDate)}</span></div>
+        <div class="item">Fórmula aplicada: Valor Base × (1 + ${result.ipcaAccumulated.toFixed(2)}%)</div>
+        <div class="item">Valor corrigido: <span class="value-highlight">${formatCurrency(result.correctedValue)}</span></div>
+    </div>
+    
+    ${result.applyInterest ? `
+    <div class="section">
+        <div class="section-title">III - JUROS DE MORA (SELIC)</div>
+        <div class="item">Índice aplicado: <span class="value-highlight">SELIC acumulada</span> (conforme Tabela Prática TJSP - Outubro/2025)</div>
+        <div class="item">Período de aplicação: <span class="value-highlight">${formatDate(result.paymentDeadline)} a ${formatDate(result.calculationDate)}</span></div>
+        <div class="item">Percentual aplicável: <span class="value-highlight">${result.selicAccumulated.toFixed(2)}%</span></div>
+        <div class="item">Valor dos juros: <span class="value-highlight">${formatCurrency(result.finalValue - result.correctedValue)}</span></div>
+    </div>
+    ` : ''}
+    
+    <div class="section">
+        <div class="section-title">${result.applyInterest ? 'IV' : 'III'} - VALOR FINAL ATUALIZADO</div>
+        <div class="item">Valor total da multa criminal atualizada: <span class="value-highlight" style="font-size: 16px;">${formatCurrency(result.finalValue)}</span></div>
+        <div class="item">Valor por extenso: <span class="value-highlight">${numberToWords(result.finalValue)}</span></div>
+        <div class="item">Data da atualização: <span class="value-highlight">${formatDate(result.calculationDate)}</span></div>
+        ${result.installments > 1 ? `
+        <div class="item" style="margin-top: 15px;">Número de parcelas: <span class="value-highlight">${result.installments}</span></div>
+        <div class="item">Valor de cada parcela: <span class="value-highlight">${formatCurrency(result.installmentValue)}</span></div>
+        ` : ''}
+    </div>
+    
+    <div class="section legal-basis">
+        <div class="section-title">${result.applyInterest ? 'V' : 'IV'} - FUNDAMENTOS LEGAIS</div>
+        <ul>
+            <li>Art. 49 e 50 do Código Penal (Decreto-Lei nº 2.848/1940)</li>
+            <li>STF, AP 1.030/DF, Rel. Min. Edson Fachin</li>
+            <li>STJ, EREsp 91.003/RS</li>
+            <li>Tabela Prática para Cálculo de Atualização Monetária - IPCA-E (TJSP - Out/2025)</li>
+            <li>Taxa de Juros SELIC Acumulada (TJSP - Out/2025)</li>
+        </ul>
+    </div>
+    
+    <div class="footer-note">
+        O presente cálculo foi elaborado com base nas tabelas oficiais do Tribunal de Justiça de São Paulo, 
+        reconhecidas como referência para cálculos judiciais em todo território nacional.
+    </div>
+    
+    <div class="signature">
+        <p>${cityName}, ${certDate.getDate()} de ${getMonthName(certDate.getMonth())} de ${certDate.getFullYear()}.</p>
+        <div style="margin-top: 60px;">
+            <div class="signature-line"></div>
+            <p><strong>${officialName}</strong></p>
+            <p>${officialPosition}</p>
+            <p>${judicialBody}</p>
+        </div>
+    </div>
+</body>
+</html>
+            `;
+            
+            // Open in new window
+            const printWindow = window.open('', '_blank');
+            printWindow.document.write(certificateHTML);
+            printWindow.document.close();
+        }
+        
+        // Number to words helper (simplified)
+        function numberToWords(value) {
+            // Simplified version - just format nicely
+            return formatCurrency(value).replace('R$', '').trim() + ' (valor numérico)';
+        }
+        
+        // Get month name
+        function getMonthName(month) {
+            const months = ['janeiro', 'fevereiro', 'março', 'abril', 'maio', 'junho', 
+                          'julho', 'agosto', 'setembro', 'outubro', 'novembro', 'dezembro'];
+            return months[month];
+        }
+        
+        // Fetch IPCA-E Data (deprecated - keeping for compatibility)
+        async function fetchIPCAE() {
+            const crimeDate = document.getElementById('crimeDate').value;
+            const calcDate = document.getElementById('calculationDate').value;
+            
+            if (!crimeDate || !calcDate) {
+                showFetchStatus('ipca', 'error', '⚠️ Por favor, preencha a data do crime e a data do cálculo primeiro.');
+                return;
+            }
+            
+            const crimeDateObj = new Date(crimeDate + 'T00:00:00');
+            const calcDateObj = new Date(calcDate + 'T00:00:00');
+            
+            if (crimeDateObj >= calcDateObj) {
+                showFetchStatus('ipca', 'error', '⚠️ A data do cálculo deve ser posterior à data do crime.');
+                return;
+            }
+            
+            showFetchStatus('ipca', 'loading', '🔄 Buscando dados do IPCA-E da API do IBGE...');
+            document.getElementById('fetchIpcaBtn').disabled = true;
+            
+            try {
+                // Fetch IPCA-E data from IBGE API
+                const url = 'https://servicodados.ibge.gov.br/api/v3/agregados/1419/periodos/-240/variaveis/63?localidades=N1[all]';
+                
+                const response = await fetch(url);
+                
+                if (!response.ok) {
+                    throw new Error('API não disponível');
+                }
+                
+                const data = await response.json();
+                
+                // Parse IPCA-E data
+                const ipcaData = parseIPCAEData(data, crimeDateObj, calcDateObj);
+                
+                if (ipcaData.error) {
+                    showFetchStatus('ipca', 'error', `⚠️ ${ipcaData.error}`);
+                    return;
+                }
+                
+                // Update form field
+                document.getElementById('ipcaAccumulated').value = ipcaData.accumulated.toFixed(4);
+                
+                // Show breakdown
+                displayIPCABreakdown(ipcaData);
+                
+                showFetchStatus('ipca', 'success', `✓ IPCA-E obtido com sucesso! Período: ${ipcaData.months.length} meses incluídos. Fonte: IBGE/SIDRA`);
+                
+                ipcaDataCache = ipcaData;
+                lastIpcaFetch = new Date().toLocaleString('pt-BR');
+                
+            } catch (error) {
+                console.error('Error fetching IPCA-E:', error);
+                showFetchStatus('ipca', 'error', '⚠️ Não foi possível conectar à API do IBGE. Por favor, insira o valor manualmente ou tente novamente. Verifique sua conexão à internet.');
+            } finally {
+                document.getElementById('fetchIpcaBtn').disabled = false;
+            }
+        }
+
+        // Parse IPCA-E Data
+        function parseIPCAEData(apiData, startDate, endDate) {
+            try {
+                const series = apiData[0].resultados[0].series[0];
+                const valores = series.serie;
+                
+                // Get all months between dates
+                const monthsInRange = [];
+                let currentDate = new Date(startDate);
+                currentDate.setMonth(currentDate.getMonth() + 1); // Start from month after crime
+                
+                while (currentDate <= endDate) {
+                    const yearMonth = `${currentDate.getFullYear()}${String(currentDate.getMonth() + 1).padStart(2, '0')}`;
+                    monthsInRange.push(yearMonth);
+                    currentDate.setMonth(currentDate.getMonth() + 1);
+                }
+                
+                if (monthsInRange.length === 0) {
+                    return { error: 'Período muito curto para aplicar IPCA-E (menos de 1 mês)' };
+                }
+                
+                // Get values for each month
+                const monthData = [];
+                let accumulatedFactor = 1.0;
+                
+                for (const yearMonth of monthsInRange) {
+                    const value = valores[yearMonth];
+                    
+                    if (value && value !== '...' && value !== '-') {
+                        const percentage = parseFloat(value);
+                        const factor = 1 + (percentage / 100);
+                        accumulatedFactor *= factor;
+                        
+                        monthData.push({
+                            period: yearMonth,
+                            percentage: percentage,
+                            formatted: `${yearMonth.substring(4, 6)}/${yearMonth.substring(0, 4)}`
+                        });
+                    }
+                }
+                
+                if (monthData.length === 0) {
+                    return { error: 'Dados não disponíveis para o período solicitado no IBGE' };
+                }
+                
+                const accumulated = (accumulatedFactor - 1) * 100;
+                
+                return {
+                    months: monthData,
+                    accumulated: accumulated,
+                    startDate: startDate,
+                    endDate: endDate
+                };
+                
+            } catch (error) {
+                console.error('Error parsing IPCA-E data:', error);
+                return { error: 'Erro ao processar dados do IBGE' };
+            }
+        }
+
+        // Display IPCA Breakdown
+        function displayIPCABreakdown(data) {
+            const breakdown = document.getElementById('ipcaBreakdown');
+            
+            let html = `<strong>📊 Detalhamento IPCA-E:</strong><br>`;
+            html += `<strong>Período:</strong> ${formatDate(data.startDate.toISOString().split('T')[0])} a ${formatDate(data.endDate.toISOString().split('T')[0])}<br>`;
+            html += `<strong>Meses incluídos:</strong> ${data.months.length}<br>`;
+            
+            if (data.months.length <= 12) {
+                html += `<div style="margin-top: 0.5rem;">`;
+                data.months.forEach(month => {
+                    html += `• ${month.formatted}: ${month.percentage >= 0 ? '+' : ''}${month.percentage.toFixed(2)}%<br>`;
+                });
+                html += `</div>`;
+            }
+            
+            html += `<strong style="color: var(--success-color); font-size: 1rem;">Acumulado: ${data.accumulated.toFixed(4)}%</strong>`;
+            
+            breakdown.innerHTML = html;
+            breakdown.style.display = 'block';
+        }
+
+        // Fetch SELIC Data
+        async function fetchSELIC() {
+            const paymentDate = document.getElementById('paymentDeadline').value;
+            const calcDate = document.getElementById('calculationDate').value;
+            
+            if (!paymentDate || !calcDate) {
+                showFetchStatus('selic', 'error', '⚠️ Por favor, preencha a data do vencimento e a data do cálculo primeiro.');
+                return;
+            }
+            
+            const paymentDateObj = new Date(paymentDate + 'T00:00:00');
+            const calcDateObj = new Date(calcDate + 'T00:00:00');
+            
+            if (paymentDateObj >= calcDateObj) {
+                showFetchStatus('selic', 'error', '⚠️ A data do cálculo deve ser posterior à data do vencimento.');
+                return;
+            }
+            
+            showFetchStatus('selic', 'loading', '🔄 Buscando dados da SELIC da API do Banco Central...');
+            document.getElementById('fetchSelicBtn').disabled = true;
+            
+            try {
+                // Format dates for BCB API (DD/MM/YYYY)
+                const startDateStr = formatDateForAPI(paymentDateObj);
+                const endDateStr = formatDateForAPI(calcDateObj);
+                
+                const url = `https://api.bcb.gov.br/dados/serie/bcdata.sgs.11/dados?formato=json&dataInicial=${startDateStr}&dataFinal=${endDateStr}`;
+                
+                const response = await fetch(url);
+                
+                if (!response.ok) {
+                    throw new Error('API não disponível');
+                }
+                
+                const data = await response.json();
+                
+                if (!data || data.length === 0) {
+                    showFetchStatus('selic', 'error', '⚠️ Dados não disponíveis para o período solicitado no Banco Central.');
+                    return;
+                }
+                
+                // Calculate accumulated SELIC
+                const selicData = calculateAccumulatedSELIC(data, paymentDateObj, calcDateObj);
+                
+                // Update form field
+                document.getElementById('selicAccumulated').value = selicData.accumulated.toFixed(4);
+                
+                // Show breakdown
+                displaySELICBreakdown(selicData);
+                
+                showFetchStatus('selic', 'success', `✓ SELIC obtida com sucesso! ${selicData.days} dias incluídos. Fonte: Banco Central do Brasil`);
+                
+                selicDataCache = selicData;
+                lastSelicFetch = new Date().toLocaleString('pt-BR');
+                
+            } catch (error) {
+                console.error('Error fetching SELIC:', error);
+                showFetchStatus('selic', 'error', '⚠️ Não foi possível conectar à API do Banco Central. Por favor, insira o valor manualmente ou tente novamente. Verifique sua conexão à internet.');
+            } finally {
+                document.getElementById('fetchSelicBtn').disabled = false;
+            }
+        }
+
+        // Format Date for BCB API
+        function formatDateForAPI(date) {
+            const day = String(date.getDate()).padStart(2, '0');
+            const month = String(date.getMonth() + 1).padStart(2, '0');
+            const year = date.getFullYear();
+            return `${day}/${month}/${year}`;
+        }
+
+        // Calculate Accumulated SELIC
+        function calculateAccumulatedSELIC(data, startDate, endDate) {
+            // SELIC is given as annual rate, need to convert to daily
+            let accumulatedFactor = 1.0;
+            const dailyRates = [];
+            
+            data.forEach(entry => {
+                const annualRate = parseFloat(entry.valor);
+                // Convert annual SELIC to daily rate: (1 + annual/100)^(1/252) - 1
+                const dailyRate = (Math.pow(1 + (annualRate / 100), 1 / 252) - 1) * 100;
+                const factor = 1 + (dailyRate / 100);
+                accumulatedFactor *= factor;
+                
+                dailyRates.push({
+                    date: entry.data,
+                    annualRate: annualRate,
+                    dailyRate: dailyRate
+                });
+            });
+            
+            const accumulated = (accumulatedFactor - 1) * 100;
+            
+            return {
+                days: dailyRates.length,
+                accumulated: accumulated,
+                dailyRates: dailyRates,
+                startDate: startDate,
+                endDate: endDate
+            };
+        }
+
+        // Display SELIC Breakdown
+        function displaySELICBreakdown(data) {
+            const breakdown = document.getElementById('selicBreakdown');
+            
+            let html = `<strong>📊 Detalhamento SELIC:</strong><br>`;
+            html += `<strong>Período:</strong> ${formatDate(data.startDate.toISOString().split('T')[0])} a ${formatDate(data.endDate.toISOString().split('T')[0])}<br>`;
+            html += `<strong>Dias úteis incluídos:</strong> ${data.days}<br>`;
+            html += `<strong style="color: var(--warning-color); font-size: 1rem;">Acumulado: ${data.accumulated.toFixed(4)}%</strong><br>`;
+            html += `<span style="font-size: 0.75rem; color: var(--text-light);">Taxa convertida de anual para diária considerando 252 dias úteis/ano</span>`;
+            
+            breakdown.innerHTML = html;
+            breakdown.style.display = 'block';
+        }
+
+        // Show Fetch Status
+        function showFetchStatus(type, status, message) {
+            const statusEl = document.getElementById(`${type}FetchStatus`);
+            statusEl.style.display = 'block';
+            statusEl.textContent = message;
+            
+            if (status === 'loading') {
+                statusEl.style.background = '#dbeafe';
+                statusEl.style.border = '1px solid var(--secondary-color)';
+                statusEl.style.color = 'var(--text-dark)';
+            } else if (status === 'success') {
+                statusEl.style.background = '#d1fae5';
+                statusEl.style.border = '1px solid var(--success-color)';
+                statusEl.style.color = '#065f46';
+            } else if (status === 'error') {
+                statusEl.style.background = '#fee2e2';
+                statusEl.style.border = '1px solid var(--error-color)';
+                statusEl.style.color = '#991b1b';
+            }
+            
+            if (status !== 'loading') {
+                setTimeout(() => {
+                    if (status === 'error') {
+                        statusEl.style.display = 'none';
+                    }
+                }, 8000);
+            }
+        }
+    </script>
+</body>
+</html>
