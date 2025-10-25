@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>JurisCalc - Cálculos Judiciais com Inteligência e Precisão</title>
+    <title>Sextante Judiciário - Cálculos judiciais com inteligência e precisão</title>
     <style>
         :root {
             --primary-color: #1e3a8a;
@@ -663,8 +663,8 @@
     <!-- Header -->
     <header class="header">
         <div class="header-content">
-            <h1>⚖️ JurisCalc</h1>
-            <p>Cálculos Judiciais com Inteligência e Precisão</p>
+            <h1>⚖️ Sextante Judiciário</h1>
+            <p>Cálculos judiciais com inteligência e precisão</p>
         </div>
     </header>
 
@@ -673,44 +673,40 @@
         <div id="mainView">
             <!-- Welcome Section -->
             <section class="welcome-section">
-                <h2>Bem-vindo ao JurisCalc</h2>
+                <h2>Bem-vindo ao Sextante Judiciário</h2>
                 <p>
-                    Este portal foi desenvolvido para auxiliar magistrados na realização de cálculos e procedimentos comuns da atividade jurisdicional. 
-                    Atualmente, disponibilizamos a Calculadora de Multa Criminal, com mais ferramentas sendo adicionadas em breve.
-                </p>
-                <p style="margin-top: 1rem;">
-                    Todas as ferramentas são baseadas na legislação brasileira vigente e foram desenvolvidas para garantir precisão e facilidade de uso.
+                    Este portal foi desenvolvido para auxiliar magistrados e servidores no desempenho do serviço judiciário. Atualmente, disponibilizamos a Calculadora de multa criminal, mas outras ferramentas serão adicionadas em breve.
                 </p>
             </section>
 
             <!-- Tools Grid -->
-            <h2 style="color: var(--primary-color); margin-bottom: 1.5rem; font-size: 1.8rem;">Ferramentas Disponíveis</h2>
+            <h2 style="color: var(--primary-color); margin-bottom: 1.5rem; font-size: 1.8rem;">Ferramentas disponíveis</h2>
             <div class="tools-grid">
                 <!-- Active Tool -->
                 <div class="tool-card" onclick="showCalculator()">
                     <div class="tool-card-icon">💰</div>
-                    <h3>Calculadora de Multa Criminal</h3>
-                    <p>Calcule multas criminais baseadas no sistema de dias-multa (Art. 49 e 50 do Código Penal)</p>
+                    <h3>Calculadora de multa criminal</h3>
+                    <p>Calcule multas criminais baseadas no sistema de dias-multa (arts. 49 e 50 do Código Penal)</p>
                 </div>
 
                 <!-- Future Tools -->
                 <div class="tool-card disabled">
                     <div class="tool-card-icon">⚖️</div>
-                    <h3>Calculadora de Dosimetria de Pena</h3>
+                    <h3>Calculadora de dosimetria de pena</h3>
                     <p>Cálculo trifásico da pena (pena-base, agravantes/atenuantes, causas de aumento/diminuição)</p>
                     <span class="status-badge">Em breve</span>
                 </div>
 
                 <div class="tool-card disabled">
                     <div class="tool-card-icon">👨‍⚖️</div>
-                    <h3>Calculadora de Honorários Advocatícios</h3>
+                    <h3>Calculadora de honorários advocatícios</h3>
                     <p>Cálculo de honorários sucumbenciais conforme CPC (10-20% com tabelas específicas)</p>
                     <span class="status-badge">Em breve</span>
                 </div>
 
                 <div class="tool-card disabled">
                     <div class="tool-card-icon">📅</div>
-                    <h3>Calculadora de Prazos Processuais</h3>
+                    <h3>Calculadora de prazos processuais</h3>
                     <p>Contagem de prazos processuais (CPC, CPP, CLT)</p>
                     <span class="status-badge">Em breve</span>
                 </div>
@@ -724,8 +720,8 @@
             </button>
 
             <div class="calculator-header">
-                <h2>💰 Calculadora de Multa Criminal</h2>
-                <p>Sistema de dias-multa conforme Arts. 49 e 50 do Código Penal Brasileiro</p>
+                <h2>💰 Calculadora de multa criminal</h2>
+                <p>Sistema de dias-multa conforme arts. 49 e 50 do Código Penal</p>
             </div>
 
             <!-- Alert Box -->
@@ -735,7 +731,7 @@
             <form id="calculatorForm">
                 <!-- Fine Days Section -->
                 <div class="form-section">
-                    <h3>1. Quantidade de Dias-Multa</h3>
+                    <h3>1. Quantidade de dias-multa</h3>
                     <div class="form-group">
                         <label>
                             <input type="checkbox" id="specialLaw" name="specialLaw" style="width: auto; margin-right: 0.5rem;">
@@ -753,7 +749,7 @@
 
                 <!-- Crime Date Section -->
                 <div class="form-section" style="background: #fef3c7; padding: 1.5rem; border-radius: 8px; border: 2px solid var(--warning-color);">
-                    <h3 style="color: var(--warning-color); margin-bottom: 1rem;">📅 Data do Crime (OBRIGATÓRIO)</h3>
+                    <h3 style="color: var(--warning-color); margin-bottom: 1rem;">📅 Data do crime (obrigatório)</h3>
                     <div class="form-group" style="margin-bottom: 0;">
                         <label for="crimeDate">Data do crime *</label>
                         <input type="date" id="crimeDate" name="crimeDate" required>
@@ -768,7 +764,7 @@
 
                 <!-- Calculation Method Section -->
                 <div class="form-section">
-                    <h3>2. Valor do Dia-Multa</h3>
+                    <h3>2. Valor do dia-multa</h3>
                     <div class="radio-group">
                         <label class="radio-option" id="methodAOption">
                             <input type="radio" name="calculationMethod" value="fraction" checked>
@@ -812,7 +808,7 @@
 
                 <!-- Monetary Correction Section -->
                 <div class="form-section">
-                    <h3>3. Correção Monetária e Juros</h3>
+                    <h3>3. Atualização monetária</h3>
                     <div style="background: #d1fae5; padding: 1.5rem; border-radius: 8px; margin-bottom: 1.5rem; border: 2px solid var(--success-color);">
                         <h4 style="color: var(--success-color); margin-bottom: 1rem; font-size: 1.1rem;">📊 TABELAS ATUALIZADAS: OUTUBRO/2025 (TJSP)</h4>
                         <p style="margin: 0; color: var(--text-dark); font-size: 0.95rem; line-height: 1.6;">
@@ -836,8 +832,9 @@
 
                     <div style="background: white; padding: 1.5rem; border-radius: 8px; border: 2px solid var(--border-color); margin-bottom: 1.5rem;">
                         <div style="margin-bottom: 1rem;">
-                            <h4 style="color: var(--primary-color); margin: 0 0 0.5rem 0; font-size: 1.1rem;">📈 IPCA-E (Correção Monetária)</h4>
-                            <p style="font-size: 0.85rem; color: var(--text-medium); margin: 0;">Calculado automaticamente conforme Tabela Prática TJSP - Out/2025</p>
+                            <h4 style="color: var(--primary-color); margin: 0 0 0.5rem 0; font-size: 1.1rem;">📈 IPCA-E (correção monetária)</h4>
+                            <p style="font-size: 0.85rem; color: var(--text-medium); margin: 0;">Calculado automaticamente conforme Tabela Prática TJSP - out/2025</p>
+                            <p style="font-size: 0.85rem; color: var(--text-medium); margin: 0.5rem 0 0 0;">Aplica-se da data do crime até o vencimento (ou data do cálculo se não houver juros)</p>
                         </div>
                         
                         <div id="ipcaCalculationDisplay" style="display: none; padding: 0.75rem; border-radius: 6px; margin-bottom: 1rem; font-size: 0.9rem; background: #d1fae5; border: 1px solid var(--success-color); color: #065f46;"></div>
@@ -855,7 +852,7 @@
                             <input type="checkbox" id="applyInterest" name="applyInterest" style="width: auto; margin-right: 0.5rem;">
                             Aplicar juros de mora (SELIC) - após prazo de pagamento voluntário
                         </label>
-                        <span class="helper-text" style="display: block; margin-top: 0.5rem;">Marque apenas se o prazo de pagamento voluntário (10 dias) já venceu</span>
+                        <span class="helper-text" style="display: block; margin-top: 0.5rem;">Marque se o prazo de pagamento voluntário (10 dias) já venceu. A SELIC substitui o IPCA-E após o vencimento, pois já inclui correção monetária e juros.</span>
                     </div>
 
                     <div class="conditional-input" id="interestFields" style="margin-top: 1rem;">
@@ -867,8 +864,9 @@
                             </div>
 
                             <div style="margin-bottom: 1rem; margin-top: 1.5rem;">
-                                <h4 style="color: var(--primary-color); margin: 0 0 0.5rem 0; font-size: 1.1rem;">💸 SELIC (Juros de Mora)</h4>
-                                <p style="font-size: 0.85rem; color: var(--text-medium); margin: 0;">Calculado automaticamente conforme Tabela Prática TJSP - Out/2025</p>
+                                <h4 style="color: var(--primary-color); margin: 0 0 0.5rem 0; font-size: 1.1rem;">💸 SELIC (correção monetária + juros de mora)</h4>
+                                <p style="font-size: 0.85rem; color: var(--text-medium); margin: 0;">Calculado automaticamente conforme Tabela Prática TJSP - out/2025</p>
+                                <p style="font-size: 0.85rem; color: var(--warning-color); margin: 0.5rem 0 0 0; font-weight: 500;">⚠️ A SELIC substitui o IPCA-E após o vencimento, pois já engloba correção e juros</p>
                             </div>
                             
                             <div id="selicCalculationDisplay" style="display: none; padding: 0.75rem; border-radius: 6px; margin-bottom: 1rem; font-size: 0.9rem; background: #fef3c7; border: 1px solid var(--warning-color); color: #78350f;"></div>
@@ -885,7 +883,7 @@
 
                 <!-- Additional Information Section -->
                 <div class="form-section">
-                    <h3>4. Informações Complementares</h3>
+                    <h3>4. Informações complementares</h3>
                     <div class="form-group">
                         <label for="installments">Número de parcelas</label>
                         <input type="number" id="installments" name="installments" min="1" max="120" value="1">
@@ -920,8 +918,8 @@
 
                 <!-- Certificate Generation Section -->
                 <div id="certificateSection" class="certificate-section" style="display: none; margin-top: 2rem; padding: 2rem; background: #f0f9ff; border: 2px solid var(--secondary-color); border-radius: 12px;">
-                    <h3 style="color: var(--primary-color); margin-bottom: 1rem; font-size: 1.5rem;">📄 Gerar Certidão Oficial</h3>
-                    <p style="color: var(--text-medium); margin-bottom: 1.5rem;">Preencha os dados abaixo para gerar a Certidão de Apuração de Multa Criminal</p>
+                    <h3 style="color: var(--primary-color); margin-bottom: 1rem; font-size: 1.5rem;">📄 Gerar certidão oficial</h3>
+                    <p style="color: var(--text-medium); margin-bottom: 1.5rem;">Preencha os dados abaixo para gerar a certidão de apuração de multa criminal</p>
                     
                     <div class="form-section">
                         <div class="form-group">
@@ -956,7 +954,7 @@
                         </div>
                         
                         <div class="button-group" style="margin-top: 1.5rem;">
-                            <button type="button" class="btn btn-primary" onclick="generateCertificate()">📄 Gerar Certidão PDF</button>
+                            <button type="button" class="btn btn-primary" onclick="generateCertificate()">📄 Gerar certidão PDF</button>
                         </div>
                     </div>
                 </div>
@@ -965,12 +963,8 @@
                 <div class="legal-references">
                     <h4>📋 FUNDAMENTOS LEGAIS</h4>
                     <div class="legal-ref-item">
-                        <strong>Art. 49 do Código Penal</strong>
-                        <p>A pena de multa consiste no pagamento ao fundo penitenciário da quantia fixada na sentença e calculada em dias-multa. Será, no mínimo, de 10 (dez) e, no máximo, de 360 (trezentos e sessenta) dias-multa. O valor do dia-multa será fixado pelo juiz não podendo ser inferior a um trigésimo do maior salário mínimo mensal vigente ao tempo do fato, nem superior a 5 (cinco) vezes esse salário.</p>
-                    </div>
-                    <div class="legal-ref-item">
-                        <strong>Art. 50 do Código Penal</strong>
-                        <p>A multa deve ser paga dentro de 10 (dez) dias depois de transitada em julgado a sentença. A requerimento do condenado e conforme as circunstâncias, o juiz pode permitir que o pagamento se realize em parcelas mensais.</p>
+                        <strong>Arts. 49 e 50 do Código Penal</strong>
+                        <p>A pena de multa consiste no pagamento ao fundo penitenciário da quantia fixada na sentença e calculada em dias-multa (mínimo 10, máximo 360 dias-multa). O valor do dia-multa não pode ser inferior a 1/30 nem superior a 5x o salário mínimo vigente ao tempo do fato. A multa deve ser paga em 10 dias após o trânsito em julgado.
                     </div>
                     <div class="legal-ref-item">
                         <strong>STF, AP 1.030/DF, Min. Edson Fachin</strong>
@@ -981,8 +975,8 @@
                         <p>Precedente sobre aplicação de correção monetária e juros em execuções de multas criminais.</p>
                     </div>
                     <div class="legal-ref-item">
-                        <strong>Lei 11.343/2006 (Lei de Drogas)</strong>
-                        <p>Exemplo de lei especial: Art. 28 (40 a 100 dias-multa), Art. 33 (500 a 1.500 dias-multa para tráfico).</p>
+                        <strong>tabelas práticas TJSP - outubro/2025</strong>
+                        <p>Tabelas oficiais para cálculo de IPCA-E e SELIC acumulada, utilizadas como referência para cálculos judiciais.</p>
                     </div>
                 </div>
             </div>
@@ -994,7 +988,17 @@
                     <span id="helpToggle">▼</span>
                 </div>
                 <div class="help-content" id="helpContent">
-                    <h4 style="color: var(--primary-color); margin-bottom: 1rem;">Como usar a calculadora:</h4>
+                    <h4 style="color: var(--primary-color); margin-bottom: 1rem;">📘 Metodologia de atualização:</h4>
+                    <div style="background: #f0f9ff; padding: 1rem; border-radius: 8px; margin-bottom: 1.5rem; border-left: 4px solid var(--secondary-color);">
+                        <p style="color: var(--text-dark); margin: 0 0 0.5rem 0; font-weight: 500;">A atualização da multa criminal segue metodologia específica em dois períodos:</p>
+                        <ul style="margin: 0.5rem 0 0.5rem 1.5rem; color: var(--text-medium); line-height: 1.8;">
+                            <li><strong>Período 1 (crime até vencimento):</strong> aplica-se apenas IPCA-E</li>
+                            <li><strong>Período 2 (vencimento até cálculo):</strong> aplica-se apenas SELIC, que já engloba correção monetária e juros de mora</li>
+                        </ul>
+                        <p style="color: var(--warning-color); margin: 0.5rem 0 0 0; font-weight: 500;">⚠️ Importante: SELIC e IPCA-E nunca incidem sobre o mesmo período, pois a SELIC já incorpora ambos os componentes (correção + juros).</p>
+                    </div>
+                    
+                    <h4 style="color: var(--primary-color); margin-bottom: 1rem;">Como usar a calculadora:</
                     <ol style="color: var(--text-medium); line-height: 1.8; margin-bottom: 2rem;">
                         <li>Informe o número de dias-multa fixado na sentença (entre 10 e 360 dias)</li>
                         <li>Escolha o método de cálculo:
@@ -1010,35 +1014,37 @@
                     <h4 style="color: var(--primary-color); margin-bottom: 1rem;">Exemplos de Cálculo:</h4>
                     
                     <div class="help-example">
-                        <h4>Exemplo 1: Crime do Código Penal</h4>
-                        <p><strong>Situação:</strong> Furto simples - 30 dias-multa, 1/3 do salário mínimo</p>
-                        <p><strong>Dados:</strong> Crime em 15/03/2020 (SM: R$ 1.045,00), IPCA-E: 28,5%</p>
+                        <h4>Exemplo 1: crime do Código Penal</h4>
+                        <p><strong>Situação:</strong> furto simples - 30 dias-multa, 1/3 do salário mínimo</p>
+                        <p><strong>Dados:</strong> crime em 15/03/2020 (SM: R$ 1.045,00), sem juros</p>
                         <p><strong>Cálculo:</strong></p>
                         <ul style="margin-left: 1.5rem; color: var(--text-medium);">
                             <li>Valor base: 30 × (R$ 1.045,00 / 3) = R$ 10.450,00</li>
-                            <li>Correção IPCA-E: R$ 10.450,00 × 1,285 = <strong>R$ 13.428,25</strong></li>
+                            <li>IPCA-E aplicado até data do cálculo</li>
+                            <li>Valor final atualizado conforme tabelas TJSP</li>
                         </ul>
                     </div>
 
                     <div class="help-example">
-                        <h4>Exemplo 2: Lei de Drogas - Tráfico</h4>
-                        <p><strong>Situação:</strong> Tráfico de drogas - 500 dias-multa, 1 SM integral</p>
-                        <p><strong>Dados:</strong> Crime em 10/08/2022 (SM: R$ 1.212,00), IPCA-E: 15,8%, SELIC: 8,2%</p>
-                        <p><strong>Cálculo:</strong></p>
+                        <h4>Exemplo 2: Lei de Drogas - tráfico</h4>
+                        <p><strong>Situação:</strong> tráfico de drogas - 500 dias-multa, 1 SM integral</p>
+                        <p><strong>Dados:</strong> crime em 10/08/2022 (SM: R$ 1.212,00), prazo vencido em 25/08/2022</p>
+                        <p><strong>Cálculo (metodologia em dois períodos):</strong></p>
                         <ul style="margin-left: 1.5rem; color: var(--text-medium);">
                             <li>Valor base: 500 × R$ 1.212,00 = R$ 606.000,00</li>
-                            <li>Correção IPCA-E: R$ 606.000,00 × 1,158 = R$ 701.748,00</li>
-                            <li>Juros SELIC: R$ 701.748,00 × 1,082 = <strong>R$ 759.291,54</strong></li>
+                            <li>Período 1: IPCA-E da data do crime até vencimento</li>
+                            <li>Período 2: SELIC do vencimento até data do cálculo (substitui IPCA-E)</li>
+                            <li>Valor final calculado conforme tabelas TJSP</li>
                         </ul>
                     </div>
 
                     <div class="help-example">
-                        <h4>Leis Especiais - Exemplos de Quantidades</h4>
-                        <p><strong>Lei 11.343/2006 (Drogas):</strong></p>
+                        <h4>Leis especiais - exemplos de quantidades</h4>
+                        <p><strong>Lei 11.343/2006 (drogas):</strong></p>
                         <ul style="margin-left: 1.5rem; color: var(--text-medium);">
-                            <li>Art. 28 (porte para consumo): 40 a 100 dias-multa</li>
-                            <li>Art. 33 (tráfico): 500 a 1.500 dias-multa</li>
-                            <li>Art. 33, §3º (uso compartilhado): 700 a 1.500 dias-multa</li>
+                            <li>art. 28 (porte para consumo): 40 a 100 dias-multa</li>
+                            <li>art. 33 (tráfico): 500 a 1.500 dias-multa</li>
+                            <li>art. 33, §3º (uso compartilhado): 700 a 1.500 dias-multa</li>
                         </ul>
                     </div>
                 </div>
@@ -1054,8 +1060,8 @@
 
     <!-- Footer -->
     <footer class="footer">
-        <p>&copy; 2025 JurisCalc - Cálculos Judiciais com Inteligência e Precisão</p>
-        <p style="margin-top: 0.5rem; font-size: 0.9rem;">Desenvolvido para auxiliar magistrados na atividade jurisdicional</p>
+        <p>&copy; 2025 Sextante Judiciário - Cálculos judiciais com inteligência e precisão</p>
+        <p style="margin-top: 0.5rem; font-size: 0.9rem;">Desenvolvido para auxiliar magistrados e servidores no serviço judiciário</p>
     </footer>
 
     <script>
@@ -1182,6 +1188,10 @@
 
             // Setup apply interest checkbox
             document.getElementById('applyInterest').addEventListener('change', handleApplyInterestChange);
+            document.getElementById('applyInterest').addEventListener('change', calculateIPCAE);
+            
+            // Payment deadline affects IPCA-E calculation
+            document.getElementById('paymentDeadline').addEventListener('change', calculateIPCAE);
 
             // Setup form submission
             document.getElementById('calculatorForm').addEventListener('submit', handleCalculation);
@@ -1545,6 +1555,8 @@
         function calculateIPCAE() {
             const crimeDateStr = document.getElementById('crimeDate').value;
             const calcDateStr = document.getElementById('calculationDate').value;
+            const applyInterest = document.getElementById('applyInterest').checked;
+            const paymentDateStr = document.getElementById('paymentDeadline').value;
             
             if (!crimeDateStr || !calcDateStr) {
                 document.getElementById('ipcaAccumulated').value = '';
@@ -1553,9 +1565,14 @@
             }
             
             const crimeDate = new Date(crimeDateStr + 'T00:00:00');
-            const calcDate = new Date(calcDateStr + 'T00:00:00');
+            let endDate = new Date(calcDateStr + 'T00:00:00');
             
-            if (crimeDate >= calcDate) {
+            // If interest applies, IPCA-E only goes until payment deadline
+            if (applyInterest && paymentDateStr) {
+                endDate = new Date(paymentDateStr + 'T00:00:00');
+            }
+            
+            if (crimeDate >= endDate) {
                 document.getElementById('ipcaAccumulated').value = '';
                 document.getElementById('ipcaCalculationDisplay').style.display = 'none';
                 return;
@@ -1563,12 +1580,12 @@
             
             const crimeYear = crimeDate.getFullYear();
             const crimeMonth = crimeDate.getMonth() + 1;
-            const calcYear = calcDate.getFullYear();
-            const calcMonth = calcDate.getMonth() + 1;
+            const endYear = endDate.getFullYear();
+            const endMonth = endDate.getMonth() + 1;
             
             // Get factors from tables
             const initialFactor = IPCA_E_FACTORS[crimeYear] && IPCA_E_FACTORS[crimeYear][crimeMonth];
-            const finalFactor = IPCA_E_FACTORS[calcYear] && IPCA_E_FACTORS[calcYear][calcMonth];
+            const finalFactor = IPCA_E_FACTORS[endYear] && IPCA_E_FACTORS[endYear][endMonth];
             
             if (!initialFactor || !finalFactor) {
                 document.getElementById('ipcaCalculationDisplay').innerHTML = '⚠️ Dados não disponíveis para o período selecionado nas tabelas TJSP';
@@ -1585,10 +1602,15 @@
             
             document.getElementById('ipcaAccumulated').value = percentual.toFixed(4);
             
+            const periodDesc = applyInterest && paymentDateStr ? 
+                `${formatDate(crimeDateStr)} a ${formatDate(paymentDateStr)} (até vencimento)` :
+                `${formatDate(crimeDateStr)} a ${formatDate(calcDateStr)}`;
+            
             const displayMsg = `✓ IPCA-E calculado: ${percentual.toFixed(2)}%<br>` +
+                              `Período: ${periodDesc}<br>` +
                               `Método: Fator Final ÷ Fator Inicial<br>` +
                               `Cálculo: ${finalFactor.toFixed(6)} ÷ ${initialFactor.toFixed(6)} = ${(finalFactor/initialFactor).toFixed(6)}<br>` +
-                              `Fonte: Tabela Prática TJSP - Outubro/2025`;
+                              `Fonte: Tabela Prática TJSP - outubro/2025`;
             
             document.getElementById('ipcaCalculationDisplay').innerHTML = displayMsg;
             document.getElementById('ipcaCalculationDisplay').style.display = 'block';
@@ -1643,9 +1665,11 @@
             document.getElementById('selicAccumulated').value = percentual.toFixed(4);
             
             const displayMsg = `✓ SELIC calculada: ${percentual.toFixed(2)}%<br>` +
+                              `Período: ${formatDate(paymentDateStr)} a ${formatDate(calcDateStr)}<br>` +
                               `Método: Subtração dos percentuais acumulados<br>` +
                               `Cálculo: ${finalPercent.toFixed(2)}% - ${initialPercent.toFixed(2)}% = ${percentual.toFixed(2)}%<br>` +
-                              `Fonte: Tabela Prática TJSP - Outubro/2025`;
+                              `⚠️ SELIC substitui IPCA-E neste período (já inclui correção + juros)<br>` +
+                              `Fonte: Tabela Prática TJSP - outubro/2025`;
             
             document.getElementById('selicCalculationDisplay').innerHTML = displayMsg;
             document.getElementById('selicCalculationDisplay').style.display = 'block';
@@ -1685,14 +1709,14 @@
                 </div>
 
                 <div style="background: #d1fae5; padding: 1.5rem; border-radius: 8px; margin-bottom: 1.5rem;">
-                    <h4 style="color: var(--success-color); margin-bottom: 1rem; font-size: 1.2rem;">📈 CORREÇÃO MONETÁRIA</h4>
+                    <h4 style="color: var(--success-color); margin-bottom: 1rem; font-size: 1.2rem;">📈 CORREÇÃO MONETÁRIA - PERÍODO 1</h4>
                     <div class="result-item" style="background: white;">
                         <span class="result-label">Índice:</span>
                         <span class="result-value">IPCA-E</span>
                     </div>
                     <div class="result-item" style="background: white;">
                         <span class="result-label">Período:</span>
-                        <span class="result-value">${formatDate(result.crimeDate)} a ${formatDate(result.calculationDate)}</span>
+                        <span class="result-value">${formatDate(result.crimeDate)} a ${result.applyInterest && result.paymentDeadline ? formatDate(result.paymentDeadline) : formatDate(result.calculationDate)}</span>
                     </div>
                     <div class="result-item" style="background: white;">
                         <span class="result-label">Percentual acumulado:</span>
@@ -1708,21 +1732,21 @@
             if (result.applyInterest) {
                 html += `
                     <div style="background: #fef3c7; padding: 1.5rem; border-radius: 8px; margin-bottom: 1.5rem;">
-                        <h4 style="color: var(--warning-color); margin-bottom: 1rem; font-size: 1.2rem;">💸 JUROS DE MORA</h4>
+                        <h4 style="color: var(--warning-color); margin-bottom: 1rem; font-size: 1.2rem;">💸 CORREÇÃO MONETÁRIA E JUROS - PERÍODO 2</h4>
                         <div class="result-item" style="background: white;">
                             <span class="result-label">Índice:</span>
-                            <span class="result-value">SELIC</span>
+                            <span class="result-value">SELIC (inclui correção monetária e juros de mora)</span>
                         </div>
                         <div class="result-item" style="background: white;">
                             <span class="result-label">Período:</span>
                             <span class="result-value">${formatDate(result.paymentDeadline)} a ${formatDate(result.calculationDate)}</span>
                         </div>
                         <div class="result-item" style="background: white;">
-                            <span class="result-label">Percentual acumulado:</span>
+                            <span class="result-label">Percentual aplicável:</span>
                             <span class="result-value">${result.selicAccumulated.toFixed(2)}%</span>
                         </div>
                         <div class="result-item" style="background: white; border-left-color: var(--warning-color);">
-                            <span class="result-label"><strong>Valor com juros:</strong></span>
+                            <span class="result-label"><strong>Valor final:</strong></span>
                             <span class="result-value"><strong>${formatCurrency(result.finalValue)}</strong></span>
                         </div>
                     </div>
@@ -1927,81 +1951,81 @@
     <meta charset="UTF-8">
     <title>Certidão de Apuração de Multa Criminal</title>
     <style>
-        @page { margin: 2cm; }
+        @page { margin: 15mm; }
         body {
             font-family: 'Times New Roman', Times, serif;
-            line-height: 1.6;
+            line-height: 1.3;
             color: #000;
             max-width: 800px;
             margin: 0 auto;
-            padding: 20px;
+            padding: 15px;
+            font-size: 11pt;
         }
         .header {
             text-align: center;
-            margin-bottom: 30px;
+            margin-bottom: 15px;
             border-bottom: 2px solid #000;
-            padding-bottom: 15px;
+            padding-bottom: 10px;
         }
         .header h1 {
-            font-size: 16px;
+            font-size: 14px;
             font-weight: bold;
-            margin: 5px 0;
+            margin: 3px 0;
         }
         .header h2 {
-            font-size: 14px;
-            margin: 5px 0;
+            font-size: 12px;
+            margin: 3px 0;
         }
         .title {
             text-align: center;
-            font-size: 18px;
+            font-size: 14px;
             font-weight: bold;
-            margin: 30px 0;
+            margin: 15px 0;
             text-decoration: underline;
         }
         .process-info {
-            margin: 20px 0;
-            font-size: 13px;
+            margin: 12px 0;
+            font-size: 11pt;
         }
         .process-info p {
-            margin: 5px 0;
+            margin: 3px 0;
         }
         .section {
-            margin: 25px 0;
+            margin: 12px 0;
         }
         .section-title {
-            font-size: 14px;
+            font-size: 11pt;
             font-weight: bold;
-            margin-bottom: 10px;
+            margin-bottom: 6px;
         }
         .item {
-            margin: 8px 0;
-            font-size: 13px;
+            margin: 4px 0;
+            font-size: 10pt;
         }
         .value-highlight {
             font-weight: bold;
-            font-size: 14px;
+            font-size: 11pt;
         }
         .legal-basis {
-            margin-top: 30px;
-            font-size: 12px;
+            margin-top: 12px;
+            font-size: 10pt;
         }
         .legal-basis ul {
-            margin-left: 20px;
+            margin: 5px 0 0 20px;
+            padding: 0;
         }
-        .footer-note {
-            margin-top: 25px;
-            font-size: 12px;
-            text-align: justify;
-            font-style: italic;
+        .legal-basis li {
+            margin: 2px 0;
         }
         .signature {
-            margin-top: 50px;
+            margin-top: 25px;
             text-align: center;
+            font-size: 10pt;
         }
         .signature-line {
             border-top: 1px solid #000;
-            width: 400px;
-            margin: 0 auto 10px auto;
+            width: 350px;
+            margin: 0 auto 5px auto;
         }
         .print-button {
             position: fixed;
@@ -2035,72 +2059,55 @@
         <p><strong>Apenado:</strong> ${convictedName}</p>
     </div>
     
-    <p style="text-align: justify; margin: 20px 0; font-size: 13px;">
-        Certifico que, nos termos do art. 49 do Código Penal e conforme determinação judicial nos autos em epígrafe, 
-        foi realizada a apuração do valor atualizado da pena de multa criminal, com os seguintes parâmetros e resultados:
+    <p style="text-align: justify; margin: 12px 0; font-size: 10pt;">
+        Certifico que foi realizada a apuração do valor atualizado da pena de multa criminal, conforme art. 49 do Código Penal:
     </p>
     
     <div class="section">
-        <div class="section-title">I - DADOS BÁSICOS DA CONDENAÇÃO</div>
-        <div class="item">Número de dias-multa: <span class="value-highlight">${result.fineDays} dias</span></div>
-        <div class="item">Data do crime: <span class="value-highlight">${formatDate(result.crimeDate)}</span></div>
-        <div class="item">Salário mínimo vigente na data do crime: <span class="value-highlight">${formatCurrency(result.minimumWage)}</span></div>
-        <div class="item">Valor do dia-multa: <span class="value-highlight">${formatCurrency(result.valuePerDay)}</span> ${result.fractionDescription ? '(' + result.fractionDescription + ')' : ''}</div>
-        <div class="item">Valor base da multa: <span class="value-highlight">${formatCurrency(result.baseValue)}</span></div>
+        <div class="section-title">I - DADOS DA CONDENAÇÃO</div>
+        <div class="item">Dias-multa: <span class="value-highlight">${result.fineDays}</span> | Data do crime: <span class="value-highlight">${formatDate(result.crimeDate)}</span></div>
+        <div class="item">Salário mínimo: <span class="value-highlight">${formatCurrency(result.minimumWage)}</span> | Valor/dia: <span class="value-highlight">${formatCurrency(result.valuePerDay)}</span> ${result.fractionDescription ? '(' + result.fractionDescription + ')' : ''}</div>
+        <div class="item">Valor base: <span class="value-highlight">${formatCurrency(result.baseValue)}</span></div>
     </div>
     
     <div class="section">
-        <div class="section-title">II - CORREÇÃO MONETÁRIA (IPCA-E)</div>
-        <div class="item">Índice aplicado: <span class="value-highlight">IPCA-E</span> (conforme Tabela Prática TJSP - Outubro/2025)</div>
-        <div class="item">Período de correção: <span class="value-highlight">${formatDate(result.crimeDate)} a ${formatDate(result.calculationDate)}</span></div>
-        <div class="item">Fórmula aplicada: Valor Base × (1 + ${result.ipcaAccumulated.toFixed(2)}%)</div>
-        <div class="item">Valor corrigido: <span class="value-highlight">${formatCurrency(result.correctedValue)}</span></div>
+        <div class="section-title">II - ATUALIZAÇÃO MONETÁRIA</div>`;
+        
+        if (!result.applyInterest) {
+            certificateHTML += `
+        <div class="item">IPCA-E (${formatDate(result.crimeDate)} a ${formatDate(result.calculationDate)}): ${result.ipcaAccumulated.toFixed(2)}%</div>
+        <div class="item">Valor atualizado: <span class="value-highlight">${formatCurrency(result.correctedValue)}</span></div>`;
+        } else {
+            certificateHTML += `
+        <div class="item">IPCA-E (${formatDate(result.crimeDate)} a ${formatDate(result.paymentDeadline)}): ${result.ipcaAccumulated.toFixed(2)}%</div>
+        <div class="item">Valor com IPCA-E: <span class="value-highlight">${formatCurrency(result.correctedValue)}</span></div>
+        <div class="item" style="margin-top: 6px;">SELIC (${formatDate(result.paymentDeadline)} a ${formatDate(result.calculationDate)}): ${result.selicAccumulated.toFixed(2)}% (inclui correção e juros)</div>
+        <div class="item">Valor final: <span class="value-highlight">${formatCurrency(result.finalValue)}</span></div>`;
+        }
+        
+        certificateHTML += `
     </div>
     
-    ${result.applyInterest ? `
+
+    
     <div class="section">
-        <div class="section-title">III - JUROS DE MORA (SELIC)</div>
-        <div class="item">Índice aplicado: <span class="value-highlight">SELIC acumulada</span> (conforme Tabela Prática TJSP - Outubro/2025)</div>
-        <div class="item">Período de aplicação: <span class="value-highlight">${formatDate(result.paymentDeadline)} a ${formatDate(result.calculationDate)}</span></div>
-        <div class="item">Percentual aplicável: <span class="value-highlight">${result.selicAccumulated.toFixed(2)}%</span></div>
-        <div class="item">Valor dos juros: <span class="value-highlight">${formatCurrency(result.finalValue - result.correctedValue)}</span></div>
-    </div>
-    ` : ''}
-    
-    <div class="section">
-        <div class="section-title">${result.applyInterest ? 'IV' : 'III'} - VALOR FINAL ATUALIZADO</div>
-        <div class="item">Valor total da multa criminal atualizada: <span class="value-highlight" style="font-size: 16px;">${formatCurrency(result.finalValue)}</span></div>
-        <div class="item">Valor por extenso: <span class="value-highlight">${numberToWords(result.finalValue)}</span></div>
-        <div class="item">Data da atualização: <span class="value-highlight">${formatDate(result.calculationDate)}</span></div>
-        ${result.installments > 1 ? `
-        <div class="item" style="margin-top: 15px;">Número de parcelas: <span class="value-highlight">${result.installments}</span></div>
-        <div class="item">Valor de cada parcela: <span class="value-highlight">${formatCurrency(result.installmentValue)}</span></div>
-        ` : ''}
+        <div class="section-title">III - VALOR ATUALIZADO</div>
+        <div class="item">Total: <span class="value-highlight" style="font-size: 12pt;">${formatCurrency(result.finalValue)}</span> (${numberToWords(result.finalValue)})</div>
+        <div class="item">Data: <span class="value-highlight">${formatDate(result.calculationDate)}</span>${result.installments > 1 ? ` | Parcelas: <span class="value-highlight">${result.installments}x de ${formatCurrency(result.installmentValue)}</span>` : ''}</div>
     </div>
     
-    <div class="section legal-basis">
-        <div class="section-title">${result.applyInterest ? 'V' : 'IV'} - FUNDAMENTOS LEGAIS</div>
-        <ul>
-            <li>Art. 49 e 50 do Código Penal (Decreto-Lei nº 2.848/1940)</li>
-            <li>STF, AP 1.030/DF, Rel. Min. Edson Fachin</li>
-            <li>STJ, EREsp 91.003/RS</li>
-            <li>Tabela Prática para Cálculo de Atualização Monetária - IPCA-E (TJSP - Out/2025)</li>
-            <li>Taxa de Juros SELIC Acumulada (TJSP - Out/2025)</li>
-        </ul>
+    <div class="item" style="margin-top: 10px; font-size: 9pt;">
+        <strong>Fundamento:</strong> arts. 49-50, CP; STF AP 1.030/DF; STJ EREsp 91.003/RS; Tabelas TJSP out/2025.
     </div>
     
-    <div class="footer-note">
-        O presente cálculo foi elaborado com base nas tabelas oficiais do Tribunal de Justiça de São Paulo, 
-        reconhecidas como referência para cálculos judiciais em todo território nacional.
-    </div>
+
     
     <div class="signature">
-        <p>${cityName}, ${certDate.getDate()} de ${getMonthName(certDate.getMonth())} de ${certDate.getFullYear()}.</p>
-        <div style="margin-top: 60px;">
+        <p style="margin: 15px 0 5px 0;">${cityName}, ${certDate.getDate()} de ${getMonthName(certDate.getMonth())} de ${certDate.getFullYear()}.</p>
+        <div style="margin-top: 35px;">
             <div class="signature-line"></div>
-            <p><strong>${officialName}</strong></p>
-            <p>${officialPosition}</p>
-            <p>${judicialBody}</p>
+            <p style="margin: 3px 0;"><strong>${officialName}</strong></p>
+            <p style="margin: 3px 0;">${officialPosition} - ${judicialBody}</p>
         </div>
     </div>
 </body>
