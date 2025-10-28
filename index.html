@@ -4,11 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sextante Judiciário - A melhor orientação no desempenho do serviço judiciário</title>
+    <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Montserrat:wght@400;600;700&family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
     <style>
         :root {
-            --primary-color: #1e3a8a;
-            --primary-hover: #1e40af;
-            --secondary-color: #3b82f6;
+            --primary-color: #2c3e50;
+            --primary-hover: #1a252f;
+            --secondary-color: #3498db;
             --accent-color: #60a5fa;
             --success-color: #10b981;
             --error-color: #ef4444;
@@ -31,7 +32,7 @@
         }
 
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Roboto', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             line-height: 1.6;
             color: var(--text-dark);
             background-color: var(--bg-light);
@@ -48,17 +49,32 @@
         .header-content {
             max-width: 1200px;
             margin: 0 auto;
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+        }
+
+        .header-logo {
+            width: 70px;
+            height: 70px;
+            flex-shrink: 0;
+        }
+
+        .header-text {
+            flex: 1;
         }
 
         .header h1 {
-            font-size: 2rem;
+            font-family: 'Pacifico', cursive;
+            font-size: 2.2rem;
             margin-bottom: 0.5rem;
-            font-weight: 600;
+            font-weight: 400;
         }
 
         .header p {
             font-size: 1.1rem;
             opacity: 0.95;
+            font-weight: 300;
         }
 
         /* Container */
@@ -581,12 +597,22 @@
 
         /* Responsive Design */
         @media (max-width: 768px) {
+            .header-content {
+                flex-direction: row;
+                gap: 1rem;
+            }
+            
+            .header-logo {
+                width: 50px;
+                height: 50px;
+            }
+            
             .header h1 {
                 font-size: 1.5rem;
             }
             
             .header p {
-                font-size: 1rem;
+                font-size: 0.9rem;
             }
 
             .tools-grid {
@@ -663,8 +689,11 @@
     <!-- Header -->
     <header class="header">
         <div class="header-content">
-            <h1>⚖️ Sextante Judiciário</h1>
-            <p>A melhor orientação no desempenho do serviço judiciário</p>
+            <img src="https://user-gen-media-assets.s3.amazonaws.com/seedream_images/cf8be6c5-5e7d-4df1-97a1-2dd2f8b5c611.png" alt="Sextante Judiciário" class="header-logo">
+            <div class="header-text">
+                <h1>Sextante Judiciário</h1>
+                <p>A melhor orientação no desempenho do serviço judiciário</p>
+            </div>
         </div>
     </header>
 
@@ -683,37 +712,38 @@
             <h2 style="color: var(--primary-color); margin-bottom: 1.5rem; font-size: 1.8rem;">Ferramentas disponíveis</h2>
             <div class="tools-grid">
                 <!-- Active Tool -->
-                <div class="tool-card" onclick="showCalculator()">
+                <div class="tool-card" onclick="showCalculator('criminal')">
                     <div class="tool-card-icon">💰</div>
                     <h3>Calculadora de multa criminal</h3>
                     <p>Calcule multas criminais baseadas no sistema de dias-multa (arts. 49 e 50 do Código Penal)</p>
+                    <span class="status-badge" style="background: #27ae60;">tabelas atualizadas até 10/2025</span>
+                </div>
+
+                <!-- Legal Fees Calculator -->
+                <div class="tool-card" onclick="showCalculator('fees')">
+                    <div class="tool-card-icon">👨‍⚖️</div>
+                    <h3>Calculadora de honorários advocatícios</h3>
+                    <p>Cálculo de honorários sucumbenciais e contratuais conforme art. 85 do CPC</p>
                 </div>
 
                 <!-- Future Tools -->
                 <div class="tool-card disabled">
-                    <div class="tool-card-icon">⚖️</div>
-                    <h3>Calculadora de dosimetria de pena</h3>
-                    <p>Cálculo trifásico da pena (pena-base, agravantes/atenuantes, causas de aumento/diminuição)</p>
-                    <span class="status-badge">Em breve</span>
+                    <div class="tool-card-icon">📚</div>
+                    <h3>Banco de Modelos</h3>
+                    <p>repositório de documentos judiciais para uso no serviço judiciário</p>
+                    <span class="status-badge">em breve</span>
                 </div>
 
                 <div class="tool-card disabled">
-                    <div class="tool-card-icon">👨‍⚖️</div>
-                    <h3>Calculadora de honorários advocatícios</h3>
-                    <p>Cálculo de honorários sucumbenciais conforme CPC (10-20% com tabelas específicas)</p>
-                    <span class="status-badge">Em breve</span>
-                </div>
-
-                <div class="tool-card disabled">
-                    <div class="tool-card-icon">📅</div>
-                    <h3>Calculadora de prazos processuais</h3>
-                    <p>Contagem de prazos processuais (CPC, CPP, CLT)</p>
-                    <span class="status-badge">Em breve</span>
+                    <div class="tool-card-icon">📊</div>
+                    <h3>Organograma de Obrigações Administrativas CNJ</h3>
+                    <p>fluxograma com prazos administrativos do serviço judiciário conforme normas do CNJ</p>
+                    <span class="status-badge">em breve</span>
                 </div>
             </div>
         </div>
 
-        <!-- Calculator View -->
+        <!-- Criminal Calculator View -->
         <div id="calculatorView" class="calculator-section">
             <button class="back-button" onclick="showMainView()">
                 <span>←</span> Voltar ao Portal
@@ -735,9 +765,8 @@
                     <div class="form-group">
                         <label>
                             <input type="checkbox" id="specialLaw" name="specialLaw" style="width: auto; margin-right: 0.5rem;">
-                            Lei Especial (permite valores diferentes do Código Penal)
+                            lei especial - marque se o crime é previsto em lei especial e não se submete aos limites previstos no art. 49 do Código Penal
                         </label>
-                        <span class="helper-text" style="display: block; margin-top: 0.5rem;">Marque se o crime é previsto em lei especial com quantidades diferentes (ex: Lei 11.343/2006 - Drogas)</span>
                     </div>
                     <div class="form-group">
                         <label for="fineDays">Número de dias-multa *</label>
@@ -1056,12 +1085,189 @@
                 <div id="historyContent"></div>
             </div>
         </div>
+
+        <!-- Legal Fees Calculator View -->
+        <div id="feesCalculatorView" class="calculator-section">
+            <button class="back-button" onclick="showMainView()">
+                <span>←</span> Voltar ao Portal
+            </button>
+
+            <div class="calculator-header">
+                <h2>👨‍⚖️ Calculadora de honorários advocatícios</h2>
+                <p>Cálculo de honorários sucumbenciais e contratuais conforme art. 85 do CPC</p>
+            </div>
+
+            <!-- Alert Box -->
+            <div id="feesAlertBox" class="alert"></div>
+
+            <!-- Calculator Form -->
+            <form id="feesCalculatorForm">
+                <!-- Deposit Section -->
+                <div class="form-section">
+                    <h3>1. Valor do depósito judicial</h3>
+                    <div class="form-group">
+                        <label for="depositAmount">Valor do depósito judicial (R$) *</label>
+                        <input type="number" id="depositAmount" name="depositAmount" step="0.01" min="0.01" required>
+                        <span class="helper-text">Valor total depositado para levantamento</span>
+                    </div>
+                </div>
+
+                <!-- Sucumbencial Fees Section -->
+                <div class="form-section">
+                    <h3>2. Honorários sucumbenciais</h3>
+                    <div class="form-group">
+                        <label for="sucumbencialPercent">Percentual de honorários sucumbenciais (%) *</label>
+                        <input type="number" id="sucumbencialPercent" name="sucumbencialPercent" step="0.01" min="0" max="100" required>
+                        <span class="helper-text">Percentual fixado na sentença ou acórdão (geralmente entre 10% e 20%)</span>
+                    </div>
+                </div>
+
+                <!-- Contractual Fees Section -->
+                <div class="form-section">
+                    <div class="form-group">
+                        <label>
+                            <input type="checkbox" id="applyContractual" name="applyContractual" style="width: auto; margin-right: 0.5rem;">
+                            Calcular também honorários contratuais
+                        </label>
+                        <span class="helper-text" style="display: block; margin-top: 0.5rem;">Marque se houver contrato de honorários a ser aplicado sobre o valor líquido</span>
+                    </div>
+
+                    <div class="conditional-input" id="contractualFields">
+                        <div class="form-group">
+                            <label for="contractualPercent">Percentual de honorários contratuais (%) *</label>
+                            <input type="number" id="contractualPercent" name="contractualPercent" step="0.01" min="0" max="100">
+                            <span class="helper-text">Percentual previsto no contrato de honorários (aplicado sobre o valor líquido após sucumbenciais)</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Certificate Fields Section -->
+                <div class="form-section">
+                    <h3>3. Dados para certidão (opcional)</h3>
+                    <div class="form-group">
+                        <label for="feesProcessNumber">Número do processo</label>
+                        <input type="text" id="feesProcessNumber" name="feesProcessNumber" placeholder="Ex: 0000000-00.0000.0.00.0000">
+                    </div>
+                    <div class="form-group">
+                        <label for="lawyerName">Nome do advogado</label>
+                        <input type="text" id="lawyerName" name="lawyerName" placeholder="Nome completo do advogado">
+                    </div>
+                    <div class="form-group">
+                        <label for="feesJudicialBody">Órgão judiciário</label>
+                        <input type="text" id="feesJudicialBody" name="feesJudicialBody" placeholder="Ex: 1ª Vara Cível de Teresina">
+                    </div>
+                    <div class="form-group">
+                        <label for="feesOfficialName">Nome do servidor responsável</label>
+                        <input type="text" id="feesOfficialName" name="feesOfficialName" placeholder="Nome completo do servidor">
+                    </div>
+                    <div class="form-group">
+                        <label for="feesOfficialPosition">Cargo do servidor</label>
+                        <input type="text" id="feesOfficialPosition" name="feesOfficialPosition" placeholder="Ex: Diretor de Secretaria">
+                    </div>
+                    <div class="form-group">
+                        <label for="depositId">ID do comprovante de depósito</label>
+                        <input type="text" id="depositId" name="depositId" placeholder="Ex: fl. 123 dos autos">
+                    </div>
+                    <div class="form-group">
+                        <label for="sentenceId">ID da sentença/acórdão</label>
+                        <input type="text" id="sentenceId" name="sentenceId" placeholder="Ex: fl. 456 dos autos">
+                    </div>
+                    <div class="conditional-input" id="contractIdField">
+                        <div class="form-group">
+                            <label for="contractId">ID do contrato de honorários</label>
+                            <input type="text" id="contractId" name="contractId" placeholder="Ex: fl. 789 dos autos">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Buttons -->
+                <div class="button-group">
+                    <button type="submit" class="btn btn-primary">🧐 Calcular honorários</button>
+                    <button type="button" class="btn btn-secondary" onclick="clearFeesForm()">🔄 Limpar formulário</button>
+                </div>
+            </form>
+
+            <!-- Results Section -->
+            <div id="feesResultsSection" class="results-section">
+                <div class="results-header">
+                    <h3>📋 Resultado do cálculo</h3>
+                    <div class="button-group" style="margin: 0;">
+                        <button class="btn btn-secondary" onclick="printFeesResults()">🖨️ Imprimir</button>
+                        <button class="btn btn-primary" onclick="generateFeesCertificate()">📄 Gerar certidão</button>
+                        <button class="btn btn-secondary" onclick="newFeesCalculation()">➕ Novo cálculo</button>
+                    </div>
+                </div>
+
+                <div id="feesResultsContent"></div>
+
+                <!-- Legal References -->
+                <div class="legal-references">
+                    <h4>📋 FUNDAMENTOS LEGAIS</h4>
+                    <div class="legal-ref-item">
+                        <strong>Art. 85 do Código de Processo Civil</strong>
+                        <p>A sentença condenará o vencido a pagar honorários ao advogado do vencedor. Os honorários serão fixados entre o mínimo de dez e o máximo de vinte por cento sobre o valor da condenação.</p>
+                    </div>
+                    <div class="legal-ref-item">
+                        <strong>Fórmula de cálculo dos honorários sucumbenciais</strong>
+                        <p>Honorários = (Depósito × Percentual) / (1 + Percentual). Esta fórmula garante que o percentual fixado incida sobre o valor que efetivamente caberá à parte.</p>
+                    </div>
+                    <div class="legal-ref-item">
+                        <strong>Honorários contratuais</strong>
+                        <p>Os honorários contratuais, quando aplicáveis, incidem sobre o valor líquido que cabe à parte (após dedução dos honorários sucumbenciais).</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Help Section -->
+            <div class="help-section">
+                <div class="help-header" onclick="toggleFeesHelp()">
+                    <span>❓ Ajuda e exemplos</span>
+                    <span id="feesHelpToggle">▼</span>
+                </div>
+                <div class="help-content" id="feesHelpContent">
+                    <h4 style="color: var(--primary-color); margin-bottom: 1rem;">📚 Como usar a calculadora:</h4>
+                    <ol style="color: var(--text-medium); line-height: 1.8; margin-bottom: 2rem;">
+                        <li>Informe o valor total do depósito judicial</li>
+                        <li>Informe o percentual de honorários sucumbenciais fixado na sentença/acórdão</li>
+                        <li>Se houver honorários contratuais, marque a opção e informe o percentual</li>
+                        <li>Preencha os dados para certidão (opcional)</li>
+                        <li>Clique em "Calcular honorários" para obter o resultado detalhado</li>
+                    </ol>
+
+                    <h4 style="color: var(--primary-color); margin-bottom: 1rem;">Exemplos de cálculo:</h4>
+                    
+                    <div class="help-example">
+                        <h4>Exemplo 1: Apenas honorários sucumbenciais</h4>
+                        <p><strong>Situação:</strong> Depósito de R$ 10.000,00 com 20% de honorários sucumbenciais</p>
+                        <p><strong>Cálculo:</strong></p>
+                        <ul style="margin-left: 1.5rem; color: var(--text-medium);">
+                            <li>Honorários sucumbenciais: (R$ 10.000,00 × 0,20) / (1 + 0,20) = R$ 1.666,67</li>
+                            <li>Valor líquido à parte: R$ 10.000,00 - R$ 1.666,67 = R$ 8.333,33</li>
+                            <li>Total ao advogado: R$ 1.666,67</li>
+                        </ul>
+                    </div>
+
+                    <div class="help-example">
+                        <h4>Exemplo 2: Honorários sucumbenciais + contratuais</h4>
+                        <p><strong>Situação:</strong> Depósito de R$ 10.000,00 com 20% sucumbenciais e 30% contratuais</p>
+                        <p><strong>Cálculo:</strong></p>
+                        <ul style="margin-left: 1.5rem; color: var(--text-medium);">
+                            <li>Honorários sucumbenciais: (R$ 10.000,00 × 0,20) / (1 + 0,20) = R$ 1.666,67</li>
+                            <li>Valor líquido após sucumbenciais: R$ 8.333,33</li>
+                            <li>Honorários contratuais: R$ 8.333,33 × 0,30 = R$ 2.500,00</li>
+                            <li>Total ao advogado: R$ 1.666,67 + R$ 2.500,00 = R$ 4.166,67</li>
+                            <li>Valor final à parte: R$ 8.333,33 - R$ 2.500,00 = R$ 5.833,33</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 
     <!-- Footer -->
     <footer class="footer">
-        <p>&copy; 2025 Sextante Judiciário - Cálculos judiciais com inteligência e precisão</p>
-        <p style="margin-top: 0.5rem; font-size: 0.9rem;">Desenvolvido para auxiliar magistrados e servidores no serviço judiciário</p>
+        <p style="font-size: 1rem; margin-bottom: 1rem;">Quer sugerir correções ou melhorias? Envie um email para <a href="mailto:coutinho.tco@gmail.com" style="color: #fff; text-decoration: underline;">coutinho.tco@gmail.com</a></p>
+        <p style="font-size: 0.85rem; opacity: 0.8; max-width: 800px; margin: 0 auto; line-height: 1.6;">Este site é gratuito para uso institucional ou pessoal, sem qualquer garantia ou finalidade comercial. O conteúdo pode ser reproduzido, adaptado ou redistribuído nos termos da legislação vigente.</p>
     </footer>
 
     <script>
@@ -1332,15 +1538,22 @@
         }
 
         // Navigation Functions
-        function showCalculator() {
+        function showCalculator(type) {
             document.getElementById('mainView').style.display = 'none';
-            document.getElementById('calculatorView').classList.add('active');
+            if (type === 'criminal') {
+                document.getElementById('calculatorView').classList.add('active');
+                document.getElementById('feesCalculatorView').classList.remove('active');
+            } else if (type === 'fees') {
+                document.getElementById('feesCalculatorView').classList.add('active');
+                document.getElementById('calculatorView').classList.remove('active');
+            }
             window.scrollTo(0, 0);
         }
 
         function showMainView() {
             document.getElementById('mainView').style.display = 'block';
             document.getElementById('calculatorView').classList.remove('active');
+            document.getElementById('feesCalculatorView').classList.remove('active');
             window.scrollTo(0, 0);
         }
 
@@ -2129,6 +2342,316 @@
                           'julho', 'agosto', 'setembro', 'outubro', 'novembro', 'dezembro'];
             return months[month];
         }
+        
+        // ====== LEGAL FEES CALCULATOR FUNCTIONS ======
+        
+        let currentFeesResult = null;
+        
+        // Initialize fees calculator
+        document.addEventListener('DOMContentLoaded', function() {
+            // Setup contractual fees checkbox
+            document.getElementById('applyContractual').addEventListener('change', handleContractualChange);
+            
+            // Setup fees form submission
+            document.getElementById('feesCalculatorForm').addEventListener('submit', handleFeesCalculation);
+        });
+        
+        // Handle contractual fees checkbox
+        function handleContractualChange(e) {
+            const contractualFields = document.getElementById('contractualFields');
+            const contractIdField = document.getElementById('contractIdField');
+            
+            if (e.target.checked) {
+                contractualFields.classList.add('show');
+                contractIdField.classList.add('show');
+            } else {
+                contractualFields.classList.remove('show');
+                contractIdField.classList.remove('show');
+            }
+        }
+        
+        // Handle fees calculation
+        function handleFeesCalculation(e) {
+            e.preventDefault();
+            
+            // Get form values
+            const depositAmount = parseFloat(document.getElementById('depositAmount').value);
+            const sucumbencialPercent = parseFloat(document.getElementById('sucumbencialPercent').value);
+            const applyContractual = document.getElementById('applyContractual').checked;
+            const contractualPercent = applyContractual ? parseFloat(document.getElementById('contractualPercent').value) : 0;
+            
+            // Validate
+            if (!depositAmount || depositAmount <= 0) {
+                showFeesAlert('Por favor, informe um valor de depósito válido.', 'error');
+                return;
+            }
+            
+            if (!sucumbencialPercent || sucumbencialPercent < 0 || sucumbencialPercent > 100) {
+                showFeesAlert('Por favor, informe um percentual de honorários sucumbenciais válido (0-100%).', 'error');
+                return;
+            }
+            
+            if (applyContractual && (!contractualPercent || contractualPercent < 0 || contractualPercent > 100)) {
+                showFeesAlert('Por favor, informe um percentual de honorários contratuais válido (0-100%).', 'error');
+                return;
+            }
+            
+            // Calculate sucumbencial fees
+            const sucumbencialAmount = (depositAmount * (sucumbencialPercent / 100)) / (1 + (sucumbencialPercent / 100));
+            const netToParty = depositAmount - sucumbencialAmount;
+            
+            // Calculate contractual fees if applicable
+            let contractualAmount = 0;
+            if (applyContractual) {
+                contractualAmount = netToParty * (contractualPercent / 100);
+            }
+            
+            // Calculate totals
+            const totalLawyer = sucumbencialAmount + contractualAmount;
+            const finalParty = netToParty - contractualAmount;
+            
+            // Create result object
+            const result = {
+                depositAmount,
+                sucumbencialPercent,
+                sucumbencialAmount,
+                netToParty,
+                applyContractual,
+                contractualPercent,
+                contractualAmount,
+                totalLawyer,
+                finalParty,
+                timestamp: new Date().toLocaleString('pt-BR')
+            };
+            
+            // Display results
+            displayFeesResults(result);
+            currentFeesResult = result;
+            
+            // Show success message
+            showFeesAlert('Cálculo realizado com sucesso!', 'success');
+            
+            // Scroll to results
+            document.getElementById('feesResultsSection').scrollIntoView({ behavior: 'smooth' });
+        }
+        
+        // Display fees results
+        function displayFeesResults(result) {
+            const resultsContent = document.getElementById('feesResultsContent');
+            
+            let html = `
+                <div style="background: var(--bg-light); padding: 1.5rem; border-radius: 8px; margin-bottom: 1.5rem;">
+                    <h4 style="color: var(--primary-color); margin-bottom: 1rem; font-size: 1.2rem;">💰 CÁLCULO DE HONORÁRIOS ADVOCATÍCIOS</h4>
+                    <div class="result-item">
+                        <span class="result-label">Valor do depósito judicial:</span>
+                        <span class="result-value">${formatCurrency(result.depositAmount)}</span>
+                    </div>
+                </div>
+
+                <div style="background: #d1fae5; padding: 1.5rem; border-radius: 8px; margin-bottom: 1.5rem;">
+                    <h4 style="color: var(--success-color); margin-bottom: 1rem; font-size: 1.2rem;">⚖️ HONORÁRIOS SUCUMBENCIAIS</h4>
+                    <div class="result-item" style="background: white;">
+                        <span class="result-label">Percentual:</span>
+                        <span class="result-value">${result.sucumbencialPercent.toFixed(2)}%</span>
+                    </div>
+                    <div class="result-item" style="background: white;">
+                        <span class="result-label">Fórmula:</span>
+                        <span class="result-value" style="font-size: 0.9rem;">(${formatCurrency(result.depositAmount)} × ${result.sucumbencialPercent}%) / (1 + ${result.sucumbencialPercent}%)</span>
+                    </div>
+                    <div class="result-item" style="background: white; border-left-color: var(--success-color);">
+                        <span class="result-label"><strong>Valor dos honorários sucumbenciais:</strong></span>
+                        <span class="result-value"><strong>${formatCurrency(result.sucumbencialAmount)}</strong></span>
+                    </div>
+                    <div class="result-item" style="background: #f0f9ff; border-left-color: var(--secondary-color);">
+                        <span class="result-label"><strong>Valor líquido (após sucumbenciais):</strong></span>
+                        <span class="result-value"><strong>${formatCurrency(result.netToParty)}</strong></span>
+                    </div>
+                </div>
+            `;
+            
+            if (result.applyContractual) {
+                html += `
+                    <div style="background: #fef3c7; padding: 1.5rem; border-radius: 8px; margin-bottom: 1.5rem;">
+                        <h4 style="color: var(--warning-color); margin-bottom: 1rem; font-size: 1.2rem;">📄 HONORÁRIOS CONTRATUAIS</h4>
+                        <div class="result-item" style="background: white;">
+                            <span class="result-label">Percentual:</span>
+                            <span class="result-value">${result.contractualPercent.toFixed(2)}%</span>
+                        </div>
+                        <div class="result-item" style="background: white;">
+                            <span class="result-label">Base de cálculo:</span>
+                            <span class="result-value">${formatCurrency(result.netToParty)} (valor líquido)</span>
+                        </div>
+                        <div class="result-item" style="background: white; border-left-color: var(--warning-color);">
+                            <span class="result-label"><strong>Valor dos honorários contratuais:</strong></span>
+                            <span class="result-value"><strong>${formatCurrency(result.contractualAmount)}</strong></span>
+                        </div>
+                    </div>
+                `;
+            }
+            
+            html += `
+                <div style="background: var(--primary-color); color: white; padding: 2rem; border-radius: 8px; margin-bottom: 1.5rem;">
+                    <h4 style="margin-bottom: 1.5rem; font-size: 1.3rem; text-align: center;">📋 RESUMO FINAL</h4>
+                    <div style="background: rgba(255,255,255,0.1); padding: 1rem; border-radius: 8px; margin-bottom: 1rem;">
+                        <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
+                            <span>Total de honorários ao advogado:</span>
+                            <span style="font-weight: bold; font-size: 1.2rem;">${formatCurrency(result.totalLawyer)}</span>
+                        </div>
+                        <div style="margin-left: 1rem; font-size: 0.9rem; opacity: 0.9;">
+                            <div>• Sucumbenciais: ${formatCurrency(result.sucumbencialAmount)}</div>
+                            ${result.applyContractual ? `<div>• Contratuais: ${formatCurrency(result.contractualAmount)}</div>` : ''}
+                        </div>
+                    </div>
+                    <div style="background: rgba(255,255,255,0.1); padding: 1rem; border-radius: 8px;">
+                        <div style="display: flex; justify-content: space-between;">
+                            <span>Valor final à parte:</span>
+                            <span style="font-weight: bold; font-size: 1.2rem;">${formatCurrency(result.finalParty)}</span>
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            resultsContent.innerHTML = html;
+            document.getElementById('feesResultsSection').classList.add('show');
+        }
+        
+        // Generate fees certificate
+        function generateFeesCertificate() {
+            if (!currentFeesResult) {
+                alert('⚠️ Por favor, realize um cálculo antes de gerar a certidão.');
+                return;
+            }
+            
+            const processNumber = document.getElementById('feesProcessNumber').value.trim();
+            const lawyerName = document.getElementById('lawyerName').value.trim();
+            const judicialBody = document.getElementById('feesJudicialBody').value.trim();
+            const officialName = document.getElementById('feesOfficialName').value.trim();
+            const officialPosition = document.getElementById('feesOfficialPosition').value.trim();
+            const depositId = document.getElementById('depositId').value.trim();
+            const sentenceId = document.getElementById('sentenceId').value.trim();
+            const contractId = document.getElementById('contractId').value.trim();
+            
+            if (!processNumber || !lawyerName || !judicialBody || !officialName || !officialPosition) {
+                alert('⚠️ Por favor, preencha os campos obrigatórios: Número do processo, Nome do advogado, Órgão judiciário, Nome e Cargo do servidor.');
+                return;
+            }
+            
+            const result = currentFeesResult;
+            const today = new Date();
+            const cityName = judicialBody.includes('Teresina') ? 'Teresina' : judicialBody.split(' ').pop();
+            
+            // Generate certificate HTML
+            let certHTML = '<!DOCTYPE html>\n<html lang="pt-BR">\n<head>\n';
+            certHTML += '<meta charset="UTF-8">\n<title>Certidão de Cálculo de Honorários Advocatícios</title>\n';
+            certHTML += '<style>\n';
+            certHTML += '@page { margin: 15mm; }\n';
+            certHTML += 'body { font-family: "Times New Roman", Times, serif; line-height: 1.3; color: #000; max-width: 800px; margin: 0 auto; padding: 15px; font-size: 11pt; }\n';
+            certHTML += '.header { text-align: center; margin-bottom: 15px; border-bottom: 2px solid #000; padding-bottom: 10px; }\n';
+            certHTML += '.header h1 { font-size: 14px; font-weight: bold; margin: 3px 0; }\n';
+            certHTML += '.header h2 { font-size: 12px; margin: 3px 0; }\n';
+            certHTML += '.title { text-align: center; font-size: 14px; font-weight: bold; margin: 15px 0; text-decoration: underline; }\n';
+            certHTML += '.section { margin: 12px 0; }\n';
+            certHTML += '.section-title { font-size: 11pt; font-weight: bold; margin-bottom: 6px; }\n';
+            certHTML += '.item { margin: 4px 0; font-size: 10pt; }\n';
+            certHTML += '.value-highlight { font-weight: bold; }\n';
+            certHTML += '.signature { margin-top: 25px; text-align: center; font-size: 10pt; }\n';
+            certHTML += '.signature-line { border-top: 1px solid #000; width: 350px; margin: 0 auto 5px auto; }\n';
+            certHTML += '.print-button { position: fixed; top: 20px; right: 20px; padding: 10px 20px; background: #2c3e50; color: white; border: none; border-radius: 5px; cursor: pointer; }\n';
+            certHTML += '@media print { .print-button { display: none; } }\n';
+            certHTML += '</style>\n</head>\n<body>\n';
+            certHTML += '<button class="print-button" onclick="window.print()">🖨️ Imprimir / Salvar PDF</button>\n';
+            certHTML += '<div class="header">\n<h1>PODER JUDICIÁRIO</h1>\n<h2>' + judicialBody + '</h2>\n</div>\n';
+            certHTML += '<div class="title">CERTIDÃO DE CÁLCULO DE HONORÁRIOS ADVOCATÍCIOS</div>\n';
+            certHTML += '<p><strong>Processo nº:</strong> ' + processNumber + '</p>\n';
+            certHTML += '<p><strong>Advogado:</strong> ' + lawyerName + '</p>\n';
+            certHTML += '<p style="text-align: justify; margin: 12px 0; font-size: 10pt;">Certifico que foi realizado o cálculo dos honorários advocatícios devidos, conforme documentos nos autos:</p>\n';
+            certHTML += '<div class="section">\n<div class="section-title">I - DADOS DO DEPÓSITO</div>\n';
+            certHTML += '<div class="item">Valor depositado: <span class="value-highlight">' + formatCurrency(result.depositAmount) + '</span></div>\n';
+            if (depositId) certHTML += '<div class="item">Comprovante: ' + depositId + '</div>\n';
+            certHTML += '</div>\n';
+            certHTML += '<div class="section">\n<div class="section-title">II - HONORÁRIOS SUCUMBENCIAIS</div>\n';
+            if (sentenceId) certHTML += '<div class="item">Base legal: ' + sentenceId + '</div>\n';
+            certHTML += '<div class="item">Percentual fixado: <span class="value-highlight">' + result.sucumbencialPercent.toFixed(2) + '%</span></div>\n';
+            certHTML += '<div class="item">Cálculo: ' + formatCurrency(result.depositAmount) + ' × ' + result.sucumbencialPercent.toFixed(2) + '% / (1 + ' + result.sucumbencialPercent.toFixed(2) + '%)</div>\\n';
+            certHTML += '<div class="item">Valor: <span class="value-highlight">' + formatCurrency(result.sucumbencialAmount) + '</span></div>\n';
+            certHTML += '</div>\n';
+            
+            if (result.applyContractual) {
+                certHTML += '<div class="section">\n<div class="section-title">III - HONORÁRIOS CONTRATUAIS</div>\n';
+                if (contractId) certHTML += '<div class="item">Base legal: ' + contractId + '</div>\n';
+                certHTML += '<div class="item">Percentual: <span class="value-highlight">' + result.contractualPercent.toFixed(2) + '%</span></div>\n';
+                certHTML += '<div class="item">Base de cálculo: ' + formatCurrency(result.netToParty) + ' (valor líquido)</div>\n';
+                certHTML += '<div class="item">Valor: <span class="value-highlight">' + formatCurrency(result.contractualAmount) + '</span></div>\n';
+                certHTML += '</div>\n';
+            }
+            
+            certHTML += '<div class="section">\n<div class="section-title">' + (result.applyContractual ? 'IV' : 'III') + ' - VALORES FINAIS</div>\n';
+            certHTML += '<div class="item">Total de honorários: <span class="value-highlight">' + formatCurrency(result.totalLawyer) + '</span></div>\n';
+            certHTML += '<div class="item" style="margin-left: 20px;">• Sucumbenciais: ' + formatCurrency(result.sucumbencialAmount) + '</div>\n';
+            if (result.applyContractual) {
+                certHTML += '<div class="item" style="margin-left: 20px;">• Contratuais: ' + formatCurrency(result.contractualAmount) + '</div>\n';
+            }
+            certHTML += '<div class="item">Valor à parte: <span class="value-highlight">' + formatCurrency(result.finalParty) + '</span></div>\n';
+            certHTML += '</div>\n';
+            certHTML += '<div class="item" style="margin-top: 10px; font-size: 9pt;">\n';
+            certHTML += '<strong>Fundamento:</strong> art. 85 do CPC/2015' + (result.applyContractual ? '; contrato de honorários' : '') + '.\n';
+            certHTML += '</div>\n';
+            certHTML += '<div class="signature">\n';
+            certHTML += '<p style="margin: 15px 0 5px 0;">' + today.getDate() + ' de ' + getMonthName(today.getMonth()) + ' de ' + today.getFullYear() + '.</p>\n';
+            certHTML += '<div style="margin-top: 35px;">\n';
+            certHTML += '<div class="signature-line"></div>\n';
+            certHTML += '<p style="margin: 3px 0;"><strong>' + officialName + '</strong></p>\n';
+            certHTML += '<p style="margin: 3px 0;">' + officialPosition + ' - ' + judicialBody + '</p>\n';
+            certHTML += '</div>\n</div>\n</body>\n</html>';
+            
+            // Open in new window
+            const printWindow = window.open('', '_blank');
+            printWindow.document.write(certHTML);
+            printWindow.document.close();
+        }
+        
+        // Helper functions for fees calculator
+        function showFeesAlert(message, type = 'error') {
+            const alertBox = document.getElementById('feesAlertBox');
+            alertBox.textContent = message;
+            alertBox.className = `alert alert-${type} show`;
+            setTimeout(() => {
+                alertBox.classList.remove('show');
+            }, 5000);
+        }
+        
+        function clearFeesForm() {
+            document.getElementById('feesCalculatorForm').reset();
+            document.getElementById('feesResultsSection').classList.remove('show');
+            document.getElementById('contractualFields').classList.remove('show');
+            document.getElementById('contractIdField').classList.remove('show');
+            document.getElementById('feesAlertBox').classList.remove('show');
+            currentFeesResult = null;
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+        
+        function newFeesCalculation() {
+            clearFeesForm();
+        }
+        
+        function printFeesResults() {
+            window.print();
+        }
+        
+        function toggleFeesHelp() {
+            const helpContent = document.getElementById('feesHelpContent');
+            const helpToggle = document.getElementById('feesHelpToggle');
+            
+            if (helpContent.classList.contains('show')) {
+                helpContent.classList.remove('show');
+                helpToggle.textContent = '▼';
+            } else {
+                helpContent.classList.add('show');
+                helpToggle.textContent = '▲';
+            }
+        }
+        
+        // ====== END LEGAL FEES CALCULATOR FUNCTIONS ======
         
         // Fetch IPCA-E Data (deprecated - keeping for compatibility)
         async function fetchIPCAE() {
