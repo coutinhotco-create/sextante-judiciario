@@ -1,0 +1,1052 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Calculadora de Multa Criminal</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: Arial, sans-serif; background: #f5f5f5; padding: 20px; line-height: 1.6; }
+    .container { max-width: 900px; margin: 0 auto; background: white; padding: 30px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+    h1 { color: #333; margin-bottom: 10px; font-size: 24px; }
+    .subtitle { color: #666; margin-bottom: 20px; font-size: 14px; }
+    .banner { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 15px 20px; border-radius: 6px; margin-bottom: 30px; font-size: 14px; line-height: 1.5; }
+    .banner.erro { background: linear-gradient(135deg, #e53e3e 0%, #c53030 100%); }
+    .banner-actions { margin-top: 10px; }
+    .banner-actions button { background: rgba(255,255,255,0.2); color: white; border: 1px solid rgba(255,255,255,0.4); padding: 6px 12px; border-radius: 4px; cursor: pointer; font-size: 12px; transition: background 0.3s; }
+    .banner-actions button:hover { background: rgba(255,255,255,0.3); }
+    .campo { margin-bottom: 20px; }
+    label { display: block; margin-bottom: 6px; font-weight: 500; color: #333; font-size: 14px; }
+    input[type="number"], input[type="date"] { width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 4px; font-size: 14px; }
+    input:focus { outline: none; border-color: #667eea; }
+    .radio-option { display: flex; align-items: center; margin-bottom: 10px; }
+    .radio-option input[type="radio"] { margin-right: 8px; }
+    .radio-option label { margin: 0; font-weight: normal; cursor: pointer; }
+    .fracao-input { display: flex; gap: 8px; align-items: center; margin-top: 10px; }
+    .fracao-input input { width: 80px; }
+    .fracao-input span { font-size: 18px; color: #666; }
+    .erro { color: #d32f2f; font-size: 13px; margin-top: 5px; display: none; }
+    .erro.ativo { display: block; }
+    .info { color: #1976d2; background: #e3f2fd; padding: 8px; border-radius: 4px; margin-top: 5px; font-size: 13px; display: none; }
+    .info.ativo { display: block; }
+    .resumo { background: #f9f9f9; border: 1px solid #e0e0e0; padding: 20px; border-radius: 6px; margin: 20px 0; display: none; }
+    .resumo.ativo { display: block; }
+    .resumo h3 { font-size: 18px; color: #333; margin-bottom: 15px; }
+    .resumo-item { margin-bottom: 8px; color: #555; font-size: 14px; }
+    .resumo-item strong { color: #333; }
+    .button-group { display: flex; gap: 10px; }
+    .button-group button { flex: 1; }
+    button { width: 100%; padding: 14px; background: #667eea; color: white; border: none; border-radius: 6px; font-size: 16px; font-weight: 600; cursor: pointer; transition: background 0.3s; }
+    button:disabled { background: #ccc; cursor: not-allowed; }
+    button:hover:not(:disabled) { background: #5568d3; }
+    button.secondary { background: #6c757d; }
+    button.secondary:hover:not(:disabled) { background: #5a6268; }
+    .cards-container { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; margin-top: 30px; }
+    .card { background: white; border: 1px solid #e0e0e0; border-radius: 8px; padding: 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.08); }
+    .card-title { font-size: 12px; text-transform: uppercase; color: #999; margin-bottom: 10px; font-weight: 600; }
+    .card-valor { font-size: 24px; font-weight: 700; color: #333; margin-bottom: 15px; }
+    .card-detalhe { font-size: 13px; color: #666; margin-bottom: 5px; }
+    .card-percentual { font-size: 18px; font-weight: 600; color: #667eea; margin-top: 10px; }
+    .card-total { grid-column: 1 / -1; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; text-align: center; padding: 30px; }
+    .card-total .card-title { color: rgba(255,255,255,0.9); }
+    .card-total .card-valor { color: white; font-size: 36px; }
+    .resultado { display: none; margin-top: 30px; }
+    .resultado.ativo { display: block; }
+    .campo-opcional { font-size: 12px; color: #999; font-weight: normal; }
+    .aviso-limite { background: #fff3cd; border: 1px solid #ffc107; color: #856404; padding: 15px; border-radius: 6px; margin-top: 20px; font-size: 14px; line-height: 1.5; }
+    .aviso-limite strong { display: block; margin-bottom: 5px; }
+    .certidao-toggle { background: #f0f7ff; border: 2px dashed #667eea; padding: 20px; border-radius: 8px; margin-top: 30px; text-align: center; }
+    .certidao-toggle label { display: flex; align-items: center; justify-content: center; gap: 10px; font-size: 16px; font-weight: 600; color: #667eea; cursor: pointer; }
+    .certidao-toggle input[type="checkbox"] { width: 20px; height: 20px; cursor: pointer; }
+    .certidao-form { background: #f9f9f9; border: 1px solid #e0e0e0; padding: 25px; border-radius: 8px; margin-top: 20px; display: none; }
+    .certidao-form.ativo { display: block; }
+    .certidao-form h3 { font-size: 18px; color: #333; margin-bottom: 20px; text-align: center; }
+    .certidao-form .campo { margin-bottom: 15px; }
+    .certidao-form input[type="text"], .certidao-form input[type="date"] { width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 4px; font-size: 14px; }
+    .certidao-preview { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.9); z-index: 9999; display: none; overflow-y: auto; }
+    .certidao-preview.ativo { display: block; }
+    .certidao-preview-controls { position: sticky; top: 0; background: #333; padding: 15px; text-align: center; z-index: 10000; display: flex; gap: 10px; justify-content: center; }
+    .certidao-preview-controls button { padding: 10px 20px; background: #667eea; color: white; border: none; border-radius: 6px; cursor: pointer; font-size: 14px; font-weight: 600; }
+    .certidao-preview-controls button:hover { background: #5568d3; }
+    .certidao-preview-controls button.secondary { background: #6c757d; }
+    .certidao-preview-controls button.secondary:hover { background: #5a6268; }
+    .certidao-content { max-width: 210mm; margin: 20px auto; background: white; padding: 40mm 25mm; min-height: 297mm; box-shadow: 0 0 20px rgba(0,0,0,0.3); }
+    .certidao-header { text-align: center; margin-bottom: 30px; }
+    .certidao-header h1 { font-size: 18px; font-weight: bold; text-transform: uppercase; margin-bottom: 5px; }
+    .certidao-header h2 { font-size: 16px; font-weight: normal; margin-bottom: 20px; }
+    .certidao-header .numero-processo { font-size: 14px; font-weight: bold; margin-top: 15px; }
+    .certidao-body { font-size: 13px; line-height: 1.8; text-align: justify; margin-bottom: 30px; }
+    .certidao-body p { margin-bottom: 15px; text-indent: 40px; }
+    .certidao-body .sem-indent { text-indent: 0; font-weight: bold; margin-top: 20px; }
+    .certidao-table { width: 100%; border-collapse: collapse; margin: 20px 0; font-size: 12px; }
+    .certidao-table th, .certidao-table td { border: 1px solid #333; padding: 8px; text-align: left; }
+    .certidao-table th { background: #f0f0f0; font-weight: bold; }
+    .certidao-table td.valor { text-align: right; }
+    .certidao-table tr.total { font-weight: bold; background: #f9f9f9; }
+    .certidao-extenso { margin: 20px 0; padding: 15px; background: #f9f9f9; border: 1px solid #ddd; font-size: 13px; line-height: 1.6; }
+    .certidao-extenso strong { display: block; margin-bottom: 5px; }
+    .certidao-footer { margin-top: 50px; font-size: 13px; }
+    .certidao-footer .local-data { text-align: center; margin-bottom: 40px; }
+    .certidao-footer .assinatura { text-align: center; margin-top: 50px; }
+    .certidao-footer .assinatura-linha { border-top: 1px solid #333; width: 300px; margin: 0 auto 10px; }
+    .certidao-footer .assinatura-nome { font-weight: bold; }
+    @media print { body { background: white; padding: 0; } .container, .certidao-preview-controls { display: none !important; } .certidao-preview { position: static; background: white; display: block !important; } .certidao-content { margin: 0; padding: 20mm 15mm; box-shadow: none; max-width: 100%; } }
+  </style>
+</head>
+<body>
+  
+  <div style="background: white; border-bottom: 1px solid #e0e0e0; padding: 12px 20px; margin-bottom: 20px;">
+    <div style="max-width: 900px; margin: 0 auto;">
+      <a href="index.html" style="display: inline-flex; align-items: center; gap: 8px; color: #667eea; text-decoration: none; font-size: 14px; font-weight: 500; transition: opacity 0.3s;" onmouseover="this.style.opacity='0.7'" onmouseout="this.style.opacity='1'">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M19 12H5M12 19l-7-7 7-7"/>
+        </svg>
+        <span>Sextante Judiciário</span>
+      </a>
+    </div>
+  </div>
+  
+  <div class="container">
+    <h1>Calculadora de Multa Criminal</h1>
+    <p class="subtitle">Primeira parte: obtenção dos dados para o cálculo</p>
+    
+    <div id="banner" class="banner">Carregando índices...</div>
+    
+    <div class="campo">
+      <label>Quantidade de dias-multa</label>
+      <input type="number" id="qtdDias" min="1" step="1" placeholder="Número inteiro positivo">
+      <div id="erroQtd" class="erro"></div>
+    </div>
+    
+    <div class="campo">
+      <label>Valor de cada dia-multa</label>
+      <div class="radio-option">
+        <input type="radio" name="tipo" id="tipoFracao" value="fracao" checked>
+        <label for="tipoFracao">Fração do salário-mínimo (menor que 1)</label>
+      </div>
+      <div class="fracao-input" id="fracaoDiv">
+        <input type="number" id="numerador" placeholder="Numerador" min="0.01" step="0.01">
+        <span>/</span>
+        <input type="number" id="denominador" placeholder="Denominador" min="0.01" step="0.01">
+      </div>
+      <div id="erroFracao" class="erro"></div>
+      
+      <div class="radio-option" style="margin-top:10px;">
+        <input type="radio" name="tipo" id="tipoMultiplo" value="multiplo">
+        <label for="tipoMultiplo">Múltiplo do salário-mínimo (maior ou igual a 1)</label>
+      </div>
+      <div id="multiploDiv" style="display:none; margin-top:10px;">
+        <input type="number" id="multiplo" placeholder="Ex: 1, 1.5, 2, 3" min="1" step="0.01" style="width:150px;">
+      </div>
+      <div id="erroMultiplo" class="erro"></div>
+    </div>
+    
+    <div class="campo">
+      <label>Data do crime</label>
+      <input type="date" id="dataCrime">
+      <div id="erroCrime" class="erro"></div>
+      <div id="infoSalario" class="info"></div>
+    </div>
+    
+    <div class="campo">
+      <label>Data do cálculo</label>
+      <input type="date" id="dataCalculo">
+      <div id="erroCalculo" class="erro"></div>
+    </div>
+    
+    <div class="campo">
+      <label>Data de vencimento do prazo para pagamento voluntário <span class="campo-opcional">(opcional)</span></label>
+      <input type="date" id="dataVencimento">
+      <div id="erroVencimento" class="erro"></div>
+      <div class="info" style="display:block; margin-top:8px;">
+        Se deixado em branco, será considerado que não houve vencimento e não incidirão juros de mora.
+      </div>
+    </div>
+    
+    <div id="resumo" class="resumo">
+      <h3>Resumo dos dados informados</h3>
+      <div id="resumoTexto"></div>
+    </div>
+    
+    <div class="button-group">
+      <button id="btnLimpar" class="secondary">Limpar formulário</button>
+      <button id="btnCalc" disabled>Realizar cálculo da multa</button>
+    </div>
+    
+    <div id="resultado" class="resultado">
+      <h2 style="text-align:center; color:#333; margin-bottom:20px;">Resultado do Cálculo</h2>
+      <div id="avisoLimite"></div>
+      <div id="cardsResultado" class="cards-container"></div>
+      
+      <div id="certidaoToggle" class="certidao-toggle" style="display:none;">
+        <label>
+          <input type="checkbox" id="checkCertidao">
+          <span>📄 Gerar certidão oficial para impressão</span>
+        </label>
+      </div>
+      
+      <div id="certidaoForm" class="certidao-form">
+        <h3>Dados para emissão da certidão</h3>
+        
+        <div class="campo">
+          <label>Órgão judiciário</label>
+          <input type="text" id="orgaoJudiciario" placeholder="Ex: 2ª Vara Criminal da Comarca de Teresina">
+          <div id="erroOrgao" class="erro"></div>
+        </div>
+        
+        <div class="campo">
+          <label>Número do processo</label>
+          <input type="text" id="numeroProcesso" placeholder="Ex: 0000000-00.0000.0.00.0000">
+          <div id="erroProcesso" class="erro"></div>
+        </div>
+        
+        <div class="campo">
+          <label>Nome do apenado</label>
+          <input type="text" id="nomeApenado" placeholder="Nome completo">
+          <div id="erroApenado" class="erro"></div>
+        </div>
+        
+        <div class="campo">
+          <label>Servidor responsável pelo cálculo</label>
+          <input type="text" id="nomeServidor" placeholder="Nome completo do servidor">
+          <div id="erroServidor" class="erro"></div>
+        </div>
+        
+        <div class="campo">
+          <label>Cargo do servidor</label>
+          <input type="text" id="cargoServidor" placeholder="Ex: Analista Judiciário">
+          <div id="erroCargo" class="erro"></div>
+        </div>
+        
+        <div class="campo">
+          <label>Data da certidão</label>
+          <input type="date" id="dataCertidao">
+          <div id="erroDataCertidao" class="erro"></div>
+        </div>
+        
+        <button id="btnGerarCertidao" disabled>Visualizar e Imprimir Certidão</button>
+      </div>
+    </div>
+  </div>
+  
+  <div id="certidaoPreview" class="certidao-preview">
+    <div class="certidao-preview-controls">
+      <button onclick="window.print()">🖨️ Imprimir / Salvar PDF</button>
+      <button class="secondary" id="btnFecharCertidao">✕ Fechar</button>
+    </div>
+    <div class="certidao-content" id="certidaoContent"></div>
+  </div>
+
+  <script>
+    // Constantes
+    const DATA_MINIMA_REAL = '1994-07-01'; // Início do Plano Real
+    
+    // Formatadores
+    const fmt = new Intl.NumberFormat('pt-BR', {style: 'currency', currency: 'BRL', minimumFractionDigits: 2, maximumFractionDigits: 2});
+    const fmtPct = new Intl.NumberFormat('pt-BR', {style: 'percent', minimumFractionDigits: 2, maximumFractionDigits: 2});
+    
+    // Dados carregados
+    let tabelaSalarios = null;
+    let ipcaIndices = null;
+    let selicIndices = null;
+    
+    // Elementos do DOM
+    const banner = document.getElementById('banner');
+    const qtdDias = document.getElementById('qtdDias');
+    const erroQtd = document.getElementById('erroQtd');
+    const tipoFracao = document.getElementById('tipoFracao');
+    const tipoMultiplo = document.getElementById('tipoMultiplo');
+    const fracaoDiv = document.getElementById('fracaoDiv');
+    const multiploDiv = document.getElementById('multiploDiv');
+    const numerador = document.getElementById('numerador');
+    const denominador = document.getElementById('denominador');
+    const multiplo = document.getElementById('multiplo');
+    const erroFracao = document.getElementById('erroFracao');
+    const erroMultiplo = document.getElementById('erroMultiplo');
+    const dataCrime = document.getElementById('dataCrime');
+    const erroCrime = document.getElementById('erroCrime');
+    const infoSalario = document.getElementById('infoSalario');
+    const dataCalculo = document.getElementById('dataCalculo');
+    const erroCalculo = document.getElementById('erroCalculo');
+    const dataVencimento = document.getElementById('dataVencimento');
+    const erroVencimento = document.getElementById('erroVencimento');
+    const resumo = document.getElementById('resumo');
+    const resumoTexto = document.getElementById('resumoTexto');
+    const btnCalc = document.getElementById('btnCalc');
+    const btnLimpar = document.getElementById('btnLimpar');
+    const resultado = document.getElementById('resultado');
+    const avisoLimite = document.getElementById('avisoLimite');
+    const cardsResultado = document.getElementById('cardsResultado');
+    const certidaoToggle = document.getElementById('certidaoToggle');
+    const checkCertidao = document.getElementById('checkCertidao');
+    const certidaoForm = document.getElementById('certidaoForm');
+    const orgaoJudiciario = document.getElementById('orgaoJudiciario');
+    const numeroProcesso = document.getElementById('numeroProcesso');
+    const nomeApenado = document.getElementById('nomeApenado');
+    const nomeServidor = document.getElementById('nomeServidor');
+    const cargoServidor = document.getElementById('cargoServidor');
+    const dataCertidao = document.getElementById('dataCertidao');
+    const erroOrgao = document.getElementById('erroOrgao');
+    const erroProcesso = document.getElementById('erroProcesso');
+    const erroApenado = document.getElementById('erroApenado');
+    const erroServidor = document.getElementById('erroServidor');
+    const erroCargo = document.getElementById('erroCargo');
+    const erroDataCertidao = document.getElementById('erroDataCertidao');
+    const btnGerarCertidao = document.getElementById('btnGerarCertidao');
+    const certidaoPreview = document.getElementById('certidaoPreview');
+    const certidaoContent = document.getElementById('certidaoContent');
+    const btnFecharCertidao = document.getElementById('btnFecharCertidao');
+    
+    // Dados do cálculo (salvos para geração da certidão)
+    let dadosCalculo = null;
+    
+    // Funções auxiliares
+    function getHoje() {
+      const h = new Date();
+      return h.getFullYear() + '-' + String(h.getMonth()+1).padStart(2,'0') + '-' + String(h.getDate()).padStart(2,'0');
+    }
+    
+    function formatarData(iso) {
+      if (!iso) return '';
+      const [a, m, d] = iso.split('-');
+      return `${d}/${m}/${a}`;
+    }
+
+    function formatarMesAno(iso) {
+      if (!iso) return '';
+      const [a, m] = iso.split('-');
+      return `${m}/${a}`;
+    }
+    
+    function getSalario(data) {
+      if (!tabelaSalarios || !data) return null;
+      return tabelaSalarios[data.slice(0,7)];
+    }
+    
+    function getIndiceIpca(data) {
+      if (!ipcaIndices || !data) return null;
+      return ipcaIndices[data.slice(0,7)];
+    }
+    
+    function getFatorSelic(data) {
+      if (!selicIndices || !data) return null;
+      return selicIndices[data.slice(0,7)];
+    }
+    
+    function obterMesesEntre(dataIni, dataFim) {
+      const [aI, mI] = dataIni.slice(0,7).split('-').map(Number);
+      const [aF, mF] = dataFim.slice(0,7).split('-').map(Number);
+      const meses = [];
+      let a = aI, m = mI;
+      while (a < aF || (a === aF && m <= mF)) {
+        meses.push(`${a}-${String(m).padStart(2,'0')}`);
+        m++;
+        if (m > 12) { m = 1; a++; }
+      }
+      return meses;
+    }
+    
+    function subtrairUmMes(mesAno) {
+      let [ano, mes] = mesAno.split('-').map(Number);
+      mes--;
+      if (mes < 1) { mes = 12; ano--; }
+      return `${ano}-${String(mes).padStart(2, '0')}`;
+    }
+    
+    function valorPorExtenso(valor) {
+      const unidades = ['', 'um', 'dois', 'três', 'quatro', 'cinco', 'seis', 'sete', 'oito', 'nove'];
+      const dez = ['dez', 'onze', 'doze', 'treze', 'quatorze', 'quinze', 'dezesseis', 'dezessete', 'dezoito', 'dezenove'];
+      const dezenas = ['', '', 'vinte', 'trinta', 'quarenta', 'cinquenta', 'sessenta', 'setenta', 'oitenta', 'noventa'];
+      const centenas = ['', 'cento', 'duzentos', 'trezentos', 'quatrocentos', 'quinhentos', 'seiscentos', 'setecentos', 'oitocentos', 'novecentos'];
+      
+      function converterGrupo(n) {
+        if (n === 0) return '';
+        if (n === 100) return 'cem';
+        
+        let resultado = '';
+        const c = Math.floor(n / 100);
+        const d = Math.floor((n % 100) / 10);
+        const u = n % 10;
+        
+        if (c > 0) resultado += centenas[c];
+        
+        if (d === 1) {
+          if (resultado) resultado += ' e ';
+          resultado += dez[u];
+          return resultado;
+        }
+        
+        if (d > 0) {
+          if (resultado) resultado += ' e ';
+          resultado += dezenas[d];
+        }
+        
+        if (u > 0) {
+          if (resultado) resultado += ' e ';
+          resultado += unidades[u];
+        }
+        
+        return resultado;
+      }
+      
+      const partes = valor.toFixed(2).split('.');
+      const reais = parseInt(partes[0]);
+      const centavos = parseInt(partes[1]);
+      
+      let extenso = '';
+      
+      if (reais === 0) {
+        extenso = 'zero real';
+      } else {
+        const bilhao = Math.floor(reais / 1000000000);
+        const milhao = Math.floor((reais % 1000000000) / 1000000);
+        const milhar = Math.floor((reais % 1000000) / 1000);
+        const resto = reais % 1000;
+        
+        if (bilhao > 0) {
+          extenso += converterGrupo(bilhao) + (bilhao === 1 ? ' bilhão' : ' bilhões');
+        }
+        
+        if (milhao > 0) {
+          if (extenso) extenso += (milhar === 0 && resto === 0 ? ' e ' : ', ');
+          extenso += converterGrupo(milhao) + (milhao === 1 ? ' milhão' : ' milhões');
+        }
+        
+        if (milhar > 0) {
+          if (extenso) extenso += (resto === 0 ? ' e ' : ', ');
+          extenso += converterGrupo(milhar) + ' mil';
+        }
+        
+        if (resto > 0) {
+          if (extenso) extenso += ' e ';
+          extenso += converterGrupo(resto);
+        }
+        
+        extenso += (reais === 1 ? ' real' : ' reais');
+      }
+      
+      if (centavos > 0) {
+        extenso += ' e ' + converterGrupo(centavos) + (centavos === 1 ? ' centavo' : ' centavos');
+      }
+      
+      return extenso;
+    }
+    
+    // Carregamento de dados
+    async function carregarJSON(url, nome) {
+      const resp = await fetch(url, { cache: 'no-store' });
+      if (!resp.ok) throw new Error(`${nome}: HTTP ${resp.status}`);
+      const text = await resp.text();
+      try {
+        return JSON.parse(text);
+      } catch (e) {
+        throw new Error(`${nome}: arquivo não é JSON válido`);
+      }
+    }
+    
+    async function carregarTodasTabelas() {
+      tabelaSalarios = await carregarJSON('./salarios.json', 'Salários');
+      ipcaIndices = await carregarJSON('./ipcae.json', 'IPCA-E');
+      selicIndices = await carregarJSON('./selic.json', 'SELIC');
+    }
+    
+    function atualizarBannerIndices() {
+      if (!ipcaIndices || !selicIndices) return;
+      const chavesIpca = Object.keys(ipcaIndices);
+      const chavesSelic = Object.keys(selicIndices);
+      const ultIpca = chavesIpca[chavesIpca.length - 1];
+      const ultSelic = chavesSelic[chavesSelic.length - 1];
+      const [anoI, mesI] = ultIpca.split('-');
+      const [anoS, mesS] = ultSelic.split('-');
+      banner.classList.remove('erro');
+      banner.innerHTML = `Correção monetária pelo IPCA-E (atualizado até ${mesI}/${anoI}), enquanto não vencida a multa; a partir do vencimento, juros de mora e correção monetária pela SELIC (atualizada até ${mesS}/${anoS}).`;
+    }
+    
+    function mostrarErroBanner(mensagem) {
+      banner.classList.add('erro');
+      banner.innerHTML = `<strong>⚠️ Erro ao carregar dados:</strong> ${mensagem}<div class="banner-actions"><button onclick="window.location.reload()">Tentar novamente</button></div>`;
+    }
+    
+    // Event listeners para alternância de tipo
+    tipoFracao.addEventListener('change', () => {
+      fracaoDiv.style.display = 'flex';
+      multiploDiv.style.display = 'none';
+      multiplo.value = '';
+      erroMultiplo.classList.remove('ativo');
+      validar();
+    });
+    
+    tipoMultiplo.addEventListener('change', () => {
+      fracaoDiv.style.display = 'none';
+      multiploDiv.style.display = 'block';
+      numerador.value = '';
+      denominador.value = '';
+      erroFracao.classList.remove('ativo');
+      validar();
+    });
+    
+    // Validações
+    function validarQtd() {
+      erroQtd.classList.remove('ativo');
+      if (!qtdDias.value) return false;
+      const v = parseInt(qtdDias.value);
+      if (isNaN(v) || v < 1) {
+        erroQtd.textContent = 'A quantidade deve ser um número inteiro positivo.';
+        erroQtd.classList.add('ativo');
+        return false;
+      }
+      return true;
+    }
+    
+    function validarFracao() {
+      erroFracao.classList.remove('ativo');
+      if (!tipoFracao.checked) return true;
+      if (!numerador.value || !denominador.value) return false;
+      const n = parseFloat(numerador.value);
+      const d = parseFloat(denominador.value);
+      if (isNaN(n) || isNaN(d) || n <= 0 || d <= 0) {
+        erroFracao.textContent = 'Numerador e denominador devem ser números positivos.';
+        erroFracao.classList.add('ativo');
+        return false;
+      }
+      if (n/d >= 1) {
+        erroFracao.textContent = 'A fração resulta em valor ≥ 1. Use o campo "Múltiplo" abaixo.';
+        erroFracao.classList.add('ativo');
+        return false;
+      }
+      if (n/d < 1/30) {
+        erroFracao.textContent = 'Atenção: o limite legal mínimo é 1/30 do salário-mínimo (art. 49, §1º, CP).';
+        erroFracao.classList.add('ativo');
+        // Permite continuar, mas com aviso
+      }
+      return true;
+    }
+    
+    function validarMultiplo() {
+      erroMultiplo.classList.remove('ativo');
+      if (!tipoMultiplo.checked) return true;
+      if (!multiplo.value) return false;
+      const v = parseFloat(multiplo.value);
+      if (isNaN(v) || v <= 0) {
+        erroMultiplo.textContent = 'O múltiplo deve ser um número positivo.';
+        erroMultiplo.classList.add('ativo');
+        return false;
+      }
+      if (v < 1) {
+        erroMultiplo.textContent = 'Valor menor que 1. Use o campo "Fração" acima.';
+        erroMultiplo.classList.add('ativo');
+        return false;
+      }
+      if (v > 5) {
+        erroMultiplo.textContent = 'Atenção: o limite legal máximo é 5 salários-mínimos (art. 49, §1º, CP).';
+        erroMultiplo.classList.add('ativo');
+        // Permite continuar, mas com aviso
+      }
+      return true;
+    }
+    
+    function validarCrime() {
+      erroCrime.classList.remove('ativo');
+      infoSalario.classList.remove('ativo');
+      if (!dataCrime.value) return false;
+      
+      const hoje = getHoje();
+      
+      if (dataCrime.value < DATA_MINIMA_REAL) {
+        erroCrime.textContent = 'Data anterior a julho/1994 não é suportada (início do Plano Real).';
+        erroCrime.classList.add('ativo');
+        return false;
+      }
+      
+      if (dataCrime.value > hoje) {
+        erroCrime.textContent = 'A data do crime não pode ser futura.';
+        erroCrime.classList.add('ativo');
+        return false;
+      }
+      
+      const sal = getSalario(dataCrime.value);
+      if (!sal) {
+        erroCrime.textContent = 'Salário-mínimo não disponível para esta data. Verifique os dados carregados.';
+        erroCrime.classList.add('ativo');
+        return false;
+      }
+      
+      infoSalario.textContent = `Salário-mínimo vigente em ${formatarMesAno(dataCrime.value)}: ${fmt.format(sal)}`;
+      infoSalario.classList.add('ativo');
+      return true;
+    }
+    
+    function validarCalculo() {
+      erroCalculo.classList.remove('ativo');
+      if (!dataCalculo.value) return false;
+      
+      const hoje = getHoje();
+      
+      if (dataCalculo.value > hoje) {
+        erroCalculo.textContent = 'A data do cálculo não pode ser futura.';
+        erroCalculo.classList.add('ativo');
+        return false;
+      }
+      
+      if (dataCrime.value && dataCalculo.value < dataCrime.value) {
+        erroCalculo.textContent = 'A data do cálculo deve ser posterior à data do crime.';
+        erroCalculo.classList.add('ativo');
+        return false;
+      }
+      
+      return true;
+    }
+    
+    function validarVencimento() {
+      erroVencimento.classList.remove('ativo');
+      if (!dataVencimento.value) return true;
+      
+      const hoje = getHoje();
+      
+      if (dataVencimento.value > hoje) {
+        erroVencimento.textContent = 'A data de vencimento não pode ser futura.';
+        erroVencimento.classList.add('ativo');
+        return false;
+      }
+      
+      if (dataCrime.value && dataVencimento.value <= dataCrime.value) {
+        erroVencimento.textContent = 'O vencimento deve ser posterior à data do crime.';
+        erroVencimento.classList.add('ativo');
+        return false;
+      }
+      
+      if (dataCalculo.value && dataVencimento.value > dataCalculo.value) {
+        erroVencimento.textContent = 'O vencimento não pode ser posterior à data do cálculo.';
+        erroVencimento.classList.add('ativo');
+        return false;
+      }
+      
+      return true;
+    }
+    
+    function validar() {
+      const ok1 = validarQtd();
+      const ok2 = tipoFracao.checked ? validarFracao() : validarMultiplo();
+      const ok3 = validarCrime();
+      const ok4 = validarCalculo();
+      const ok5 = validarVencimento();
+      
+      if (ok1 && ok2 && ok3 && ok4 && ok5) {
+        mostrarResumo();
+        btnCalc.disabled = false;
+      } else {
+        resumo.classList.remove('ativo');
+        btnCalc.disabled = true;
+      }
+    }
+    
+    function mostrarResumo() {
+      const qtd = parseInt(qtdDias.value);
+      const sal = getSalario(dataCrime.value);
+      let vDia = 0, desc = '';
+      
+      if (tipoFracao.checked) {
+        const n = parseFloat(numerador.value);
+        const d = parseFloat(denominador.value);
+        vDia = sal * (n/d);
+        desc = `${n}/${d} do salário-mínimo`;
+      } else {
+        const m = parseFloat(multiplo.value);
+        vDia = sal * m;
+        desc = `${m.toLocaleString('pt-BR', {minimumFractionDigits:1, maximumFractionDigits:2})}x o salário-mínimo`;
+      }
+      
+      const vNom = qtd * vDia;
+      
+      let html = `<div class="resumo-item"><strong>Quantidade:</strong> ${qtd.toLocaleString('pt-BR')} dias-multa</div>`;
+      html += `<div class="resumo-item"><strong>Valor de cada dia-multa:</strong> ${fmt.format(vDia)} (${desc})</div>`;
+      html += `<div class="resumo-item"><strong>Data do crime:</strong> ${formatarData(dataCrime.value)}</div>`;
+      html += `<div class="resumo-item"><strong>Data do cálculo:</strong> ${formatarData(dataCalculo.value)}</div>`;
+      
+      if (dataVencimento.value) {
+        html += `<div class="resumo-item"><strong>Data de vencimento:</strong> ${formatarData(dataVencimento.value)}</div>`;
+      } else {
+        html += `<div class="resumo-item"><strong>Vencimento:</strong> Não houve vencimento (sem juros de mora)</div>`;
+      }
+      
+      html += `<div class="resumo-item" style="margin-top:15px; font-size:16px;"><strong>Valor nominal da multa:</strong> ${fmt.format(vNom)}</div>`;
+      
+      resumoTexto.innerHTML = html;
+      resumo.classList.add('ativo');
+    }
+    
+    // Cálculo de IPCA-E
+    function calcularIPCA(vInicial, dIni, dFim) {
+      // Correção monetária: sempre até o mês ANTERIOR à data final
+      // Fundamentação: STJ - REsp 1.260.336/RS
+      const mesAnterior = subtrairUmMes(dFim.slice(0, 7));
+      
+      // Verificar limite de dados disponíveis
+      const chavesIpca = Object.keys(ipcaIndices);
+      const ultimaChaveIpca = chavesIpca[chavesIpca.length - 1];
+      
+      let dataFimAjustada = mesAnterior;
+      let avisoLimite = '';
+      
+      if (mesAnterior > ultimaChaveIpca) {
+        dataFimAjustada = ultimaChaveIpca;
+        const [a, m] = ultimaChaveIpca.split('-');
+        avisoLimite = `IPCA-E calculado até ${m}/${a} (último índice disponível)`;
+      }
+      
+      const mesInicio = dIni.slice(0, 7);
+      const iIni = getIndiceIpca(mesInicio + '-01');
+      const iFim = getIndiceIpca(dataFimAjustada + '-01');
+      
+      if (typeof iIni !== 'number' || typeof iFim !== 'number') {
+        return null;
+      }
+      
+      const fator = iFim / iIni;
+      const vCorr = vInicial * fator;
+      
+      return {
+        valorCorrigido: vCorr,
+        valorCorrecao: vCorr - vInicial,
+        percentual: fator - 1,
+        fator: fator,
+        indiceInicio: iIni,
+        indiceFim: iFim,
+        mesInicio: mesInicio,
+        mesFim: dataFimAjustada,
+        avisoLimite: avisoLimite
+      };
+    }
+    
+    // Cálculo de SELIC
+    function calcularSELIC(vInicial, dIni, dFim) {
+      const chavesSelic = Object.keys(selicIndices);
+      const ultimaChaveSelic = chavesSelic[chavesSelic.length - 1];
+      
+      const mesFim = dFim.slice(0, 7);
+      let dataFimAjustada = mesFim;
+      let avisoLimite = '';
+      
+      if (mesFim > ultimaChaveSelic) {
+        dataFimAjustada = ultimaChaveSelic;
+        const [ano, mes] = ultimaChaveSelic.split('-');
+        avisoLimite = `SELIC calculada até ${mes}/${ano} (último índice disponível)`;
+      }
+      
+      const meses = obterMesesEntre(dIni, dataFimAjustada + '-01');
+      let fatorAcum = 1;
+      
+      for (const m of meses) {
+        const f = getFatorSelic(m + '-01');
+        if (typeof f !== 'number') {
+          return null;
+        }
+        fatorAcum *= f;
+      }
+      
+      const vCorr = vInicial * fatorAcum;
+      
+      return {
+        valorCorrigido: vCorr,
+        valorCorrecao: vCorr - vInicial,
+        percentual: fatorAcum - 1,
+        fator: fatorAcum,
+        qtdMeses: meses.length,
+        mesInicio: dIni.slice(0, 7),
+        mesFim: dataFimAjustada,
+        avisoLimite: avisoLimite
+      };
+    }
+    
+    // Botão de calcular
+    btnCalc.addEventListener('click', () => {
+      const qtd = parseInt(qtdDias.value);
+      const sal = getSalario(dataCrime.value);
+      
+      let vDia = 0;
+      if (tipoFracao.checked) {
+        vDia = sal * (parseFloat(numerador.value) / parseFloat(denominador.value));
+      } else {
+        vDia = sal * parseFloat(multiplo.value);
+      }
+      
+      const vNom = qtd * vDia;
+      
+      let html = `<div class="card"><div class="card-title">Valor Nominal</div><div class="card-valor">${fmt.format(vNom)}</div><div class="card-detalhe">${qtd.toLocaleString('pt-BR')} dias-multa × ${fmt.format(vDia)}</div><div class="card-detalhe">Base: ${formatarMesAno(dataCrime.value)}</div></div>`;
+      
+      let resIpca = null, resSelic = null, vFinal = vNom;
+      let avisos = [];
+      
+      if (dataVencimento.value) {
+        // IPCA-E: crime até mês anterior ao vencimento
+        resIpca = calcularIPCA(vNom, dataCrime.value, dataVencimento.value);
+        if (!resIpca) { 
+          alert('Erro ao calcular IPCA-E. Verifique se os índices estão disponíveis para o período.'); 
+          return; 
+        }
+        if (resIpca.avisoLimite) avisos.push(resIpca.avisoLimite);
+        
+        html += `<div class="card"><div class="card-title">Correção IPCA-E</div><div class="card-valor">${fmt.format(resIpca.valorCorrecao)}</div><div class="card-detalhe">Período: ${formatarMesAno(resIpca.mesInicio)} a ${formatarMesAno(resIpca.mesFim)}</div><div class="card-detalhe">Índice inicial: ${resIpca.indiceInicio.toFixed(6)}</div><div class="card-detalhe">Índice final: ${resIpca.indiceFim.toFixed(6)}</div><div class="card-percentual">+${fmtPct.format(resIpca.percentual)}</div></div>`;
+        
+        // SELIC: do vencimento em diante
+        resSelic = calcularSELIC(resIpca.valorCorrigido, dataVencimento.value, dataCalculo.value);
+        if (!resSelic) { 
+          alert('Erro ao calcular SELIC. Verifique se os índices estão disponíveis para o período.'); 
+          return; 
+        }
+        if (resSelic.avisoLimite) avisos.push(resSelic.avisoLimite);
+        
+        html += `<div class="card"><div class="card-title">Correção e Juros (SELIC)</div><div class="card-valor">${fmt.format(resSelic.valorCorrecao)}</div><div class="card-detalhe">Período: ${formatarMesAno(resSelic.mesInicio)} a ${formatarMesAno(resSelic.mesFim)}</div><div class="card-detalhe">Fator acumulado: ${resSelic.fator.toFixed(8)}</div><div class="card-detalhe">${resSelic.qtdMeses} ${resSelic.qtdMeses === 1 ? 'mês' : 'meses'} aplicados</div><div class="card-percentual">+${fmtPct.format(resSelic.percentual)}</div></div>`;
+        
+        vFinal = resSelic.valorCorrigido;
+      } else {
+        // Sem vencimento: IPCA-E do crime até mês anterior ao cálculo
+        resIpca = calcularIPCA(vNom, dataCrime.value, dataCalculo.value);
+        if (!resIpca) { 
+          alert('Erro ao calcular IPCA-E. Verifique se os índices estão disponíveis para o período.'); 
+          return; 
+        }
+        if (resIpca.avisoLimite) avisos.push(resIpca.avisoLimite);
+        
+        html += `<div class="card"><div class="card-title">Correção IPCA-E</div><div class="card-valor">${fmt.format(resIpca.valorCorrecao)}</div><div class="card-detalhe">Período: ${formatarMesAno(resIpca.mesInicio)} a ${formatarMesAno(resIpca.mesFim)}</div><div class="card-detalhe">Índice inicial: ${resIpca.indiceInicio.toFixed(6)}</div><div class="card-detalhe">Índice final: ${resIpca.indiceFim.toFixed(6)}</div><div class="card-percentual">+${fmtPct.format(resIpca.percentual)}</div></div>`;
+        
+        html += `<div class="card"><div class="card-title">Correção e Juros (SELIC)</div><div class="card-valor">R$ 0,00</div><div class="card-detalhe">Não aplicável</div><div class="card-detalhe">(Multa não vencida)</div></div>`;
+        
+        vFinal = resIpca.valorCorrigido;
+      }
+      
+      html += `<div class="card card-total"><div class="card-title">Valor Total da Multa</div><div class="card-valor">${fmt.format(vFinal)}</div></div>`;
+      
+      cardsResultado.innerHTML = html;
+      
+      if (avisos.length > 0) {
+        avisoLimite.innerHTML = `<div class="aviso-limite"><strong>⚠️ ATENÇÃO</strong>${avisos.map(a => `<br>• ${a}`).join('')}</div>`;
+      } else {
+        avisoLimite.innerHTML = '';
+      }
+      
+      resultado.classList.add('ativo');
+      
+      // Salvar dados do cálculo para certidão
+      dadosCalculo = {
+        qtdDias: qtd,
+        valorDia: vDia,
+        valorNominal: vNom,
+        valorFinal: vFinal,
+        dataCrime: dataCrime.value,
+        dataCalculo: dataCalculo.value,
+        dataVencimento: dataVencimento.value || null,
+        resIpca: resIpca,
+        resSelic: resSelic
+      };
+      
+      // Mostrar opção de certidão
+      certidaoToggle.style.display = 'block';
+      
+      resultado.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+    
+    // Toggle certidão
+    checkCertidao.addEventListener('change', () => {
+      if (checkCertidao.checked) {
+        certidaoForm.classList.add('ativo');
+        dataCertidao.value = getHoje();
+        validarCertidao();
+      } else {
+        certidaoForm.classList.remove('ativo');
+      }
+    });
+    
+    // Validações da certidão
+    function validarCertidao() {
+      let valido = true;
+      
+      erroOrgao.classList.remove('ativo');
+      if (!orgaoJudiciario.value.trim()) {
+        valido = false;
+      }
+      
+      erroProcesso.classList.remove('ativo');
+      if (!numeroProcesso.value.trim()) {
+        valido = false;
+      }
+      
+      erroApenado.classList.remove('ativo');
+      if (!nomeApenado.value.trim()) {
+        valido = false;
+      }
+      
+      erroServidor.classList.remove('ativo');
+      if (!nomeServidor.value.trim()) {
+        valido = false;
+      }
+      
+      erroCargo.classList.remove('ativo');
+      if (!cargoServidor.value.trim()) {
+        valido = false;
+      }
+      
+      erroDataCertidao.classList.remove('ativo');
+      if (!dataCertidao.value) {
+        valido = false;
+      } else if (dataCertidao.value > getHoje()) {
+        erroDataCertidao.textContent = 'A data da certidão não pode ser futura.';
+        erroDataCertidao.classList.add('ativo');
+        valido = false;
+      }
+      
+      btnGerarCertidao.disabled = !valido;
+    }
+    
+    orgaoJudiciario.addEventListener('input', validarCertidao);
+    numeroProcesso.addEventListener('input', validarCertidao);
+    nomeApenado.addEventListener('input', validarCertidao);
+    nomeServidor.addEventListener('input', validarCertidao);
+    cargoServidor.addEventListener('input', validarCertidao);
+    dataCertidao.addEventListener('change', validarCertidao);
+    
+    // Gerar certidão
+    btnGerarCertidao.addEventListener('click', () => {
+      if (!dadosCalculo) return;
+      
+      const extenso = valorPorExtenso(dadosCalculo.valorFinal);
+      
+      let html = `
+        <div class="certidao-header">
+          <h1>${orgaoJudiciario.value}</h1>
+          <h2>CERTIDÃO DE APURAÇÃO DE MULTA CRIMINAL</h2>
+          <div class="numero-processo">Processo nº ${numeroProcesso.value}</div>
+        </div>
+        
+        <div class="certidao-body">
+          <p>Certifico que, nos autos do processo em epígrafe, procedi à apuração do valor da pena de multa imposta a <strong>${nomeApenado.value}</strong>, considerando os critérios legais de correção monetária e juros de mora.</p>
+          
+          <p class="sem-indent">DISCRIMINAÇÃO DO CÁLCULO:</p>
+          
+          <table class="certidao-table">
+            <thead>
+              <tr>
+                <th>Descrição</th>
+                <th style="width: 150px;">Valor (R$)</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Valor nominal da multa<br><small>${dadosCalculo.qtdDias} dias-multa × ${fmt.format(dadosCalculo.valorDia)}</small></td>
+                <td class="valor">${fmt.format(dadosCalculo.valorNominal)}</td>
+              </tr>
+              <tr>
+                <td>Correção monetária (IPCA-E)<br><small>Período: ${formatarMesAno(dadosCalculo.resIpca.mesInicio)} a ${formatarMesAno(dadosCalculo.resIpca.mesFim)}</small></td>
+                <td class="valor">${fmt.format(dadosCalculo.resIpca.valorCorrecao)}</td>
+              </tr>
+              <tr>
+                <td>Correção e juros (SELIC)${dadosCalculo.resSelic ? '<br><small>Período: ' + formatarMesAno(dadosCalculo.resSelic.mesInicio) + ' a ' + formatarMesAno(dadosCalculo.resSelic.mesFim) + '</small>' : '<br><small>Não aplicável (multa não vencida)</small>'}</td>
+                <td class="valor">${dadosCalculo.resSelic ? fmt.format(dadosCalculo.resSelic.valorCorrecao) : 'R$ 0,00'}</td>
+              </tr>
+              <tr class="total">
+                <td>VALOR TOTAL ATUALIZADO</td>
+                <td class="valor">${fmt.format(dadosCalculo.valorFinal)}</td>
+              </tr>
+            </tbody>
+          </table>
+          
+          <div class="certidao-extenso">
+            <strong>Valor total por extenso:</strong>
+            ${extenso.charAt(0).toUpperCase() + extenso.slice(1)}.
+          </div>
+          
+          <p><strong>Critérios:</strong> Correção monetária calculada com base no IPCA-E da data do crime até a data do vencimento do prazo para pagamento voluntário. A partir dessa data, incidência apenas da SELIC como juros de mora e correção monetária.</p>
+          
+          <p><strong>Data do crime:</strong> ${formatarData(dadosCalculo.dataCrime)}</p>
+          <p><strong>Data do cálculo:</strong> ${formatarData(dadosCalculo.dataCalculo)}</p>
+          ${dadosCalculo.dataVencimento ? '<p><strong>Vencimento do prazo para pagamento voluntário:</strong> ' + formatarData(dadosCalculo.dataVencimento) + '</p>' : '<p><strong>Vencimento:</strong> Não houve prazo de vencimento estabelecido.</p>'}
+        </div>
+        
+        
+          <div class="assinatura" style="text-align: center;">
+            <div class="assinatura-linha"></div>
+            <div class="assinatura-nome"><strong>${nomeServidor.value}</strong></div>
+            <div><strong>${cargoServidor.value}</strong></div>
+          </div>
+        </div>
+      `;
+      
+      certidaoContent.innerHTML = html;
+      certidaoPreview.classList.add('ativo');
+      document.body.style.overflow = 'hidden';
+    });
+    
+    // Fechar certidão
+    btnFecharCertidao.addEventListener('click', () => {
+      certidaoPreview.classList.remove('ativo');
+      document.body.style.overflow = 'auto';
+    });
+    
+    // Botão limpar
+    btnLimpar.addEventListener('click', () => {
+      if (confirm('Deseja realmente limpar todos os campos e o resultado?')) {
+        qtdDias.value = '';
+        numerador.value = '';
+        denominador.value = '';
+        multiplo.value = '';
+        dataCrime.value = '';
+        dataCalculo.value = getHoje();
+        dataVencimento.value = '';
+        
+        tipoFracao.checked = true;
+        fracaoDiv.style.display = 'flex';
+        multiploDiv.style.display = 'none';
+        
+        erroQtd.classList.remove('ativo');
+        erroFracao.classList.remove('ativo');
+        erroMultiplo.classList.remove('ativo');
+        erroCrime.classList.remove('ativo');
+        erroCalculo.classList.remove('ativo');
+        erroVencimento.classList.remove('ativo');
+        infoSalario.classList.remove('ativo');
+        
+        resumo.classList.remove('ativo');
+        resultado.classList.remove('ativo');
+        btnCalc.disabled = true;
+        
+        // Limpar certidão
+        certidaoToggle.style.display = 'none';
+        checkCertidao.checked = false;
+        certidaoForm.classList.remove('ativo');
+        orgaoJudiciario.value = '';
+        numeroProcesso.value = '';
+        nomeApenado.value = '';
+        nomeServidor.value = '';
+        cargoServidor.value = '';
+        dataCertidao.value = '';
+        dadosCalculo = null;
+        
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
+    });
+    
+    // Event listeners de validação
+    qtdDias.addEventListener('input', validar);
+    numerador.addEventListener('input', validar);
+    denominador.addEventListener('input', validar);
+    multiplo.addEventListener('input', validar);
+    dataCrime.addEventListener('change', validar);
+    dataCalculo.addEventListener('change', validar);
+    dataVencimento.addEventListener('change', validar);
+    
+    // Inicialização
+    window.addEventListener('DOMContentLoaded', async () => {
+      // Preencher data do cálculo com hoje
+      dataCalculo.value = getHoje();
+      
+      try {
+        await carregarTodasTabelas();
+        atualizarBannerIndices();
+      } catch (e) {
+        mostrarErroBanner(e.message);
+        console.error('Erro ao carregar tabelas:', e);
+      }
+    });
+  </script>
+</body>
+</html>
