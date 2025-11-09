@@ -2,7 +2,7 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
-  <title>Calculadora de Multa Criminal</title>
+  <title>Calculadora de multa criminal</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -107,7 +107,7 @@
   </div>
   
   <div class="container">
-    <h1>Calculadora de Multa Criminal</h1>
+    <h1>Calculadora de multa criminal</h1>
     <p class="subtitle">Primeira parte: obtenção dos dados para o cálculo</p>
     
     <div id="banner" class="banner">Carregando índices...</div>
@@ -174,7 +174,7 @@
     </div>
     
     <div id="resultado" class="resultado">
-      <h2 style="text-align:center; color:#333; margin-bottom:20px;">Resultado do Cálculo</h2>
+      <h2 style="text-align:center; color:#333; margin-bottom:20px;">Resultado do cálculo</h2>
       <div id="avisoLimite"></div>
       <div id="cardsResultado" class="cards-container"></div>
       
@@ -224,7 +224,7 @@
           <div id="erroDataCertidao" class="erro"></div>
         </div>
         
-        <button id="btnGerarCertidao" disabled>Visualizar e Imprimir Certidão</button>
+        <button id="btnGerarCertidao" disabled>Visualizar e imprimir certidão</button>
       </div>
     </div>
   </div>
@@ -936,11 +936,11 @@
                 <td class="valor">${fmt.format(dadosCalculo.valorNominal)}</td>
               </tr>
               <tr>
-                <td>Correção monetária (IPCA-E)<br><small>Período: ${formatarMesAno(dadosCalculo.resIpca.mesInicio)} a ${formatarMesAno(dadosCalculo.resIpca.mesFim)}</small></td>
+                <td>Correção monetária (IPCA-E - STF, RE 870.947 e AP 1030/DF)<br><small>Período: ${formatarMesAno(dadosCalculo.resIpca.mesInicio)} a ${formatarMesAno(dadosCalculo.resIpca.mesFim)}</small></td>
                 <td class="valor">${fmt.format(dadosCalculo.resIpca.valorCorrecao)}</td>
               </tr>
               <tr>
-                <td>Correção e juros (SELIC)${dadosCalculo.resSelic ? '<br><small>Período: ' + formatarMesAno(dadosCalculo.resSelic.mesInicio) + ' a ' + formatarMesAno(dadosCalculo.resSelic.mesFim) + '</small>' : '<br><small>Não aplicável (multa não vencida)</small>'}</td>
+                <td>Correção e juros (SELIC - STF, AP 1030/DF)${dadosCalculo.resSelic ? '<br><small>Período: ' + formatarMesAno(dadosCalculo.resSelic.mesInicio) + ' a ' + formatarMesAno(dadosCalculo.resSelic.mesFim) + '</small>' : '<br><small>Não aplicável (multa não vencida)</small>'}</td>
                 <td class="valor">${dadosCalculo.resSelic ? fmt.format(dadosCalculo.resSelic.valorCorrecao) : 'R$ 0,00'}</td>
               </tr>
               <tr class="total">
@@ -955,7 +955,7 @@
             ${extenso.charAt(0).toUpperCase() + extenso.slice(1)}.
           </div>
           
-          <p><strong>Critérios:</strong> Correção monetária calculada com base no IPCA-E da data do crime até a data do vencimento do prazo para pagamento voluntário. A partir dessa data, incidência apenas da SELIC como juros de mora e correção monetária.</p>
+          <p><strong>Critérios:</strong> Correção monetária calculada com base no IPCA-E da data do crime até a data do vencimento do prazo para pagamento voluntário. A partir dessa data, incidência apenas da SELIC como juros de mora e correção monetária, tudo conforme dispõe o art. 49, § 2º, do Código Penal e decidido pelo Supremo Tribunal Federal (RE 870.947, Rel. Min. Luiz Fux, Pleno, j. 20.09.2017; Ação Penal nº 1.030/DF, Despacho de 16.07.2021, Min. Edson Fachin).</p>
           
           <p><strong>Data do crime:</strong> ${formatarData(dadosCalculo.dataCrime)}</p>
           <p><strong>Data do cálculo:</strong> ${formatarData(dadosCalculo.dataCalculo)}</p>
