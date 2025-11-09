@@ -114,6 +114,38 @@
             -moz-osx-font-smoothing: grayscale;
         }
 
+
+        /* --- Link de Volta ao Sextante --- */
+        .voltar {
+            max-width: 1000px;
+            margin: 0 auto var(--space-24);
+        }
+
+        .voltar a {
+            display: inline-flex;
+            align-items: center;
+            gap: var(--space-8);
+            color: var(--color-primary);
+            text-decoration: none;
+            font-size: var(--font-size-base);
+            font-weight: var(--font-weight-medium);
+            transition: opacity var(--duration-normal);
+            padding: var(--space-8) var(--space-12);
+            border-radius: var(--radius-base);
+        }
+
+        .voltar a:hover {
+            opacity: 0.8;
+            background-color: var(--color-secondary-bg);
+        }
+
+        /* Ajuste para modo escuro */
+        @media (prefers-color-scheme: dark) {
+            .voltar a:hover {
+                background-color: var(--color-surface);
+            }
+        }
+
         .container { max-width: 1000px; margin: 0 auto; }
 
         header { text-align: center; margin-bottom: var(--space-48); }
@@ -687,7 +719,19 @@
         }
     </style>
 </head>
-<body>
+<body>    
+    <!-- LINK DE RETORNO AO SEXTANTE -->
+    <div class="voltar">
+        <a href="index.html">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M19 12H5M12 19l-7-7 7-7"/>
+            </svg>
+            <span>Sextante Judiciário</span>
+        </a>
+    </div>
+
+    <div class="container">
+        <!-- ... conteúdo existente ... -->
     <div class="container">
         <header>
             <h1>
