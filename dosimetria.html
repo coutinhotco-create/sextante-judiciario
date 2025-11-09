@@ -1,0 +1,2768 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dosímetro penal</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            /* Paleta de Cores */
+            --color-white: rgba(255, 255, 255, 1);
+            --color-cream-50: rgba(252, 252, 249, 1);
+            --color-gray-50: #F9FAFB;
+            --color-gray-100: #f7fafc;
+            --color-gray-200: #edf2f7;
+            --color-gray-300: #e2e8f0;
+            --color-gray-400: #cbd5e0;
+            --color-gray-500: #a0aec0;
+            --color-gray-600: #718096;
+            --color-gray-700: #4A5568;
+            --color-slate-900: rgba(19, 52, 59, 1);
+            --color-charcoal-700: #2D3748;
+            --color-charcoal-800: #1A202C;
+            --color-teal-200: #B2F5EA;
+            --color-teal-500: rgba(33, 128, 141, 1);
+            --color-teal-600: rgba(29, 116, 128, 1);
+            --color-teal-700: rgba(26, 104, 115, 1);
+            --color-red-100: #FFF5F5;
+            --color-red-500: #E53E3E;
+            --color-red-600: #C53030;
+            --color-blue-100: #EBF8FF;
+            --color-blue-500: #3182CE;
+            --color-blue-600: #2B6CB0;
+            --color-green-100: #F0FFF4;
+            --color-green-500: #38A169;
+            --color-yellow-500: #D69E2E;
+            
+            /* Modo Claro */
+            --color-background: var(--color-gray-100);
+            --color-surface: var(--color-white);
+            --color-text: var(--color-charcoal-800);
+            --color-text-secondary: var(--color-gray-600);
+            --color-primary: var(--color-teal-600);
+            --color-primary-hover: var(--color-teal-700);
+            --color-border: var(--color-gray-300);
+            --color-input-bg: var(--color-white);
+            --color-focus-ring: rgba(33, 128, 141, 0.2);
+            --color-secondary-bg: var(--color-gray-50);
+            --select-caret: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%232D3748' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+
+            /* Tipografia e Espaçamento (Mais denso) */
+            --font-family-base: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            --font-size-xs: 12px;
+            --font-size-sm: 14px;
+            --font-size-base: 15px; /* Reduzido */
+            --font-size-lg: 18px;
+            --font-size-xl: 20px;
+            --font-size-2xl: 24px;
+            --font-size-3xl: 36px;
+            --font-weight-normal: 400;
+            --font-weight-medium: 500;
+            --font-weight-semibold: 600;
+            --font-weight-bold: 700;
+            --space-4: 4px;
+            --space-8: 8px;
+            --space-10: 10px; /* Novo */
+            --space-12: 12px;
+            --space-16: 16px;
+            --space-20: 20px;
+            --space-24: 24px;
+            --space-32: 32px;
+            --space-48: 48px;
+            --radius-base: 8px;
+            --radius-lg: 12px;
+            --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            --duration-fast: 150ms;
+            --duration-normal: 250ms;
+        }
+
+        /* --- Modo Escuro --- */
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --color-background: var(--color-charcoal-800);
+                --color-surface: #2D3748;
+                --color-text: var(--color-gray-200);
+                --color-text-secondary: var(--color-gray-400);
+                --color-primary: var(--color-teal-200);
+                --color-primary-hover: var(--color-white);
+                --color-border: #4A5568;
+                --color-input-bg: #2D3748;
+                --color-focus-ring: rgba(178, 245, 234, 0.2);
+                --color-secondary-bg: #1A202C;
+                --select-caret: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23E2E8F0' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+           
+                --color-red-100: #2D3748;
+                --color-blue-100: #2D3748;
+                --color-green-100: #2D3748;
+            }
+        }
+
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: var(--font-family-base);
+            font-size: var(--font-size-base);
+            color: var(--color-text);
+            background-color: var(--color-background);
+            padding: var(--space-24);
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        .container { max-width: 1000px; margin: 0 auto; }
+
+        header { text-align: center; margin-bottom: var(--space-48); }
+
+        h1 {
+            font-size: var(--font-size-3xl);
+            font-weight: var(--font-weight-bold);
+            color: var(--color-text);
+            margin-bottom: var(--space-8);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: var(--space-16);
+        }
+
+        .subtitle {
+            font-size: var(--font-size-lg);
+            color: var(--color-text-secondary);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .card {
+            background-color: var(--color-surface);
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-md);
+            margin-bottom: var(--space-32);
+            overflow: hidden;
+            transition: all var(--duration-normal) ease;
+        }
+
+        .card-header {
+            padding: var(--space-20) var(--space-24);
+            border-bottom: 1px solid var(--color-border);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        
+        .card-header-content {
+            display: flex;
+            align-items: center;
+            gap: var(--space-12);
+        }
+
+        .card-header h2 {
+            font-size: var(--font-size-xl);
+            font-weight: var(--font-weight-semibold);
+            color: var(--color-text);
+        }
+
+        .card-body { padding: var(--space-24); }
+        .card-body.subtle { background-color: var(--color-secondary-bg); padding: var(--space-20); }
+
+        .icon {
+            width: 24px;
+            height: 24px;
+            stroke-width: 2;
+            color: var(--color-primary);
+        }
+
+        /* --- Utilitários de Formulário (Mais Densos) --- */
+        .form-row {
+            display: grid;
+            gap: var(--space-16); /* Reduzido */
+            margin-bottom: var(--space-16); /* Reduzido */
+        }
+        .form-row.cols-2 { grid-template-columns: 1fr 1fr; }
+        .form-row.cols-3 { grid-template-columns: 1fr 1fr 1fr; }
+        .form-row.cols-4 { grid-template-columns: 1fr 1fr 1fr 1fr; }
+
+        .form-group { display: flex; flex-direction: column; gap: var(--space-8); }
+        
+        label, .form-label {
+            font-size: var(--font-size-sm);
+            font-weight: var(--font-weight-medium);
+            color: var(--color-text);
+            margin: 0;
+        }
+        
+        .label-group {
+             display: flex;
+             align-items: center;
+             gap: var(--space-8);
+        }
+
+        .input-group { display: flex; }
+        .input-group input { border-top-right-radius: 0; border-bottom-right-radius: 0; border-right: 0; }
+        .input-group select { border-top-left-radius: 0; border-bottom-left-radius: 0; }
+
+        input[type="number"], input[type="date"], select, input[type="text"] {
+            width: 100%;
+            padding: var(--space-10) var(--space-12); /* Reduzido */
+            font-size: var(--font-size-base);
+            font-family: var(--font-family-base);
+            color: var(--color-text);
+            background-color: var(--color-input-bg);
+            border: 1px solid var(--color-border);
+            border-radius: var(--radius-base);
+            transition: all var(--duration-fast) ease;
+        }
+        
+        input:focus, select:focus {
+            outline: none;
+            border-color: var(--color-primary);
+            box-shadow: 0 0 0 3px var(--color-focus-ring);
+        }
+
+        select {
+            -webkit-appearance: none; -moz-appearance: none; appearance: none;
+            background-image: var(--select-caret);
+            background-repeat: no-repeat;
+            background-position: right var(--space-12) center;
+            background-size: 16px;
+            cursor: pointer;
+        }
+        
+        .checkbox-group {
+            display: flex;
+            align-items: center;
+            gap: var(--space-12);
+            cursor: pointer;
+            padding: var(--space-10) var(--space-16); /* Reduzido */
+            border-radius: var(--radius-base);
+            transition: background-color var(--duration-fast);
+            background-color: var(--color-secondary-bg);
+            border: 1px solid var(--color-border);
+        }
+        .checkbox-group:hover { background-color: var(--color-gray-100); }
+        .checkbox-group label { font-weight: var(--font-weight-medium); cursor: pointer; }
+        input[type="checkbox"] {
+            width: 18px; height: 18px; /* Reduzido */
+            cursor: pointer;
+            accent-color: var(--color-primary);
+        }
+
+        .conditional-section {
+            max-height: 0;
+            opacity: 0;
+            overflow: hidden;
+            transition: max-height 0.4s ease-out, opacity 0.3s ease-in, margin-top 0.4s ease-out;
+            margin-top: 0;
+        }
+        .conditional-section.active {
+            opacity: 1;
+            max-height: 2000px; /* Valor alto */
+            margin-top: var(--space-16);
+        }
+        
+        .prisao-periodo {
+            padding-bottom: var(--space-16);
+            padding-top: var(--space-16);
+            border-bottom: 1px dashed var(--color-border);
+            position: relative;
+        }
+        .prisao-periodo:first-child { padding-top: 0; }
+        .prisao-periodo:last-child { border-bottom: none; padding-bottom: 0; }
+        
+        .prisao-periodo h3 {
+            font-size: var(--font-size-sm);
+            font-weight: var(--font-weight-semibold);
+            margin-bottom: var(--space-12);
+            color: var(--color-text-secondary);
+        }
+
+        .btn-remove-periodo {
+            position: absolute;
+            top: var(--space-16);
+            right: 0;
+            background: none;
+            border: none;
+            color: var(--color-gray-500);
+            cursor: pointer;
+            padding: var(--space-4);
+            border-radius: 50%;
+        }
+        .btn-remove-periodo:hover { color: var(--color-red-500); background-color: var(--color-red-100); }
+        .btn-remove-periodo svg { width: 16px; height: 16px; }
+
+        .btn {
+            padding: var(--space-10) var(--space-16);
+            font-size: var(--font-size-sm);
+            font-weight: var(--font-weight-medium);
+            border-radius: var(--radius-base);
+            border: 1px solid transparent;
+            cursor: pointer;
+            transition: all var(--duration-fast) ease;
+            display: inline-flex;
+            align-items: center;
+            gap: var(--space-8);
+        }
+        .btn-primary {
+            background-color: var(--color-primary);
+            color: var(--color-white);
+            border-color: var(--color-primary);
+        }
+        .btn-primary:hover { background-color: var(--color-primary-hover); }
+        
+        .btn-secondary {
+            background-color: var(--color-secondary-bg);
+            color: var(--color-text);
+            border-color: var(--color-border);
+        }
+        .btn-secondary:hover { background-color: var(--color-gray-100); }
+        
+        .btn-danger {
+            background-color: var(--color-red-500);
+            color: var(--color-white);
+            border-color: var(--color-red-500);
+        }
+        .btn-danger:hover { background-color: var(--color-red-600); }
+
+        .btn-info {
+            background-color: var(--color-blue-500);
+            color: var(--color-white);
+            border-color: var(--color-blue-500);
+        }
+        .btn-info:hover { background-color: var(--color-blue-600); }
+
+        .btn svg { width: 16px; height: 16px; }
+
+        .btn-group { display: flex; gap: var(--space-12); }
+        .btn-full { width: 100%; justify-content: center; }
+
+        .help-text {
+            font-size: var(--font-size-xs);
+            color: var(--color-text-secondary);
+            margin-top: var(--space-8);
+            text-align: right;
+        }
+        
+        .info-tooltip-container {
+            position: relative;
+            display: inline-block;
+        }
+        .info-icon {
+            color: var(--color-gray-500);
+            cursor: help;
+        }
+        .info-tooltip {
+            position: absolute;
+            bottom: 100%;
+            left: 50%;
+            transform: translateX(-50%) translateY(-8px);
+            background-color: var(--color-charcoal-700);
+            color: var(--color-white);
+            padding: var(--space-12);
+            border-radius: var(--radius-base);
+            font-size: var(--font-size-xs);
+            font-weight: var(--font-weight-normal);
+            width: 300px;
+            box-shadow: var(--shadow-lg);
+            opacity: 0;
+            visibility: hidden;
+            transition: all var(--duration-fast) ease;
+            z-index: 10;
+        }
+        .info-tooltip::after {
+            content: '';
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            border-width: 6px;
+            border-style: solid;
+            border-color: var(--color-charcoal-700) transparent transparent transparent;
+        }
+        .info-tooltip-container:hover .info-tooltip {
+            opacity: 1;
+            visibility: visible;
+            transform: translateX(-50%) translateY(0);
+        }
+
+        /* --- Seção 1: Circunstâncias --- */
+        .circunstancias-container {
+            display: grid;
+            gap: var(--space-12);
+        }
+        .circunstancia-item {
+            display: grid;
+            grid-template-columns: 1fr 120px;
+            gap: var(--space-16);
+            align-items: start;
+            padding: var(--space-16);
+            border-radius: var(--radius-base);
+            border: 1px solid var(--color-border);
+            border-left-width: 4px;
+            transition: all var(--duration-normal) ease;
+        }
+        
+        .circunstancia-item.is-negativa {
+            background-color: var(--color-red-100);
+            border-left-color: var(--color-red-500);
+        }
+        .circunstancia-item.is-positiva {
+            background-color: var(--color-blue-100);
+            border-left-color: var(--color-blue-500);
+        }
+
+        .circunstancia-label {
+            font-weight: var(--font-weight-medium);
+            color: var(--color-text);
+        }
+        .circunstancia-label-lei-drogas {
+            font-size: var(--font-size-xs);
+            color: var(--color-gray-600);
+            font-weight: var(--font-weight-normal);
+        }
+        .circunstancia-options {
+            margin-top: var(--space-12);
+            display: flex;
+            flex-direction: column;
+            gap: var(--space-12);
+        }
+        .circunstancia-resultado {
+            margin-top: var(--space-12);
+            font-size: var(--font-size-sm);
+            font-weight: var(--font-weight-medium);
+            color: var(--color-gray-700);
+            text-align: left;
+        }
+        .circunstancia-item.is-negativa .circunstancia-resultado { color: var(--color-red-600); }
+        .circunstancia-item.is-positiva .circunstancia-resultado { color: var(--color-blue-600); }
+        
+        .radio-group {
+            display: flex;
+            gap: var(--space-16);
+            align-items: center;
+        }
+        .radio-group label {
+            display: flex;
+            align-items: center;
+            gap: var(--space-8);
+            cursor: pointer;
+        }
+
+        /* --- Seções 2 e 3: Modais e Tags --- */
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.6);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            visibility: hidden;
+            transition: all var(--duration-normal) ease;
+            z-index: 100;
+        }
+        .modal.active {
+            opacity: 1;
+            visibility: visible;
+        }
+        .modal-content {
+            background-color: var(--color-surface);
+            border-radius: var(--radius-lg);
+            padding: var(--space-32);
+            width: 90%;
+            max-width: 600px;
+            max-height: 80vh;
+            overflow-y: auto;
+            transform: scale(0.95);
+            transition: all var(--duration-normal) ease;
+        }
+        .modal.active .modal-content {
+            transform: scale(1);
+        }
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: var(--space-24);
+        }
+        .modal-header h3 {
+            font-size: var(--font-size-xl);
+            font-weight: var(--font-weight-semibold);
+        }
+        .modal-close {
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: var(--color-gray-500);
+            padding: var(--space-4);
+        }
+        .modal-close:hover { color: var(--color-charcoal-800); }
+        .modal-body { display: flex; flex-direction: column; gap: var(--space-12); }
+        
+        .modal-option {
+            display: block;
+            padding: var(--space-12) var(--space-16);
+            border-radius: var(--radius-base);
+            border: 1px solid var(--color-border);
+            cursor: pointer;
+            transition: all var(--duration-fast);
+        }
+        .modal-option:hover {
+            background-color: var(--color-secondary-bg);
+            border-color: var(--color-primary);
+        }
+        .modal-option label {
+            font-weight: var(--font-weight-normal);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: var(--space-12);
+        }
+        .modal-option input[type="checkbox"] { width: 18px; height: 18px; }
+        
+        .fase-container {
+            display: flex;
+            flex-direction: column;
+            gap: var(--space-16);
+            padding-top: var(--space-16);
+        }
+        
+        .tag-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: var(--space-12);
+        }
+        
+        .tag {
+            display: grid;
+            grid-template-columns: 1fr auto auto;
+            gap: var(--space-12);
+            align-items: center;
+            padding: var(--space-12) var(--space-16);
+            border-radius: var(--radius-base);
+            font-size: var(--font-size-sm);
+            font-weight: var(--font-weight-medium);
+            border-left-width: 4px;
+            border-style: solid;
+            width: 100%;
+        }
+        .tag-atenuante {
+            background-color: var(--color-blue-100);
+            border-color: var(--color-blue-500);
+            color: var(--color-blue-600);
+        }
+        .tag-agravante {
+            background-color: var(--color-red-100);
+            border-color: var(--color-red-500);
+            color: var(--color-red-600);
+        }
+        .tag-diminuicao {
+            background-color: var(--color-blue-100);
+            border-color: var(--color-blue-500);
+            color: var(--color-blue-600);
+        }
+        .tag-aumento {
+            background-color: var(--color-red-100);
+            border-color: var(--color-red-600);
+            color: var(--color-red-600);
+        }
+        
+        .tag-label {
+            flex: 1;
+            font-weight: var(--font-weight-medium);
+        }
+        .tag-fracao { width: 120px; }
+        .tag-remove {
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: var(--color-gray-500);
+            padding: var(--space-4);
+            border-radius: 50%;
+        }
+        .tag-remove:hover { color: var(--color-red-500); background-color: var(--color-red-100); }
+        .tag-remove svg { width: 16px; height: 16px; }
+
+        /* --- Resultado --- */
+        .resultado-bloco {
+            padding: var(--space-20) var(--space-24);
+            border-radius: var(--radius-lg);
+            background-color: var(--color-secondary-bg);
+            border: 1px solid var(--color-border);
+            margin-bottom: var(--space-16);
+            animation: fadeIn 0.5s ease;
+        }
+        .resultado-bloco h3 {
+            font-size: var(--font-size-lg);
+            font-weight: var(--font-weight-semibold);
+            color: var(--color-primary);
+            margin-bottom: var(--space-12);
+        }
+        .resultado-bloco p {
+            font-size: var(--font-size-base);
+            color: var(--color-text);
+            line-height: 1.6;
+            margin-bottom: var(--space-8);
+        }
+        .resultado-bloco p strong {
+            font-weight: var(--font-weight-semibold);
+            color: var(--color-text);
+        }
+        
+        .resultado-final {
+            background-color: var(--color-primary);
+            color: var(--color-white);
+        }
+        .resultado-final h3, .resultado-final p, .resultado-final strong {
+            color: var(--color-white);
+        }
+        .resultado-final.is-alerta {
+             background-color: var(--color-yellow-500);
+        }
+
+        .hidden { display: none !important; }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(4px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* --- Responsividade --- */
+        @media (max-width: 768px) {
+            body { padding: var(--space-16); }
+            h1 { font-size: var(--font-size-2xl); }
+            .subtitle { font-size: var(--font-size-base); }
+            .form-row.cols-2, .form-row.cols-3, .form-row.cols-4 { grid-template-columns: 1fr; }
+            
+            .circunstancia-item {
+                grid-template-columns: 1fr;
+            }
+            .circunstancia-item .circunstancia-main {
+                grid-template-columns: 1fr;
+            }
+            .circunstancia-resultado { text-align: left; }
+            
+            .tag {
+                grid-template-columns: 1fr;
+                gap: var(--space-12);
+            }
+            .tag-fracao { width: 100%; }
+            .tag-remove { position: absolute; top: var(--space-8); right: var(--space-8); }
+        }
+
+        /* --- Estilos para validação de períodos coincidentes --- */
+        .prisao-periodo.periodo-conflitante {
+            border: 1px solid var(--color-red-500);
+            background-color: var(--color-red-100);
+        }
+        
+        .periodo-dias {
+            font-size: var(--font-size-sm);
+            color: var(--color-gray-600);
+            margin-top: var(--space-8);
+            font-weight: var(--font-weight-medium);
+        }
+        
+        .periodo-total {
+            margin-top: var(--space-16);
+            padding: var(--space-12);
+            background-color: var(--color-secondary-bg);
+            border-radius: var(--radius-base);
+            border: 1px solid var(--color-border);
+        }
+        
+        .periodo-total strong {
+            color: var(--color-primary);
+        }
+        
+        .error-message {
+            color: var(--color-red-500);
+            font-size: var(--font-size-sm);
+            margin-top: var(--space-8);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>
+                <!-- Ícone do Cabeçalho -->
+                <svg width="48" height="48" viewBox="0 0 100 100">
+                    <defs>
+                        <linearGradient id="gavel-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" stop-color="var(--color-primary)"/>
+                            <stop offset="100%" stop-color="var(--color-teal-700)"/>
+                        </linearGradient>
+                    </defs>
+                    <g transform="rotate(-15 50 50)">
+                        <path d="M20 85 L80 85 L75 95 L15 95 Z" fill="var(--color-border)" />
+                        <path d="M20 70 L80 70 L80 85 L20 85 Z" fill="url(#gavel-gradient)" />
+                        <rect x="46" y="30" width="8" height="38" rx="4" fill="url(#gavel-gradient)" />
+                        <path d="M30 15 Q50 10, 70 15 L70 35 Q50 40, 30 35 Z" fill="url(#gavel-gradient)" />
+                    </g>
+                </svg>
+                Dosímetro penal
+            </h1>
+            <p class="subtitle">Ferramenta interativa de auxílio à aplicação da pena (critério trifásico)</p>
+        </header>
+
+        <!-- ============================================= -->
+        <!-- SEÇÃO 1: DADOS DO CASO                       -->
+        <!-- ============================================= -->
+        <div class="card">
+            <div class="card-header">
+                <div class="card-header-content">
+                    <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline></svg>
+                    <h2>Dados do caso</h2>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="form-row cols-3">
+                    <div class="form-group">
+                        <label for="numeroProcesso">Processo nº (opcional)</label>
+                        <input type="text" id="numeroProcesso" placeholder="Ex: 0000000-00.0000.0.00.0000">
+                    </div>
+                    <div class="form-group">
+                        <label for="nomeReu">Réu ou ré (opcional)</label>
+                        <input type="text" id="nomeReu" placeholder="Nome completo">
+                    </div>
+                    <div class="form-group">
+                        <label for="crimeJulgamento">Crime sob julgamento (opcional)</label>
+                        <input type="text" id="crimeJulgamento" placeholder="Descrição do crime">
+                    </div>
+                </div>
+                
+                <div class="form-row cols-2">
+                    <div class="form-group">
+                        <label for="penaMinima">Pena mínima abstrata</label>
+                        <div class="input-group">
+                            <input type="number" id="penaMinima" min="0" step="1" value="1" data-calc-trigger>
+                            <select id="unidadeMinimaPrivativa" data-calc-trigger>
+                                <option value="anos" selected>ano(s)</option><option value="meses">mês(es)</option><option value="dias">dia(s)</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="penaMaxima">Pena máxima abstrata</label>
+                        <div class="input-group">
+                            <input type="number" id="penaMaxima" min="0" step="1" value="5" data-calc-trigger>
+                            <select id="unidadeMaximaPrivativa" data-calc-trigger>
+                                <option value="anos" selected>ano(s)</option><option value="meses">mês(es)</option><option value="dias">dia(s)</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="form-row cols-2">
+                     <div class="checkbox-group">
+                        <input type="checkbox" id="temMulta" data-calc-trigger>
+                        <label for="temMulta">O crime prevê pena de multa</label>
+                    </div>
+                     <div class="checkbox-group">
+                        <input type="checkbox" id="temPrisao" data-calc-trigger>
+                        <label for="temPrisao">Houve prisão processual (detração)</label>
+                    </div>
+                </div>
+
+                <div id="multaSection" class="conditional-section">
+                    <div class="card-body subtle">
+                        <div class="form-row cols-3">
+                            <div class="form-group">
+                                <label for="multaMinima">Multa mínima</label>
+                                <input type="number" id="multaMinima" min="0" step="1" value="10" data-calc-trigger>
+                            </div>
+                            <div class="form-group">
+                                <label for="multaMaxima">Multa máxima</label>
+                                <input type="number" id="multaMaxima" min="0" step="1" value="360" data-calc-trigger>
+                            </div>
+                            <div class="form-group">
+                                <label for="unidadeMulta">Unidade</label>
+                                <select id="unidadeMulta" data-calc-trigger>
+                                    <option value="dias-multa" selected>dias-multa</option>
+                                    <option value="reais">R$ (reais)</option>
+                                </select>
+                            </div>
+                        </div>
+                        <p class="help-text">Valores padrão: 10 a 360 dias-multa (art. 49 do CP)</p>
+                    </div>
+                </div>
+                
+                <div id="prisaoSection" class="conditional-section">
+                     <div class="card-body subtle">
+                        <div id="prisaoPeriodosContainer">
+                            <!-- Períodos de prisão serão injetados aqui -->
+                        </div>
+                        <div id="periodoTotalContainer" class="periodo-total hidden">
+                            <div id="totalPeriodoFormatado"><strong>Total de prisão provisória: 0 dias</strong></div>
+                        </div>
+                        <button type="button" class="btn btn-secondary" id="addPeriodoBtn" style="margin-top: var(--space-16);">
+                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+                            Adicionar período
+                        </button>
+                        <p class="help-text" style="margin-top: var(--space-16);">A detração será calculada conforme art. 42 do CP</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- ============================================= -->
+        <!-- SEÇÃO 2: 1ª FASE (PENA-BASE)                  -->
+        <!-- ============================================= -->
+        <div class="card">
+            <div class="card-header">
+                <div class="card-header-content">
+                    <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                        <path d="M12 20h9"></path>
+                        <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4 12.5-12.5z"></path>
+                    </svg>
+                    <h2>Primeira fase (circunstâncias judiciais)</h2>
+                </div>
+                <div class="info-tooltip-container">
+                    <svg class="icon info-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
+                    <div class="info-tooltip">
+                        Na valoração das circunstâncias judiciais, é amplamente aceito no âmbito jurisprudencial a aplicação de ⅙ sobre a pena mínima em abstrato para cada circunstância negativa. Também há vasta utilização do critério de ⅛ sobre o intervalo between as penas mínima e máxima em abstrato. Porém, admite-se a valoração de cada circunstância sob outros critérios, desde que mediante fundamentação idônea e concreta.
+                    </div>
+                </div>
+            </div>
+            
+            <div class="card-body" style="padding-bottom: 0;">
+                <div class="form-row cols-2">
+                    <div class="form-group">
+                        <label>Base de incidência das circunstâncias</label>
+                        <div class="radio-group">
+                             <label><input type="radio" name="baseIncidencia" value="minima" checked data-calc-trigger> Pena mínima</label>
+                             <label><input type="radio" name="baseIncidencia" value="intervalo" data-calc-trigger> Intervalo (max - min)</label>
+                        </div>
+                    </div>
+                     <div class="checkbox-group" style="height: 100%;">
+                        <input type="checkbox" id="leiDeDrogas" data-calc-trigger>
+                        <label for="leiDeDrogas">Crime previsto na Lei de Drogas (nº 11.343/06)</label>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="card-body">
+                <div class="circunstancias-container" id="circunstanciasContainer">
+                    <!-- Circunstância da Lei de Drogas (oculta) - AGORA VEM PRIMEIRO -->
+                    <div class="circunstancia-item hidden" data-cy="naturezaQuantidadeDrogas" id="circunstanciaDrogas">
+                        <div class="circunstancia-main">
+                            <label class="circunstancia-label">
+                                Natureza e quantidade da droga
+                                <span class="circunstancia-label-lei-drogas">(Art. 42 da Lei 11.343/06)</span>
+                            </label>
+                            <div class="circunstancia-options conditional-section">
+                                <div class="checkbox-group hidden">
+                                    <input type="checkbox" class="positiva-checkbox" data-calc-trigger>
+                                    <label>Usar para reduzir a pena?</label>
+                                </div>
+                                <select class="fracao-select" data-calc-trigger></select>
+                            </div>
+                             <p class="circunstancia-resultado"></p>
+                        </div>
+                        <select class="valiacao-select" data-calc-trigger>
+                            <option value="neutra" selected>Neutra</option>
+                            <option value="positiva">Positiva</option>
+                            <option value="negativa">Negativa</option>
+                        </select>
+                    </div>
+                    
+                    <!-- As 8 circunstâncias padrão -->
+                    <div class="circunstancia-item" data-cy="culpabilidade">
+                        <div class="circunstancia-main">
+                            <label class="circunstancia-label">Culpabilidade</label>
+                            <div class="circunstancia-options conditional-section active">
+                                <div class="checkbox-group hidden">
+                                    <input type="checkbox" class="positiva-checkbox" data-calc-trigger>
+                                    <label>Usar para reduzir a pena?</label>
+                                </div>
+                                <select class="fracao-select" data-calc-trigger>
+                                    <!-- Opções de fração negativa -->
+                                </select>
+                            </div>
+                             <p class="circunstancia-resultado"></p>
+                        </div>
+                        <select class="valiacao-select" data-calc-trigger>
+                            <option value="neutra" selected>Neutra</option>
+                            <option value="positiva">Positiva</option>
+                            <option value="negativa">Negativa</option>
+                        </select>
+                    </div>
+                    
+                    <div class="circunstancia-item" data-cy="antecedentes">
+                        <div class="circunstancia-main">
+                            <label class="circunstancia-label">Antecedentes</label>
+                            <div class="circunstancia-options conditional-section">
+                                <div class="checkbox-group hidden">
+                                    <input type="checkbox" class="positiva-checkbox" data-calc-trigger>
+                                    <label>Usar para reduzir a pena?</label>
+                                </div>
+                                <select class="fracao-select" data-calc-trigger></select>
+                            </div>
+                             <p class="circunstancia-resultado"></p>
+                        </div>
+                        <select class="valiacao-select" data-calc-trigger>
+                            <option value="neutra" selected>Neutra</option>
+                            <option value="positiva">Positiva</option>
+                            <option value="negativa">Negativa</option>
+                        </select>
+                    </div>
+                    
+                    <div class="circunstancia-item" data-cy="condutaSocial">
+                        <div class="circunstancia-main">
+                            <label class="circunstancia-label">Conduta social</label>
+                            <div class="circunstancia-options conditional-section">
+                                <div class="checkbox-group hidden">
+                                    <input type="checkbox" class="positiva-checkbox" data-calc-trigger>
+                                    <label>Usar para reduzir a pena?</label>
+                                </div>
+                                <select class="fracao-select" data-calc-trigger></select>
+                            </div>
+                             <p class="circunstancia-resultado"></p>
+                        </div>
+                        <select class="valiacao-select" data-calc-trigger>
+                            <option value="neutra" selected>Neutra</option>
+                            <option value="positiva">Positiva</option>
+                            <option value="negativa">Negativa</option>
+                        </select>
+                    </div>
+                    
+                    <div class="circunstancia-item" data-cy="personalidade">
+                        <div class="circunstancia-main">
+                            <label class="circunstancia-label">Personalidade do agente</label>
+                            <div class="circunstancia-options conditional-section">
+                                <div class="checkbox-group hidden">
+                                    <input type="checkbox" class="positiva-checkbox" data-calc-trigger>
+                                    <label>Usar para reduzir a pena?</label>
+                                </div>
+                                <select class="fracao-select" data-calc-trigger></select>
+                            </div>
+                             <p class="circunstancia-resultado"></p>
+                        </div>
+                        <select class="valiacao-select" data-calc-trigger>
+                            <option value="neutra" selected>Neutra</option>
+                            <option value="positiva">Positiva</option>
+                            <option value="negativa">Negativa</option>
+                        </select>
+                    </div>
+                    
+                    <div class="circunstancia-item" data-cy="motivos">
+                        <div class="circunstancia-main">
+                            <label class="circunstancia-label">Motivos</label>
+                            <div class="circunstancia-options conditional-section">
+                                <div class="checkbox-group hidden">
+                                    <input type="checkbox" class="positiva-checkbox" data-calc-trigger>
+                                    <label>Usar para reduzir a pena?</label>
+                                </div>
+                                <select class="fracao-select" data-calc-trigger></select>
+                            </div>
+                             <p class="circunstancia-resultado"></p>
+                        </div>
+                        <select class="valiacao-select" data-calc-trigger>
+                            <option value="neutra" selected>Neutra</option>
+                            <option value="positiva">Positiva</option>
+                            <option value="negativa">Negativa</option>
+                        </select>
+                    </div>
+                    
+                    <div class="circunstancia-item" data-cy="circunstancias">
+                        <div class="circunstancia-main">
+                            <label class="circunstancia-label">Circunstâncias</label>
+                            <div class="circunstancia-options conditional-section">
+                                <div class="checkbox-group hidden">
+                                    <input type="checkbox" class="positiva-checkbox" data-calc-trigger>
+                                    <label>Usar para reduzir a pena?</label>
+                                </div>
+                                <select class="fracao-select" data-calc-trigger></select>
+                            </div>
+                             <p class="circunstancia-resultado"></p>
+                        </div>
+                        <select class="valiacao-select" data-calc-trigger>
+                            <option value="neutra" selected>Neutra</option>
+                            <option value="positiva">Positiva</option>
+                            <option value="negativa">Negativa</option>
+                        </select>
+                    </div>
+                    
+                    <div class="circunstancia-item" data-cy="consequencias">
+                        <div class="circunstancia-main">
+                            <label class="circunstancia-label">Consequências do crime</label>
+                            <div class="circunstancia-options conditional-section">
+                                <div class="checkbox-group hidden">
+                                    <input type="checkbox" class="positiva-checkbox" data-calc-trigger>
+                                    <label>Usar para reduzir a pena?</label>
+                                </div>
+                                <select class="fracao-select" data-calc-trigger></select>
+                            </div>
+                             <p class="circunstancia-resultado"></p>
+                        </div>
+                        <select class="valiacao-select" data-calc-trigger>
+                            <option value="neutra" selected>Neutra</option>
+                            <option value="positiva">Positiva</option>
+                            <option value="negativa">Negativa</option>
+                        </select>
+                    </div>
+                    
+                    <div class="circunstancia-item" data-cy="comportamentoVitima">
+                        <div class="circunstancia-main">
+                            <label class="circunstancia-label">Comportamento da vítima</label>
+                            <div class="circunstancia-options conditional-section">
+                                <div class="checkbox-group hidden">
+                                    <input type="checkbox" class="positiva-checkbox" data-calc-trigger>
+                                    <label>Usar para reduzir a pena?</label>
+                                </div>
+                                <select class="fracao-select" data-calc-trigger></select>
+                            </div>
+                             <p class="circunstancia-resultado"></p>
+                        </div>
+                        <select class="valiacao-select" data-calc-trigger>
+                            <option value="neutra" selected>Neutra</option>
+                            <option value="positiva">Positiva</option>
+                            <option value="negativa">Negativa</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="card-body subtle">
+                <div class="resultado-bloco" style="margin-bottom: 0;">
+                    <h3 id="penaBaseResultado">A pena-base é de 1 ano, 0 meses e 0 dias (mínimo legal).</h3>
+                </div>
+            </div>
+        </div>
+        
+        <!-- ============================================= -->
+        <!-- SEÇÃO 3: 2ª FASE (PENA INTERMEDIÁRIA)           -->
+        <!-- ============================================= -->
+        <div class="card">
+            <div class="card-header">
+                <div class="card-header-content">
+                    <!-- NOVO ÍCONE: Setas para cima (vermelha) e para baixo (azul) -->
+                    <svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M12 19V5" stroke="var(--color-blue-500)"/>
+                        <path d="M5 12l7-7 7 7" stroke="var(--color-blue-500)"/>
+                        <path d="M19 12l-7 7-7-7" stroke="var(--color-red-500)"/>
+                    </svg>
+                    <h2>Segunda fase (agravantes e atenuantes)</h2>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="btn-group">
+                    <button type="button" class="btn btn-info" id="openAtenuantesModal">
+                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+                        Adicionar atenuantes
+                    </button>
+                    <button type="button" class="btn btn-danger" id="openAgravantesModal">
+                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+                        Adicionar agravantes
+                    </button>
+                </div>
+                
+                <div class="fase-container">
+                    <div class="tag-list" id="atenuantesContainer">
+                        <!-- Atenuantes selecionadas aparecerão aqui -->
+                    </div>
+                    <div class="tag-list" id="agravantesContainer">
+                        <!-- Agravantes selecionadas aparecerão aqui -->
+                    </div>
+                </div>
+            </div>
+            <div class="card-body subtle">
+                <div class="resultado-bloco" style="margin-bottom: 0;">
+                    <h3 id="penaIntermediariaResultado">A pena intermediária é de 1 ano, 0 meses e 0 dias.</h3>
+                </div>
+            </div>
+        </div>
+
+        <!-- ============================================= -->
+        <!-- SEÇÃO 4: 3ª FASE (PENA DEFINITIVA)            -->
+        <!-- ============================================= -->
+        <div class="card">
+            <div class="card-header">
+                <div class="card-header-content">
+                    <!-- NOVO ÍCONE: Frações -->
+                    <svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M5 12h14"/>
+                        <path d="M12 5v14"/>
+                        <circle cx="19" cy="19" r="2"/>
+                        <circle cx="5" cy="5" r="2"/>
+                        <path d="M8 19a2 2 0 1 0 0-4 2 2 0 0 0 0 4z"/>
+                        <path d="M16 5a2 2 0 1 0 0 4 2 2 0 0 0 0-4z"/>
+                    </svg>
+                    <h2>Terceira fase (causas de aumento e de diminuição de pena)</h2>
+                </div>
+            </div>
+            <div class="card-body">
+                 <div class="btn-group">
+                    <button type="button" class="btn btn-info" id="openDiminuicaoModal">
+                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+                        Adicionar causa de diminuição
+                    </button>
+                    <button type="button" class="btn btn-danger" id="openAumentoModal">
+                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+                        Adicionar causa de aumento
+                    </button>
+                </div>
+                
+                <div class="fase-container">
+                    <div class="tag-list" id="aumentoContainer">
+                        <!-- Causas de aumento selecionadas aparecerão aqui -->
+                    </div>
+                     <div class="tag-list" id="diminuicaoContainer">
+                        <!-- Causas de diminuição selecionadas aparecerão aqui -->
+                    </div>
+                </div>
+            </div>
+            <div class="card-body subtle">
+                <div class="resultado-bloco" style="margin-bottom: 0;">
+                    <h3 id="penaDefinitivaResultado">A pena definitiva é de 1 ano, 0 meses e 0 dias.</h3>
+                </div>
+            </div>
+        </div>
+
+        <!-- ============================================= -->
+        <!-- SEÇÃO 5: RESULTADO                            -->
+        <!-- ============================================= -->
+        <div class="card">
+            <div class="card-header">
+                <div class="card-header-content">
+                    <svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path>
+                        <rect x="8" y="2" width="8" height="4" rx="1" ry="1"></rect>
+                    </svg>
+                    <h2>Considerações finais</h2>
+                </div>
+            </div>
+            <div class="card-body">
+                <!-- Pena de Multa -->
+                <div class="resultado-bloco hidden" id="resultadoMultaContainer">
+                    <h3>Pena de multa</h3>
+                    <p id="resultadoMultaTexto">A pena de multa proporcional é de <strong>10 dias-multa</strong>.</p>
+                </div>
+                
+                <!-- Detração -->
+                <div class="resultado-bloco hidden" id="resultadoDetracaoContainer">
+                    <h3>Período de prisão provisória</h3>
+                    <p id="resultadoDetracaoResumo">Período total de prisão provisória: <strong>0 dias</strong>.</p>
+                    <p id="resultadoDetracaoDetalhes" style="font-size: var(--font-size-sm); color: var(--color-text-secondary);"></p>
+                    <p id="resultadoPenaCumprir">Pena definitiva a cumprir: <strong>1 ano, 0 meses e 0 dias</strong>.</p>
+                </div>
+                
+                <!-- Regime Inicial -->
+                <div class="resultado-bloco" id="resultadoRegimeContainer">
+                    <h3>Regime inicial</h3>
+                    <p id="resultadoRegimeTexto">Conforme a regra do art. 33, § 2º, do Código Penal, o regime inicial de cumprimento da pena é o <strong>aberto</strong>.</p>
+                </div>
+                
+                <div class="btn-group" style="margin-top: var(--space-24);">
+                    <button type="button" class="btn btn-primary btn-full" id="gerarResumoBtn">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
+                        Gerar resumo da dosimetria
+                    </button>
+                    <button type="button" class="btn btn-secondary" id="limparCamposBtn">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18"></path><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"></path><path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
+                        Limpar campos
+                    </button>
+                </div>
+            </div>
+        </div>
+
+
+        <footer>
+            <p>Uso institucional ou pessoal livre. Esta ferramenta não substitui a análise judicial, sendo fornecida sem garantias de qualquer tipo. Para sugestões ou correções, por favor, envie uma mensagem ao endereço coutinho.tco@gmail.com</p>
+        </footer>
+    </div>
+    
+    <!-- ============================================= -->
+    <!-- MODAIS                                        -->
+    <!-- ============================================= -->
+    
+    <!-- Modal: Atenuantes (2ª Fase) -->
+    <div class="modal" id="modalAtenuantes">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Adicionar atenuantes</h3>
+                <button class="modal-close" data-modal-id="modalAtenuantes">&times;</button>
+            </div>
+            <div class="modal-body" id="modalAtenuantesBody">
+                <div class="modal-option"><label><input type="checkbox" data-tipo="atenuante" data-key="confissao" data-label="Confissão espontânea (art. 65, III, d, do CP)"> Confissão espontânea (art. 65, III, d, do CP)</label></div>
+                <div class="modal-option"><label><input type="checkbox" data-tipo="atenuante" data-key="idade" data-label="Menor de 21 (crime) ou maior de 70 (sentença) (art. 65, I, do CP)"> Menor de 21 (crime) ou maior de 70 (sentença) (art. 65, I, do CP)</label></div>
+                <div class="modal-option"><label><input type="checkbox" data-tipo="atenuante" data-key="relevanteValor" data-label="Relevante valor social ou moral (art. 65, III, a, do CP)"> Relevante valor social ou moral (art. 65, III, a, do CP)</label></div>
+                <div class="modal-option"><label><input type="checkbox" data-tipo="atenuante" data-key="desconhecimento" data-label="Desconhecimento da lei (art. 65, II, do CP)"> Desconhecimento da lei (art. 65, II, do CP)</label></div>
+                <div class="modal-option"><label><input type="checkbox" data-tipo="atenuante" data-key="minorar" data-label="Procurou evitar ou minorar as consequências (art. 65, III, b, do CP)"> Procurou evitar ou minorar as consequências (art. 65, III, b, do CP)</label></div>
+                <div class="modal-option"><label><input type="checkbox" data-tipo="atenuante" data-key="reparou" data-label="Reparou o dano antes do julgamento (art. 65, III, b, do CP)"> Reparou o dano antes do julgamento (art. 65, III, b, do CP)</label></div>
+                <div class="modal-option"><label><input type="checkbox" data-tipo="atenuante" data-key="coacao" data-label="Crime sob coação resistível (art. 65, III, c, do CP)"> Crime sob coação resistível (art. 65, III, c, do CP)</label></div>
+                <div class="modal-option"><label><input type="checkbox" data-tipo="atenuante" data-key="ordem" data-label="Crime em cumprimento a ordem superior (art. 65, III, c, do CP)"> Crime em cumprimento a ordem superior (art. 65, III, c, do CP)</label></div>
+                <div class="modal-option"><label><input type="checkbox" data-tipo="atenuante" data-key="emocao" data-label="Violenta emoção por ato injusto da vítima (art. 65, III, c, do CP)"> Violenta emoção por ato injusto da vítima (art. 65, III, c, do CP)</label></div>
+                <div class="modal-option"><label><input type="checkbox" data-tipo="atenuante" data-key="multidao" data-label="Influência de multidão (art. 65, III, e, do CP)"> Influência de multidão (art. 65, III, e, do CP)</label></div>
+                <div class="modal-option"><label><input type="checkbox" data-tipo="atenuante" data-key="tumulto" data-label="Influência tumulto não provocado (art. 65, III, e, do CP)"> Influência tumulto não provocado (art. 65, III, e, do CP)</label></div>
+                <div class="modal-option"><label><input type="checkbox" data-tipo="atenuante" data-key="inominada" data-label="Atenuante inominada (art. 66 do CP)"> Atenuante inominada (art. 66 do CP)</label></div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Modal: Agravantes (2ª Fase) -->
+    <div class="modal" id="modalAgravantes">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Adicionar agravantes</h3>
+                <button class="modal-close" data-modal-id="modalAgravantes">&times;</button>
+            </div>
+            <div class="modal-body" id="modalAgravantesBody">
+                <div class="modal-option"><label><input type="checkbox" data-tipo="agravante" data-key="reincidencia" data-label="Reincidência (art. 61, I, do CP)"> Reincidência (art. 61, I, do CP)</label></div>
+                <div class="modal-option"><label><input type="checkbox" data-tipo="agravante" data-key="futilTorpe" data-label="Motivo fútil ou torpe (art. 61, II, a, do CP)"> Motivo fútil ou torpe (art. 61, II, a, do CP)</label></div>
+                <div class="modal-option"><label><input type="checkbox" data-tipo="agravante" data-key="ocultarVantagem" data-label="Para cometer, ocultar ou tirar vantagem de outro crime (art. 61, II, b, do CP)"> Para cometer, ocultar ou tirar vantagem de outro crime (art. 61, II, b, do CP)</label></div>
+                <div class="modal-option"><label><input type="checkbox" data-tipo="agravante" data-key="traicao" data-label="Traição, emboscada, dissimulação ou reduzir a defesa (art. 61, II, c, do CP)"> Traição, emboscada, dissimulação ou reduzir a defesa (art. 61, II, c, do CP)</label></div>
+                <div class="modal-option"><label><input type="checkbox" data-tipo="agravante" data-key="meioCruel" data-label="Veneno, fogo, explosivo, tortura, crueldade, perigo comum (art. 61, II, d, do CP)"> Veneno, fogo, explosivo, tortura, crueldade, perigo comum (art. 61, II, d, do CP)</label></div>
+                <div class="modal-option"><label><input type="checkbox" data-tipo="agravante" data-key="familia" data-label="Crime contra ascendente, descendente, irmão ou cônjuge (art. 61, II, e, do CP)"> Crime contra ascendente, descendente, irmão ou cônjuge (art. 61, II, e, do CP)</label></div>
+                <div class="modal-option"><label><input type="checkbox" data-tipo="agravante" data-key="abusoAutoridade" data-label="Abuso de autoridade, prevalência relações domésticas (art. 61, II, f, do CP)"> Abuso de autoridade, prevalência relações domésticas (art. 61, II, f, do CP)</label></div>
+                <div class="modal-option"><label><input type="checkbox" data-tipo="agravante" data-key="violenciaMulher" data-label="Violência contra a mulher (art. 61, II, f, do CP)"> Violência contra a mulher (art. 61, II, f, do CP)</label></div>
+                <div class="modal-option"><label><input type="checkbox" data-tipo="agravante" data-key="abusoPoder" data-label="Abuso de poder, violação de dever de cargo (art. 61, II, g, do CP)"> Abuso de poder, violação de dever de cargo (art. 61, II, g, do CP)</label></div>
+                <div class="modal-option"><label><input type="checkbox" data-tipo="agravante" data-key="vulneravel" data-label="Crime contra criança, maior de 60, enfermo ou grávida (art. 61, II, h, do CP)"> Crime contra criança, maior de 60, enfermo ou grávida (art. 61, II, h, do CP)</label></div>
+                <div class="modal-option"><label><input type="checkbox" data-tipo="agravante" data-key="protecaoAutoridade" data-label="Ofendido sob imediata proteção da autoridade (art. 61, II, i, do CP)"> Ofendido sob imediata proteção da autoridade (art. 61, II, i, do CP)</label></div>
+                <div class="modal-option"><label><input type="checkbox" data-tipo="agravante" data-key="calamidade" data-label="Incêndio, naufrágio, inundação, calamidade (art. 61, II, j, do CP)"> Incêndio, naufrágio, inundação, calamidade (art. 61, II, j, do CP)</label></div>
+                <div class="modal-option"><label><input type="checkbox" data-tipo="agravante" data-key="embriaguez" data-label="Embriaguez preordenada (art. 61, II, l, do CP)"> Embriaguez preordenada (art. 61, II, l, do CP)</label></div>
+                <div class="modal-option"><label><input type="checkbox" data-tipo="agravante" data-key="promocao" data-label="Promoção ou organização do crime (62, I, do CP)"> Promoção ou organização do crime (62, I, do CP)</label></div>
+                <div class="modal-option"><label><input type="checkbox" data-tipo="agravante" data-key="coacaoOutrem" data-label="Coação ou indução a outrem (62,II, do CP)"> Coação ou indução a outrem (62,II, do CP)</label></div>
+                <div class="modal-option"><label><input type="checkbox" data-tipo="agravante" data-key="instigacao" data-label="Instigação de subordinado ou inimputável (62,III, do CP)"> Instigação de subordinado ou inimputável (62,III, do CP)</label></div>
+                <div class="modal-option"><label><input type="checkbox" data-tipo="agravante" data-key="paga" data-label="Execução mediante paga ou recompensa (62,IV, do CP)"> Execução mediante paga ou recompensa (62,IV, do CP)</label></div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Modal: Causas de Aumento (3ª Fase) -->
+    <div class="modal" id="modalAumento">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Adicionar causa de aumento</h3>
+                <button class="modal-close" data-modal-id="modalAumento">&times;</button>
+            </div>
+            <div class="modal-body" id="modalAumentoBody">
+                <div class="modal-option"><label><input type="checkbox" data-tipo="aumento" data-key="concursoFormal" data-label="Concurso formal (art. 70, CP)" data-fracoes="1/6,1/5,1/4,1/3,1/2"> Concurso formal (art. 70, CP)</label></div>
+                <div class="modal-option"><label><input type="checkbox" data-tipo="aumento" data-key="crimeContinuadoSimples" data-label="Crime continuado simples (art. 71, caput, CP)" data-fracoes="1/6,1/5,1/4,1/3,1/2,2/3"> Crime continuado simples (art. 71, caput, CP)</label></div>
+                <div class="modal-option"><label><input type="checkbox" data-tipo="aumento" data-key="crimeContinuadoQualificado" data-label="Crime continuado qualificado (art. 71, p. único, CP)" data-fracoes="1/6,1/5,1/4,1/3,1/2,2/3,1,2,3"> Crime continuado qualificado (art. 71, p. único, CP)</label></div>
+                <div class="modal-option"><label><input type="checkbox" data-tipo="aumento" data-key="resultadoDiverso" data-label="Agente pretendeu crime mais leve (art. 29, § 2º, CP)" data-fracoes="1/6,1/5,1/4,1/3,1/2"> Agente pretendeu crime mais leve (art. 29, § 2º, CP)</label></div>
+                <div class="modal-option"><label><input type="checkbox" data-tipo="aumento" data-key="majoranteNaoDefinida" data-label="Majorante não definida" data-fracoes="custom_aumento"> Majorante não definida - Inclua os dados</label></div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Modal: Causas de Diminuição (3ª Fase) -->
+    <div class="modal" id="modalDiminuicao">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Adicionar causa de diminuição</h3>
+                <button class="modal-close" data-modal-id="modalDiminuicao">&times;</button>
+            </div>
+            <div class="modal-body" id="modalDiminuicaoBody">
+                <div class="modal-option"><label><input type="checkbox" data-tipo="diminuicao" data-key="tentativa" data-label="Tentativa (art. 14, p. único, do CP)" data-fracoes="1/3,1/2,2/3"> Tentativa (art. 14, p. único, do CP)</label></div>
+                <div class="modal-option"><label><input type="checkbox" data-tipo="diminuicao" data-key="arrependimento" data-label="Arrependimento posterior (art. 16 do CP)" data-fracoes="1/3,1/2,2/3"> Arrependimento posterior (art. 16 do CP)</label></div>
+                <div class="modal-option"><label><input type="checkbox" data-tipo="diminuicao" data-key="erroProibicao" data-label="Erro de proibição escusável (art. 21 do CP)" data-fracoes="1/6,1/5,1/4,1/3"> Erro de proibição escusável (art. 21 do CP)</label></div>
+                <div class="modal-option"><label><input type="checkbox" data-tipo="diminuicao" data-key="menorParticipacao" data-label="Menor participação (art. 29, § 1º, do CP)" data-fracoes="1/6,1/5,1/4,1/3"> Menor participação (art. 29, § 1º, do CP)</label></div>
+                <div class="modal-option"><label><input type="checkbox" data-tipo="diminuicao" data-key="semiImputabilidade" data-label="Semimputabilidade (art. 26, p. único, do CP)" data-fracoes="1/6,1/5,1/4,1/3,1/2,2/3"> Semimputabilidade (art. 26, p. único, do CP)</label></div>
+                <div class="modal-option"><label><input type="checkbox" data-tipo="diminuicao" data-key="minoranteNaoDefinida" data-label="Minorante não definida" data-fracoes="custom_diminuicao"> Minorante não definida - Inclua os dados</label></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ============================================= -->
+    <!-- JAVASCRIPT CORRIGIDO                          -->
+    <!-- ============================================= -->
+    <script>
+      document.addEventListener('DOMContentLoaded', () => {
+
+          // --- Constantes e Seletores Globais ---
+          const DIAS_POR_ANO = 365;
+          const DIAS_POR_MES = 30;
+          let periodoPrisaoCount = 0;
+          const estadoGlobal = {};
+
+          // Seletores de elementos principais
+          const inputs = {
+              penaMinima: document.getElementById('penaMinima'),
+              unidadeMinima: document.getElementById('unidadeMinimaPrivativa'),
+              penaMaxima: document.getElementById('penaMaxima'),
+              unidadeMaxima: document.getElementById('unidadeMaximaPrivativa'),
+              temMulta: document.getElementById('temMulta'),
+              multaMinima: document.getElementById('multaMinima'),
+              multaMaxima: document.getElementById('multaMaxima'),
+              unidadeMulta: document.getElementById('unidadeMulta'),
+              temPrisao: document.getElementById('temPrisao'),
+              baseIncidencia: document.querySelectorAll('input[name="baseIncidencia"]'),
+              leiDeDrogas: document.getElementById('leiDeDrogas'),
+              numeroProcesso: document.getElementById('numeroProcesso'),
+              nomeReu: document.getElementById('nomeReu'),
+              crimeJulgamento: document.getElementById('crimeJulgamento'),
+          };
+
+          const sections = {
+              multa: document.getElementById('multaSection'),
+              prisao: document.getElementById('prisaoSection'),
+              circunstanciaDrogas: document.getElementById('circunstanciaDrogas'),
+          };
+
+          const containers = {
+              prisao: document.getElementById('prisaoPeriodosContainer'),
+              circunstancias: document.getElementById('circunstanciasContainer'),
+              atenuantes: document.getElementById('atenuantesContainer'),
+              agravantes: document.getElementById('agravantesContainer'),
+              aumento: document.getElementById('aumentoContainer'),
+              diminuicao: document.getElementById('diminuicaoContainer'),
+          };
+
+          const resultados = {
+              penaBase: document.getElementById('penaBaseResultado'),
+              penaIntermediaria: document.getElementById('penaIntermediariaResultado'),
+              penaDefinitiva: document.getElementById('penaDefinitivaResultado'),
+              multaContainer: document.getElementById('resultadoMultaContainer'),
+              multaTexto: document.getElementById('resultadoMultaTexto'),
+              detracaoContainer: document.getElementById('resultadoDetracaoContainer'),
+              detracaoResumo: document.getElementById('resultadoDetracaoResumo'),
+              detracaoDetalhes: document.getElementById('resultadoDetracaoDetalhes'),
+              penaCumprir: document.getElementById('resultadoPenaCumprir'),
+              regimeContainer: document.getElementById('resultadoRegimeContainer'),
+              regimeTexto: document.getElementById('resultadoRegimeTexto'),
+              periodoTotalContainer: document.getElementById('periodoTotalContainer'),
+              totalPeriodoFormatado: document.getElementById('totalPeriodoFormatado'),
+          };
+          
+          // --- Mapas de Frações ---
+          const fracoesNegativas = [
+              { v: 0.1, t: "1/10" }, { v: 0.11111, t: "1/9" }, { v: 0.125, t: "1/8" },
+              { v: 0.14285, t: "1/7" }, { v: 0.16667, t: "1/6" }, { v: 0.2, t: "1/5" },
+              { v: 0.25, t: "1/4" }, { v: 0.33333, t: "1/3" }, { v: 0.5, t: "1/2" },
+              { v: 1, t: "1x" }, { v: 2, t: "2x" }, { v: 3, t: "3x" }, { v: 4, t: "4x" }, { v: 5, t: "5x" }
+          ];
+          
+          const fracoesPositivas = fracoesNegativas.slice(0, 9); // De 1/10 a 1/2
+          
+          const fracoesSegundaFase = [
+              { v: 0.1, t: "1/10" }, { v: 0.11111, t: "1/9" }, { v: 0.125, t: "1/8" },
+              { v: 0.14285, t: "1/7" }, { v: 0.16667, t: "1/6" }, { v: 0.2, t: "1/5" },
+              { v: 0.25, t: "1/4" }, { v: 0.33333, t: "1/3" }
+          ];
+          
+          const fracoesTerceiraFase = {
+              "custom_aumento": [
+                  { v: 0.16667, t: "1/6" }, { v: 0.2, t: "1/5" }, { v: 0.25, t: "1/4" }, { v: 0.33333, t: "1/3" },
+                  { v: 0.5, t: "1/2" }, { v: 0.66667, t: "2/3" }, { v: 1, t: "1x" }, { v: 2, t: "2x" }, { v: 3, t: "3x" }
+              ],
+              "custom_diminuicao": [
+                  { v: 0.16667, t: "1/6" }, { v: 0.2, t: "1/5" }, { v: 0.25, t: "1/4" }, { v: 0.33333, t: "1/3" },
+                  { v: 0.5, t: "1/2" }, { v: 0.66667, t: "2/3" }, { v: 0.8, t: "4/5" }
+              ]
+          };
+
+          // ============ SISTEMA DE CÁLCULO CORRIGIDO ============
+
+          /**
+           * Converte um valor e unidade (anos, meses, dias) para um objeto {anos, meses, dias}
+           */
+          const parsePena = (value, unit) => {
+              const val = parseFloat(value) || 0;
+              switch (unit) {
+                  case 'anos': return { anos: Math.floor(val), meses: 0, dias: 0 };
+                  case 'meses': return { anos: 0, meses: Math.floor(val), dias: 0 };
+                  case 'dias': return { anos: 0, meses: 0, dias: Math.floor(val) };
+                  default: return { anos: 0, meses: 0, dias: 0 };
+              }
+          };
+
+          /**
+           * Normaliza uma pena, ajustando dias e meses para os valores corretos (dias < 30, meses < 12)
+           */
+          const normalizarPena = (pena) => {
+              let { anos, meses, dias } = pena;
+              
+              // Ajusta dias: cada 30 dias vira 1 mês
+              if (dias >= 30) {
+                  meses += Math.floor(dias / 30);
+                  dias = dias % 30;
+              }
+              
+              // Ajusta meses: cada 12 meses vira 1 ano
+              if (meses >= 12) {
+                  anos += Math.floor(meses / 12);
+                  meses = meses % 12;
+              }
+              
+              return { anos, meses, dias };
+          };
+
+          /**
+           * Converte anos, meses, dias para o total de dias (apenas para comparações)
+           */
+          const toDias = (pena) => {
+              return pena.anos * 365 + pena.meses * 30 + pena.dias;
+          };
+
+          /**
+           * Formata anos, meses, dias para string
+           */
+          const formatarPena = (pena) => {
+              const partes = [];
+              if (pena.anos > 0) partes.push(`${pena.anos} ${pena.anos > 1 ? 'anos' : 'ano'}`);
+              if (pena.meses > 0) partes.push(`${pena.meses} ${pena.meses > 1 ? 'meses' : 'mês'}`);
+              if (pena.dias > 0) partes.push(`${pena.dias} ${pena.dias > 1 ? 'dias' : 'dia'}`);
+              if (partes.length === 0) return "0 dias";
+              return partes.join(', ');
+          };
+
+          /**
+           * Formata pena de forma curta
+           */
+          const formatarPenaCurto = (pena) => {
+              return formatarPena(pena);
+          };
+
+          /**
+           * Verifica se um número é "quase inteiro" (dentro de uma tolerância)
+           */
+          const ehQuaseInteiro = (num, tolerancia = 0.001) => {
+              return Math.abs(num - Math.round(num)) < tolerancia;
+          };
+
+          /**
+           * Converte meses para formato {anos, meses}
+           */
+          const converterMesesParaAnosMeses = (meses) => {
+              const anos = Math.floor(meses / 12);
+              const mesesRestantes = meses % 12;
+              return { anos, meses: mesesRestantes, dias: 0 };
+          };
+
+          /**
+           * Converte dias para formato {anos, meses, dias}
+           */
+          const converterDiasParaAnosMesesDias = (dias) => {
+              let diasRestantes = dias;
+              const anos = Math.floor(diasRestantes / 365);
+              diasRestantes %= 365;
+              const meses = Math.floor(diasRestantes / 30);
+              const diasFinal = diasRestantes % 30;
+              
+              return normalizarPena({ anos, meses, dias: diasFinal });
+          };
+
+          /**
+           * Calcula uma fração de uma pena de forma INTELIGENTE
+           * Trabalha com a maior unidade possível e só converte quando necessário
+           */
+          const calcularFracaoPena = (pena, fracao) => {
+              return calcularFracaoInteligente(pena, fracao);
+          };
+
+          /**
+           * Calcula frações de forma ultra precisa para casos comuns
+           */
+          const calcularFracaoInteligente = (pena, fracao) => {
+              const { anos, meses, dias } = pena;
+              
+              // CASO 1: Apenas anos - tenta manter em anos
+              if (meses === 0 && dias === 0) {
+                  return calcularFracaoDeAnos(anos, fracao);
+              }
+              
+              // CASO 2: Apenas meses - tenta manter em meses  
+              if (anos === 0 && dias === 0) {
+                  return calcularFracaoDeMeses(meses, fracao);
+              }
+              
+              // CASO 3: Penas mistas - converte para a menor unidade necessária
+              return calcularFracaoDePenaMista(pena, fracao);
+          };
+
+          /**
+           * Calcula fração quando só há anos
+           */
+          const calcularFracaoDeAnos = (anos, fracao) => {
+              const resultado = anos * fracao;
+              
+              // Se é inteiro, perfeito!
+              if (Number.isInteger(resultado)) {
+                  return { anos: resultado, meses: 0, dias: 0 };
+              }
+              
+              // Verifica se a parte decimal corresponde a frações comuns de ano
+              const parteDecimal = resultado - Math.floor(resultado);
+              
+              // Frações comuns que convertem exatamente para meses
+              const fracoesParaMeses = {
+                  0.08333: 1,   // 1/12
+                  0.16667: 2,   // 2/12 = 1/6
+                  0.25: 3,      // 3/12 = 1/4
+                  0.33333: 4,   // 4/12 = 1/3
+                  0.5: 6,       // 6/12 = 1/2
+                  0.66667: 8,   // 8/12 = 2/3
+                  0.75: 9,      // 9/12 = 3/4
+                  0.83333: 10   // 10/12 = 5/6
+              };
+              
+              // Encontra a fração mais próxima
+              for (const [frac, mesesValor] of Object.entries(fracoesParaMeses)) {
+                  if (Math.abs(parteDecimal - parseFloat(frac)) < 0.01) {
+                      return normalizarPena({
+                          anos: Math.floor(resultado),
+                          meses: mesesValor,
+                          dias: 0
+                      });
+                  }
+              }
+              
+              // Se não encontrou correspondência, converte para meses
+              const mesesTotais = anos * 12;
+              const mesesResultado = mesesTotais * fracao;
+              
+              if (ehQuaseInteiro(mesesResultado)) {
+                  return converterMesesParaAnosMeses(Math.round(mesesResultado));
+              }
+              
+              // Último recurso: converte para dias
+              const diasTotais = anos * 365;
+              const diasResultado = Math.round(diasTotais * fracao);
+              return converterDiasParaAnosMesesDias(diasResultado);
+          };
+
+          /**
+           * Calcula fração quando só há meses
+           */
+          const calcularFracaoDeMeses = (meses, fracao) => {
+              const resultado = meses * fracao;
+              
+              if (Number.isInteger(resultado)) {
+                  return converterMesesParaAnosMeses(resultado);
+              }
+              
+              // Verifica se a parte decimal corresponde a frações comuns de mês
+              const parteDecimal = resultado - Math.floor(resultado);
+              
+              // Frações comuns que convertem exatamente para dias
+              const fracoesParaDias = {
+                  0.03333: 1,   // 1/30
+                  0.06667: 2,   // 2/30 = 1/15
+                  0.1: 3,       // 3/30 = 1/10
+                  0.13333: 4,   // 4/30 = 2/15
+                  0.16667: 5,   // 5/30 = 1/6
+                  0.2: 6,       // 6/30 = 1/5
+                  0.23333: 7,   // 7/30
+                  0.26667: 8,   // 8/30 = 4/15
+                  0.3: 9,       // 9/30 = 3/10
+                  0.33333: 10,  // 10/30 = 1/3
+                  0.36667: 11,  // 11/30
+                  0.4: 12,      // 12/30 = 2/5
+                  0.43333: 13,  // 13/30
+                  0.46667: 14,  // 14/30 = 7/15
+                  0.5: 15,      // 15/30 = 1/2
+                  0.53333: 16,  // 16/30 = 8/15
+                  0.56667: 17,  // 17/30
+                  0.6: 18,      // 18/30 = 3/5
+                  0.63333: 19,  // 19/30
+                  0.66667: 20,  // 20/30 = 2/3
+                  0.7: 21,      // 21/30 = 7/10
+                  0.73333: 22,  // 22/30 = 11/15
+                  0.76667: 23,  // 23/30
+                  0.8: 24,      // 24/30 = 4/5
+                  0.83333: 25,  // 25/30 = 5/6
+                  0.86667: 26,  // 26/30 = 13/15
+                  0.9: 27,      // 27/30 = 9/10
+                  0.93333: 28,  // 28/30 = 14/15
+                  0.96667: 29   // 29/30
+              };
+              
+              for (const [frac, dias] of Object.entries(fracoesParaDias)) {
+                  if (Math.abs(parteDecimal - parseFloat(frac)) < 0.01) {
+                      const mesesInteiro = Math.floor(resultado);
+                      return normalizarPena({
+                          anos: 0,
+                          meses: mesesInteiro,
+                          dias: dias
+                      });
+                  }
+              }
+              
+              // Converte para dias
+              const diasTotais = meses * 30;
+              const diasResultado = Math.round(diasTotais * fracao);
+              return converterDiasParaAnosMesesDias(diasResultado);
+          };
+
+          /**
+           * Calcula fração para penas mistas (anos, meses e dias)
+           */
+          const calcularFracaoDePenaMista = (pena, fracao) => {
+              // Para penas mistas, converte para dias como último recurso
+              const diasTotais = (pena.anos * 365) + (pena.meses * 30) + pena.dias;
+              const diasResultado = Math.round(diasTotais * fracao);
+              return converterDiasParaAnosMesesDias(diasResultado);
+          };
+
+          /**
+           * Soma duas penas
+           */
+          const somarPenas = (pena1, pena2) => {
+              const totalDias = toDias(pena1) + toDias(pena2);
+              return converterDiasParaAnosMesesDias(totalDias);
+          };
+
+          /**
+           * Subtrai duas penas (resultado mínimo zero)
+           */
+          const subtrairPenas = (pena1, pena2) => {
+              let totalDias = toDias(pena1) - toDias(pena2);
+              if (totalDias < 0) totalDias = 0;
+              return converterDiasParaAnosMesesDias(totalDias);
+          };
+
+          /**
+           * Multiplica uma pena por um fator (para causas de aumento)
+           */
+          const multiplicarPena = (pena, fator) => {
+              const totalDias = toDias(pena) * fator;
+              return converterDiasParaAnosMesesDias(Math.round(totalDias));
+          };
+
+          // ============ NOVAS FUNÇÕES PARA CÁLCULO DE PERÍODOS ============
+
+          /**
+           * Calcula a diferença entre duas datas em anos, meses e dias (calendário real)
+           * Considera o art. 132 do CC: prazos se completam no dia imediatamente anterior
+           */
+          const calcularPeriodoReal = (dataInicio, dataFim) => {
+              if (!dataInicio || !dataFim) return { anos: 0, meses: 0, dias: 0 };
+              
+              const inicio = new Date(dataInicio);
+              const fim = new Date(dataFim);
+              
+              if (isNaN(inicio.getTime()) || isNaN(fim.getTime()) || fim < inicio) {
+                  return { anos: 0, meses: 0, dias: 0 };
+              }
+
+              // CORREÇÃO: Verifica primeiro se é exatamente 1 ano (caso especial)
+              // Exemplo: 01/01/2024 a 31/12/2024 deve ser 1 ano exato
+              const anoInicio = inicio.getFullYear();
+              const anoFim = fim.getFullYear();
+              const mesInicio = inicio.getMonth();
+              const mesFim = fim.getMonth();
+              const diaInicio = inicio.getDate();
+              const diaFim = fim.getDate();
+              
+              // Se é exatamente 1 ano (mesmo dia do ano seguinte)
+              if (anoFim === anoInicio + 1 && mesFim === mesInicio && diaFim === diaInicio - 1) {
+                  return { anos: 1, meses: 0, dias: 0 };
+              }
+              
+              // Se é exatamente múltiplos de ano (mesmo dia e mês)
+              if (anoFim > anoInicio && mesFim === mesInicio && diaFim === diaInicio - 1) {
+                  return { anos: anoFim - anoInicio, meses: 0, dias: 0 };
+              }
+
+              let anos = fim.getFullYear() - inicio.getFullYear();
+              let meses = fim.getMonth() - inicio.getMonth();
+              let dias = fim.getDate() - inicio.getDate();
+
+              // Ajuste para dias negativos
+              if (dias < 0) {
+                  meses--;
+                  // Último dia do mês anterior
+                  const ultimoDiaMesAnterior = new Date(fim.getFullYear(), fim.getMonth(), 0).getDate();
+                  dias += ultimoDiaMesAnterior;
+              }
+
+              // Ajuste para meses negativos
+              if (meses < 0) {
+                  anos--;
+                  meses += 12;
+              }
+
+              // Inclui o dia final na contagem (art. 132 CC)
+              dias += 1;
+
+              // Ajuste se dias ultrapassar o número de dias do mês
+              const diasNoMesAtual = new Date(fim.getFullYear(), fim.getMonth() + 1, 0).getDate();
+              if (dias > diasNoMesAtual) {
+                  dias -= diasNoMesAtual;
+                  meses++;
+              }
+
+              // Ajuste se meses ultrapassar 12
+              if (meses >= 12) {
+                  anos += Math.floor(meses / 12);
+                  meses = meses % 12;
+              }
+
+              return { anos, meses, dias };
+          };
+
+          /**
+           * Formata período para exibição
+           */
+          const formatarPeriodo = (periodo) => {
+              const partes = [];
+              if (periodo.anos > 0) partes.push(`${periodo.anos} ${periodo.anos > 1 ? 'anos' : 'ano'}`);
+              if (periodo.meses > 0) partes.push(`${periodo.meses} ${periodo.meses > 1 ? 'meses' : 'mês'}`);
+              if (periodo.dias > 0) partes.push(`${periodo.dias} ${periodo.dias > 1 ? 'dias' : 'dia'}`);
+              if (partes.length === 0) return "0 dias";
+              return partes.join(', ');
+          };
+
+          /**
+           * Soma vários períodos
+           */
+          const somarPeriodos = (periodos) => {
+              let totalDias = 0;
+              
+              periodos.forEach(periodo => {
+                  // Converte cada período para dias considerando calendário real
+                  totalDias += periodo.dias;
+                  totalDias += periodo.meses * 30; // Considera mês como 30 dias para soma
+                  totalDias += periodo.anos * 365; // Considera ano como 365 dias para soma
+              });
+              
+              // Converte de volta para anos, meses, dias
+              return converterDiasParaAnosMesesDias(totalDias);
+          };
+
+          /**
+           * Subtrai dois períodos (para detração)
+           */
+          const subtrairPeriodos = (periodo1, periodo2) => {
+              const dias1 = periodo1.anos * 365 + periodo1.meses * 30 + periodo1.dias;
+              const dias2 = periodo2.anos * 365 + periodo2.meses * 30 + periodo2.dias;
+              const diferenca = Math.max(0, dias1 - dias2);
+              return converterDiasParaAnosMesesDias(diferenca);
+          };
+
+          // Mantém as constantes antigas para compatibilidade
+          const convertToDays = (value, unit) => {
+              const pena = parsePena(value, unit);
+              return toDias(pena);
+          };
+          
+          // --- Funções Auxiliares (Helpers) ---
+
+          /**
+           * Popula um <select> com um array de frações {v: valor, t: texto}.
+           */
+          const popularFracoes = (selectEl, fracoes, defaultKey = 0.16667) => {
+              selectEl.innerHTML = '';
+              fracoes.forEach(f => {
+                  const option = document.createElement('option');
+                  option.value = f.v;
+                  option.textContent = f.t;
+                  if (f.v === defaultKey) {
+                      option.selected = true;
+                  }
+                  selectEl.appendChild(option);
+              });
+          };
+          
+          /**
+           * Popula um <select> da 3ª fase com base em chaves (ex: "1/3,1/2,2/3").
+           */
+          const popularFracoesTerceiraFase = (selectEl, key) => {
+              if (fracoesTerceiraFase[key]) {
+                  popularFracoes(selectEl, fracoesTerceiraFase[key]);
+                  return;
+              }
+              
+              const fracoes = key.split(',').map(f => {
+                  let v;
+                  if (f.includes('/')) {
+                      const [num, den] = f.split('/').map(Number);
+                      v = num / den;
+                  } else {
+                      v = Number(f);
+                  }
+                  const t = f.includes('/') ? f : `${f}x`;
+                  return { v, t };
+              });
+              popularFracoes(selectEl, fracoes, fracoes[0].v);
+          };
+
+          // --- Validações Iniciais ---
+
+          const setupToggle = (checkbox, section) => {
+              if (checkbox && section) {
+                  checkbox.addEventListener('change', () => {
+                      section.classList.toggle('active', checkbox.checked);
+                      calcularDosimetria(); // Recalcula ao mostrar/esconder
+                  });
+              }
+          };
+          
+          const validarPenas = () => {
+              const minDias = convertToDays(inputs.penaMinima.value, inputs.unidadeMinima.value);
+              const maxDias = convertToDays(inputs.penaMaxima.value, inputs.unidadeMaxima.value);
+
+              if (minDias > maxDias) {
+                  inputs.penaMaxima.value = inputs.penaMinima.value;
+                  inputs.unidadeMaxima.value = inputs.unidadeMinima.value;
+              }
+          };
+          
+          const validarMultas = () => {
+              const min = parseFloat(inputs.multaMinima.value) || 0;
+              const max = parseFloat(inputs.multaMaxima.value) || 0;
+              if (max < min) {
+                  inputs.multaMaxima.value = min;
+              }
+          };
+          
+          const setupDateValidation = (inicioEl, fimEl) => {
+              const validate = () => {
+                  if (inicioEl.value && fimEl.value && new Date(fimEl.value) < new Date(inicioEl.value)) {
+                      fimEl.value = inicioEl.value;
+                  }
+                  validarPeriodosPrisao();
+                  calcularDosimetria(); // Recalcula ao mudar data
+              };
+              inicioEl.addEventListener('change', validate);
+              fimEl.addEventListener('change', validate);
+          };
+          
+          // --- Funções de UI Dinâmica ---
+
+          /**
+           * Adiciona um novo período de prisão.
+           */
+          const adicionarPeriodoPrisao = () => {
+              periodoPrisaoCount++;
+              const id = periodoPrisaoCount;
+              
+              const div = document.createElement('div');
+              div.className = 'prisao-periodo';
+              div.dataset.periodoId = id;
+              div.innerHTML = `
+                  <h3>Período ${id}</h3>
+                  <button type="button" class="btn-remove-periodo" data-remove-periodo="${id}">
+                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+                  </button>
+                  <div class="form-row cols-3">
+                      <div class="form-group">
+                          <label for="tipoPrisao${id}">Tipo</label>
+                          <select id="tipoPrisao${id}" class="tipo-prisao" data-calc-trigger>
+                              <option value="">Selecione...</option>
+                              <option value="flagrante">Em flagrante</option>
+                              <option value="temporaria">Temporária</option>
+                              <option value="preventiva">Preventiva</option>
+                          </select>
+                      </div>
+                      <div class="form-group">
+                          <label for="prisaoInicio${id}">Data de início</label>
+                          <input type="date" id="prisaoInicio${id}" class="prisao-inicio" data-calc-trigger>
+                      </div>
+                      <div class="form-group">
+                          <label for="prisaoFim${id}">Data de término</label>
+                          <input type="date" id="prisaoFim${id}" class="prisao-fim" data-calc-trigger>
+                      </div>
+                  </div>
+                  <div class="periodo-dias" id="periodoDias${id}">Período: 0 dias</div>
+              `;
+              
+              containers.prisao.appendChild(div);
+              
+              // Adiciona validadores de data para os novos campos
+              const inicioEl = document.getElementById(`prisaoInicio${id}`);
+              const fimEl = document.getElementById(`prisaoFim${id}`);
+              setupDateValidation(inicioEl, fimEl);
+              
+              // Atualiza contador de dias quando as datas mudam
+              inicioEl.addEventListener('change', atualizarContadorPeriodo);
+              fimEl.addEventListener('change', atualizarContadorPeriodo);
+              
+              // Inicializa o contador de dias
+              atualizarContadorPeriodo();
+          };
+          
+          /**
+           * Função auxiliar para calcular dias de prisão (mantida para compatibilidade)
+           */
+          function calcularDiasPrisao(inicio, fim) {
+              if (!inicio || !fim) return 0;
+              
+              const dataInicio = new Date(inicio);
+              const dataFim = new Date(fim);
+              
+              // Validação de datas
+              if (isNaN(dataInicio.getTime()) || isNaN(dataFim.getTime())) return 0;
+              if (dataFim < dataInicio) return 0; // Data inválida
+              
+              const diffTime = dataFim.getTime() - dataInicio.getTime();
+              const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24)) + 1; // +1 para inclusivo
+              
+              return diffDays > 0 ? diffDays : 0;
+          }
+
+          /**
+           * Função auxiliar para calcular período de prisão em anos, meses e dias
+           */
+          function calcularPeriodoPrisao(inicio, fim) {
+              return calcularPeriodoReal(inicio, fim);
+          }
+          
+          /**
+           * Atualiza o contador de período para um período específico
+           */
+          const atualizarContadorPeriodo = () => {
+              let periodos = [];
+              
+              containers.prisao.querySelectorAll('.prisao-periodo').forEach(periodo => {
+                  const id = periodo.dataset.periodoId;
+                  const inicio = periodo.querySelector('.prisao-inicio').value;
+                  const fim = periodo.querySelector('.prisao-fim').value;
+                  const diasEl = document.getElementById(`periodoDias${id}`);
+                  
+                  const periodoReal = calcularPeriodoPrisao(inicio, fim);
+                  if (diasEl) {
+                      diasEl.textContent = `Período: ${formatarPeriodo(periodoReal)}`;
+                  }
+                  periodos.push(periodoReal);
+              });
+              
+              // Calcula o total em anos, meses, dias
+              const totalPeriodo = somarPeriodos(periodos);
+              
+              // CORREÇÃO: Remove a exibição do total em dias, mostra apenas o formato correto
+              resultados.periodoTotalContainer.classList.toggle('hidden', periodos.length === 0);
+              
+              // CORREÇÃO: Atualiza exibição do total formatado (agora é o principal)
+              if (resultados.totalPeriodoFormatado) {
+                  resultados.totalPeriodoFormatado.innerHTML = `<strong>Total de prisão provisória: ${formatarPeriodo(totalPeriodo)}</strong>`;
+              }
+          };
+          
+          /**
+           * Remove um período de prisão.
+           */
+          const removerPeriodoPrisao = (id) => {
+              const el = document.querySelector(`.prisao-periodo[data-periodo-id="${id}"]`);
+              if (el) {
+                  el.remove();
+                  validarPeriodosPrisao();
+                  atualizarContadorPeriodo();
+                  calcularDosimetria();
+              }
+          };
+          
+          /**
+           * Valida se há períodos de prisão coincidentes
+           */
+          const validarPeriodosPrisao = () => {
+              const periodos = [];
+              let hasConflito = false;
+              
+              // Remove classes de conflito anteriores
+              containers.prisao.querySelectorAll('.prisao-periodo').forEach(p => {
+                  p.classList.remove('periodo-conflitante');
+                  const errorMsg = p.querySelector('.error-message');
+                  if (errorMsg) errorMsg.remove();
+              });
+              
+              // Coleta todos os períodos válidos
+              containers.prisao.querySelectorAll('.prisao-periodo').forEach(p => {
+                  const inicio = p.querySelector('.prisao-inicio').value;
+                  const fim = p.querySelector('.prisao-fim').value;
+                  
+                  if (inicio && fim) {
+                      const dataInicio = new Date(inicio);
+                      const dataFim = new Date(fim);
+                      
+                      if (!isNaN(dataInicio.getTime()) && !isNaN(dataFim.getTime())) {
+                          periodos.push({
+                              elemento: p,
+                              inicio: dataInicio,
+                              fim: dataFim
+                          });
+                      }
+                  }
+              });
+              
+              // Verifica conflitos
+              for (let i = 0; i < periodos.length; i++) {
+                  for (let j = i + 1; j < periodos.length; j++) {
+                      const p1 = periodos[i];
+                      const p2 = periodos[j];
+                      
+                      // Verifica se os períodos se sobrepõem
+                      if ((p1.inicio <= p2.fim && p1.fim >= p2.inicio) ||
+                          (p2.inicio <= p1.fim && p2.fim >= p1.inicio)) {
+                          
+                          p1.elemento.classList.add('periodo-conflitante');
+                          p2.elemento.classList.add('periodo-conflitante');
+                          hasConflito = true;
+                          
+                          // Adiciona mensagem de erro se não existir
+                          if (!p1.elemento.querySelector('.error-message')) {
+                              const errorMsg = document.createElement('div');
+                              errorMsg.className = 'error-message';
+                              errorMsg.textContent = 'Período coincidente com outro';
+                              p1.elemento.appendChild(errorMsg);
+                          }
+                          if (!p2.elemento.querySelector('.error-message')) {
+                              const errorMsg = document.createElement('div');
+                              errorMsg.className = 'error-message';
+                              errorMsg.textContent = 'Período coincidente com outro';
+                              p2.elemento.appendChild(errorMsg);
+                          }
+                      }
+                  }
+              }
+              
+              return hasConflito;
+          };
+          
+          /**
+           * Atualiza a UI de uma circunstância (cor, visibilidade das opções).
+           */
+          const atualizarUICircunstancia = (item) => {
+              const select = item.querySelector('.valiacao-select');
+              const options = item.querySelector('.circunstancia-options');
+              const positivaCheckboxGroup = item.querySelector('.checkbox-group');
+              const positivaCheckbox = item.querySelector('.positiva-checkbox');
+              const fracaoSelect = item.querySelector('.fracao-select');
+              
+              item.classList.remove('is-negativa', 'is-positiva');
+              options.classList.remove('active');
+              positivaCheckboxGroup.classList.add('hidden');
+              
+              if (select.value === 'negativa') {
+                  item.classList.add('is-negativa');
+                  options.classList.add('active');
+                  popularFracoes(fracaoSelect, fracoesNegativas);
+              } else if (select.value === 'positiva') {
+                  item.classList.add('is-positiva');
+                  options.classList.add('active');
+                  positivaCheckboxGroup.classList.remove('hidden');
+                  popularFracoes(fracaoSelect, fracoesPositivas);
+                  // Só mostra a fração se o "usar para reduzir" estiver marcado
+                  fracaoSelect.classList.toggle('hidden', !positivaCheckbox.checked);
+              }
+          };
+
+          /**
+           * Controla a visibilidade das frações em circunstâncias positivas.
+           */
+          const togglePositivaFracao = (item) => {
+              const positivaCheckbox = item.querySelector('.positiva-checkbox');
+              const fracaoSelect = item.querySelector('.fracao-select');
+              fracaoSelect.classList.toggle('hidden', !positivaCheckbox.checked);
+          };
+
+          /**
+           * Abre ou fecha um modal.
+           */
+          const toggleModal = (modalId, forceOpen = false) => {
+              const modal = document.getElementById(modalId);
+              if (modal) {
+                  if (forceOpen) {
+                      modal.classList.add('active');
+                      // Sincroniza checkboxes do modal com tags existentes
+                      const tipo = modalId.includes('Atenuantes') ? 'atenuante' :
+                                modalId.includes('Agravantes') ? 'agravante' :
+                                modalId.includes('Aumento') ? 'aumento' : 'diminuicao';
+                      const container = containers[tipo === 'atenuante' ? 'atenuantes' :
+                                                      tipo === 'agravante' ? 'agravantes' :
+                                                      tipo === 'aumento' ? 'aumento' : 'diminuicao'];
+                                                      
+                      const keysAtivas = [...container.querySelectorAll('.tag')].map(tag => tag.dataset.key);
+                      modal.querySelectorAll('input[type="checkbox"]').forEach(chk => {
+                          chk.checked = keysAtivas.includes(chk.dataset.key);
+                      });
+                      
+                  } else {
+                      modal.classList.remove('active');
+                  }
+              }
+          };
+          
+          /**
+           * Adiciona uma tag da 2ª ou 3ª fase.
+           */
+          const adicionarTag = (checkbox) => {
+              const { tipo, key, label, fracoes } = checkbox.dataset;
+              let container, tagClass, defaultFracoes;
+              
+              if (tipo === 'atenuante') {
+                  container = containers.atenuantes;
+                  tagClass = 'tag-atenuante';
+                  defaultFracoes = fracoesSegundaFase;
+              } else if (tipo === 'agravante') {
+                  container = containers.agravantes;
+                  tagClass = 'tag-agravante';
+                  defaultFracoes = fracoesSegundaFase;
+              } else if (tipo === 'aumento') {
+                  container = containers.aumento;
+                  tagClass = 'tag-aumento';
+              } else if (tipo === 'diminuicao') {
+                  container = containers.diminuicao;
+                  tagClass = 'tag-diminuicao';
+              }
+              
+              // Evita duplicados
+              if (container.querySelector(`.tag[data-key="${key}"]`)) return;
+
+              const tag = document.createElement('div');
+              tag.className = `tag ${tagClass}`;
+              tag.dataset.key = key;
+              tag.dataset.tipo = tipo;
+              
+              tag.innerHTML = `
+                  <span class="tag-label">${label}</span>
+                  <select class="tag-fracao" data-calc-trigger></select>
+                  <button type="button" class="tag-remove" data-remove-tag="${key}" data-tipo="${tipo}">
+                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+                  </button>
+              `;
+              
+              const selectEl = tag.querySelector('.tag-fracao');
+              if (tipo === 'aumento' || tipo === 'diminuicao') {
+                  popularFracoesTerceiraFase(selectEl, fracoes);
+              } else {
+                  popularFracoes(selectEl, defaultFracoes); // Padrão 1/6
+              }
+              
+              container.appendChild(tag);
+          };
+          
+          /**
+           * Remove uma tag da 2ª ou 3ª fase.
+           */
+          const removerTag = (key, tipo) => {
+              const container = tipo === 'atenuante' ? containers.atenuantes :
+                                tipo === 'agravante' ? containers.agravantes :
+                                tipo === 'aumento' ? containers.aumento : containers.diminuicao;
+                                
+              const tag = container.querySelector(`.tag[data-key="${key}"]`);
+              if (tag) {
+                  tag.remove();
+                  // Desmarca no modal
+                  const modal = document.getElementById(tipo === 'atenuante' ? 'modalAtenuantes' :
+                                                    tipo === 'agravante' ? 'modalAgravantes' :
+                                                    tipo === 'aumento' ? 'modalAumento' : 'modalDiminuicao');
+                  if (modal) {
+                      const chk = modal.querySelector(`input[data-key="${key}"]`);
+                      if (chk) chk.checked = false;
+                  }
+                  calcularDosimetria();
+              }
+          };
+          
+          // --- Função Principal de Cálculo CORRIGIDA ---
+
+          function calcularDosimetria() {
+              try {
+                  // 1. LER DADOS DO CASO
+                  const penaMinima = parsePena(inputs.penaMinima.value, inputs.unidadeMinima.value);
+                  const penaMaxima = parsePena(inputs.penaMaxima.value, inputs.unidadeMaxima.value);
+                  
+                  const penaMinimaEmDias = toDias(penaMinima);
+                  let penaMaximaEmDias = toDias(penaMaxima);
+                  
+                  // Validação
+                  if (penaMinimaEmDias > penaMaximaEmDias) {
+                      penaMaximaEmDias = penaMinimaEmDias;
+                  }
+
+                  // --- 2. CÁLCULO DA 1ª FASE (PENA-BASE) ---
+                  
+                  const baseIncidenciaValor = document.querySelector('input[name="baseIncidencia"]:checked').value;
+                  const baseDeCalculo = (baseIncidenciaValor === 'intervalo') 
+                                      ? subtrairPenas(penaMaxima, penaMinima)
+                                      : penaMinima;
+                                      
+                  let totalDeltaFase1 = { anos: 0, meses: 0, dias: 0 };
+                  let hasNegativa = false;
+                  
+                  containers.circunstancias.querySelectorAll('.circunstancia-item').forEach(item => {
+                      // Ignora a de drogas se não estiver marcada
+                      if (item.id === 'circunstanciaDrogas' && !inputs.leiDeDrogas.checked) {
+                          item.querySelector('.circunstancia-resultado').textContent = '';
+                          return;
+                      }
+                      
+                      const avaliacao = item.querySelector('.valiacao-select').value;
+                      const fracao = parseFloat(item.querySelector('.fracao-select').value) || 0;
+                      const resultadoEl = item.querySelector('.circunstancia-resultado');
+                      
+                      if (avaliacao === 'negativa') {
+                          hasNegativa = true;
+                          const delta = calcularFracaoPena(baseDeCalculo, fracao);
+                          totalDeltaFase1 = somarPenas(totalDeltaFase1, delta);
+                          resultadoEl.textContent = `Incremento: ${formatarPenaCurto(delta)}`;
+                      } else if (avaliacao === 'positiva') {
+                          const usarParaReduzir = item.querySelector('.positiva-checkbox').checked;
+                          if (usarParaReduzir) {
+                              const delta = calcularFracaoPena(baseDeCalculo, fracao);
+                              totalDeltaFase1 = subtrairPenas(totalDeltaFase1, delta);
+                              resultadoEl.textContent = `Diminuição: ${formatarPenaCurto(delta)}`;
+                          } else {
+                              resultadoEl.textContent = '';
+                          }
+                      } else {
+                          resultadoEl.textContent = '';
+                      }
+                  });
+
+                  let penaBase = somarPenas(penaMinima, totalDeltaFase1);
+                  
+                  // Regras de limite
+                  if (toDias(penaBase) < penaMinimaEmDias) {
+                      penaBase = penaMinima;
+                  }
+                  if (toDias(penaBase) > penaMaximaEmDias) {
+                      penaBase = penaMaxima;
+                  }
+                  if (!hasNegativa) {
+                      penaBase = penaMinima;
+                  }
+                  
+                  // Atualiza UI da Pena-Base
+                  let penaBaseTexto = `A pena-base é de <strong>${formatarPena(penaBase)}</strong>`;
+                  if (toDias(penaBase) === penaMinimaEmDias) {
+                      penaBaseTexto += " (mínimo legal).";
+                  } else if (toDias(penaBase) === penaMaximaEmDias) {
+                      penaBaseTexto += " (máximo legal).";
+                  } else {
+                      penaBaseTexto += ".";
+                  }
+                  resultados.penaBase.innerHTML = penaBaseTexto;
+
+                  // --- 3. CÁLCULO DA 2ª FASE (PENA INTERMEDIÁRIA) ---
+                  
+                  let penaIntermediaria = penaBase;
+                  
+                  containers.agravantes.querySelectorAll('.tag').forEach(tag => {
+                      const fracao = parseFloat(tag.querySelector('.tag-fracao').value) || 0;
+                      const aumento = calcularFracaoPena(penaIntermediaria, fracao);
+                      penaIntermediaria = somarPenas(penaIntermediaria, aumento);
+                  });
+                  
+                  containers.atenuantes.querySelectorAll('.tag').forEach(tag => {
+                      const fracao = parseFloat(tag.querySelector('.tag-fracao').value) || 0;
+                      const diminuicao = calcularFracaoPena(penaIntermediaria, fracao);
+                      penaIntermediaria = subtrairPenas(penaIntermediaria, diminuicao);
+                  });
+                  
+                  // Regras de limite
+                  if (toDias(penaIntermediaria) < penaMinimaEmDias) {
+                      penaIntermediaria = penaMinima;
+                  }
+                  if (toDias(penaIntermediaria) > penaMaximaEmDias) {
+                      penaIntermediaria = penaMaxima;
+                  }
+                  
+                  resultados.penaIntermediaria.innerHTML = `A pena intermediária é de <strong>${formatarPena(penaIntermediaria)}</strong>.`;
+
+                  // --- 4. CÁLCULO DA 3ª FASE (PENA DEFINITIVA) ---
+                  
+                  let penaDefinitiva = penaIntermediaria;
+                  
+                  containers.aumento.querySelectorAll('.tag').forEach(tag => {
+                      const fracao = parseFloat(tag.querySelector('.tag-fracao').value) || 0;
+                      penaDefinitiva = multiplicarPena(penaDefinitiva, 1 + fracao);
+                  });
+                  
+                  containers.diminuicao.querySelectorAll('.tag').forEach(tag => {
+                      const fracao = parseFloat(tag.querySelector('.tag-fracao').value) || 0;
+                      penaDefinitiva = multiplicarPena(penaDefinitiva, 1 - fracao);
+                  });
+                  
+                  resultados.penaDefinitiva.innerHTML = `A pena definitiva é de <strong>${formatarPena(penaDefinitiva)}</strong>.`;
+
+                  // --- 5. CÁLCULO DO RESULTADO FINAL ---
+                  
+                  // 5.1. Pena de Multa (mantém a lógica original em dias)
+                  if (inputs.temMulta.checked) {
+                      const multaMin = parseFloat(inputs.multaMinima.value) || 0;
+                      const multaMax = parseFloat(inputs.multaMaxima.value) || 0;
+                      const unidade = inputs.unidadeMulta.value;
+                      
+                      const intervaloPena = penaMaximaEmDias - penaMinimaEmDias;
+                      const intervaloMulta = multaMax - multaMin;
+                      
+                      let multaCalculada = multaMin;
+                      
+                      if (intervaloPena > 0) {
+                          // Posição da pena definitiva no intervalo
+                          let posicaoPena = (toDias(penaDefinitiva) - penaMinimaEmDias) / intervaloPena;
+                          if (posicaoPena < 0) posicaoPena = 0;
+                          if (posicaoPena > 1) posicaoPena = 1;
+                          
+                          multaCalculada = multaMin + (intervaloMulta * posicaoPena);
+                      }
+                      
+                      multaCalculada = Math.floor(multaCalculada);
+                      if (multaCalculada < multaMin) multaCalculada = multaMin;
+                      if (multaCalculada > multaMax) multaCalculada = multaMax;
+
+                      resultados.multaTexto.innerHTML = `A pena de multa proporcional é de <strong>${multaCalculada} ${unidade}</strong>.`;
+                      resultados.multaContainer.classList.remove('hidden');
+                  } else {
+                      resultados.multaContainer.classList.add('hidden');
+                  }
+                  
+                  // 5.2. Detração (agora em anos, meses e dias)
+                  let totalPeriodoPrisao = { anos: 0, meses: 0, dias: 0 };
+                  let detalhesPrisao = { flagrante: { anos: 0, meses: 0, dias: 0 }, temporaria: { anos: 0, meses: 0, dias: 0 }, preventiva: { anos: 0, meses: 0, dias: 0 }, indefinido: { anos: 0, meses: 0, dias: 0 } };
+                  
+                  if (inputs.temPrisao.checked) {
+                      const periodos = [];
+                      
+                      containers.prisao.querySelectorAll('.prisao-periodo').forEach(periodo => {
+                          const inicio = periodo.querySelector('.prisao-inicio').value;
+                          const fim = periodo.querySelector('.prisao-fim').value;
+                          const tipo = periodo.querySelector('.tipo-prisao').value;
+                          
+                          if (inicio && fim) {
+                              const periodoReal = calcularPeriodoPrisao(inicio, fim);
+                              periodos.push(periodoReal);
+                              
+                              const key = tipo || 'indefinido';
+                              detalhesPrisao[key] = somarPeriodos([detalhesPrisao[key], periodoReal]);
+                          }
+                      });
+                      
+                      totalPeriodoPrisao = somarPeriodos(periodos);
+                      
+                      resultados.detracaoResumo.innerHTML = `Período total de prisão provisória: <strong>${formatarPeriodo(totalPeriodoPrisao)}</strong>.`;
+                      
+                      let detalhesStr = [];
+                      Object.keys(detalhesPrisao).forEach(tipo => {
+                          if (detalhesPrisao[tipo].anos > 0 || detalhesPrisao[tipo].meses > 0 || detalhesPrisao[tipo].dias > 0) {
+                              const label = 
+                                  tipo === 'flagrante' ? 'flagrante' :
+                                  tipo === 'temporaria' ? 'temporária' :
+                                  tipo === 'preventiva' ? 'preventiva' : 'não especificado';
+                              detalhesStr.push(`${formatarPeriodo(detalhesPrisao[tipo])} (${label})`);
+                          }
+                      });
+                      resultados.detracaoDetalhes.textContent = detalhesStr.join('; ');
+                      
+                      resultados.detracaoContainer.classList.remove('hidden');
+                  } else {
+                      resultados.detracaoContainer.classList.add('hidden');
+                  }
+
+                  // 5.3. Pena a Cumprir e Regime (agora subtrai períodos)
+                  const penaACumprir = subtrairPeriodos(penaDefinitiva, totalPeriodoPrisao);
+                  
+                  resultados.penaCumprir.innerHTML = `Pena definitiva a cumprir: <strong>${formatarPena(penaACumprir)}</strong>.`;
+                  resultados.regimeContainer.classList.remove('is-alerta');
+                  
+                  const isReincidente = !!containers.agravantes.querySelector('.tag[data-key="reincidencia"]');
+                  
+                  if (isReincidente) {
+                      resultados.regimeTexto.innerHTML = "Considerando que há <strong>reincidência</strong>, o regime inicial de cumprimento da pena deve ser analisado pelo magistrado de acordo com as peculiaridades do caso.";
+                  } else if (toDias(penaACumprir) <= 0) {
+                      const diasExcedentes = Math.abs(toDias(penaACumprir));
+                      resultados.regimeTexto.innerHTML = `O período de prisão provisória superou em <strong>${formatarPenaCurto(converterDiasParaAnosMesesDias(diasExcedentes))}</strong> a pena definitiva.`;
+                      resultados.regimeContainer.classList.add('is-alerta');
+                  } else {
+                      let regime = "fechado";
+                      if (toDias(penaACumprir) <= (4 * DIAS_POR_ANO)) {
+                          regime = "aberto";
+                      } else if (toDias(penaACumprir) <= (8 * DIAS_POR_ANO)) {
+                          regime = "semiaberto";
+                      }
+                      resultados.regimeTexto.innerHTML = `Conforme a regra do art. 33, § 2º, do Código Penal, o regime inicial de cumprimento da pena, já subtraído o período de prisão provisória, é o <strong>${regime}</strong>.`;
+                  }
+
+                  // Salva estado para resumo
+                  salvarEstadoGlobal();
+              } catch (error) {
+                  console.error('Erro no cálculo da dosimetria:', error);
+              }
+          }
+
+          // --- Gerador de Resumo ---
+          
+          function salvarEstadoGlobal() {
+              // Coleta todos os valores para o resumo
+              estadoGlobal.numeroProcesso = inputs.numeroProcesso.value;
+              estadoGlobal.nomeReu = inputs.nomeReu.value;
+              estadoGlobal.crimeJulgamento = inputs.crimeJulgamento.value;
+              
+              estadoGlobal.penaMinima = inputs.penaMinima.value;
+              estadoGlobal.unidadeMinima = inputs.unidadeMinima.value;
+              estadoGlobal.penaMaxima = inputs.penaMaxima.value;
+              estadoGlobal.unidadeMaxima = inputs.unidadeMaxima.value;
+              estadoGlobal.penaMinimaEmDias = convertToDays(estadoGlobal.penaMinima, estadoGlobal.unidadeMinima);
+              estadoGlobal.penaMaximaEmDias = convertToDays(estadoGlobal.penaMaxima, estadoGlobal.unidadeMaxima);
+
+              estadoGlobal.temMulta = inputs.temMulta.checked;
+              estadoGlobal.multaMinima = inputs.multaMinima.value;
+              estadoGlobal.multaMaxima = inputs.multaMaxima.value;
+              estadoGlobal.unidadeMulta = inputs.unidadeMulta.value;
+              
+              estadoGlobal.temPrisao = inputs.temPrisao.checked;
+              estadoGlobal.periodosPrisao = [];
+              containers.prisao.querySelectorAll('.prisao-periodo').forEach(p => {
+                  estadoGlobal.periodosPrisao.push({
+                      tipo: p.querySelector('.tipo-prisao').value,
+                      inicio: p.querySelector('.prisao-inicio').value,
+                      fim: p.querySelector('.prisao-fim').value,
+                  });
+              });
+              
+              // Fase 1
+              estadoGlobal.baseIncidencia = document.querySelector('input[name="baseIncidencia"]:checked').value;
+              estadoGlobal.leiDeDrogas = inputs.leiDeDrogas.checked;
+              estadoGlobal.circunstancias = [];
+              containers.circunstancias.querySelectorAll('.circunstancia-item').forEach(item => {
+                  if (item.id === 'circunstanciaDrogas' && !estadoGlobal.leiDeDrogas) return;
+                  
+                  const avaliacao = item.querySelector('.valiacao-select').value;
+                  if (avaliacao === 'neutra') return;
+                  
+                  const usarParaReduzir = item.querySelector('.positiva-checkbox').checked;
+                  if (avaliacao === 'positiva' && !usarParaReduzir) return;
+                  
+                  estadoGlobal.circunstancias.push({
+                      label: item.querySelector('.circunstancia-label').innerText.trim(),
+                      avaliacao: avaliacao,
+                      fracaoValor: item.querySelector('.fracao-select').value,
+                      fracaoTexto: item.querySelector('.fracao-select').options[item.querySelector('.fracao-select').selectedIndex].text,
+                      resultado: item.querySelector('.circunstancia-resultado').textContent,
+                  });
+              });
+              estadoGlobal.penaBase = resultados.penaBase.innerHTML;
+              
+              // Fase 2
+              estadoGlobal.agravantes = [];
+              containers.agravantes.querySelectorAll('.tag').forEach(tag => {
+                  estadoGlobal.agravantes.push({
+                      label: tag.querySelector('.tag-label').textContent,
+                      fracaoTexto: tag.querySelector('.tag-fracao').options[tag.querySelector('.tag-fracao').selectedIndex].text,
+                  });
+              });
+              estadoGlobal.atenuantes = [];
+              containers.atenuantes.querySelectorAll('.tag').forEach(tag => {
+                  estadoGlobal.atenuantes.push({
+                      label: tag.querySelector('.tag-label').textContent,
+                      fracaoTexto: tag.querySelector('.tag-fracao').options[tag.querySelector('.tag-fracao').selectedIndex].text,
+                  });
+              });
+              estadoGlobal.penaIntermediaria = resultados.penaIntermediaria.innerHTML;
+              
+              // Fase 3
+              estadoGlobal.causasAumento = [];
+              containers.aumento.querySelectorAll('.tag').forEach(tag => {
+                  estadoGlobal.causasAumento.push({
+                      label: tag.querySelector('.tag-label').textContent,
+                      fracaoTexto: tag.querySelector('.tag-fracao').options[tag.querySelector('.tag-fracao').selectedIndex].text,
+                  });
+              });
+              estadoGlobal.causasDiminuicao = [];
+              containers.diminuicao.querySelectorAll('.tag').forEach(tag => {
+                  estadoGlobal.causasDiminuicao.push({
+                      label: tag.querySelector('.tag-label').textContent,
+                      fracaoTexto: tag.querySelector('.tag-fracao').options[tag.querySelector('.tag-fracao').selectedIndex].text,
+                  });
+              });
+              estadoGlobal.penaDefinitiva = resultados.penaDefinitiva.innerHTML;
+              
+              // Resultado
+              estadoGlobal.resultadoMulta = resultados.multaTexto.innerHTML;
+              estadoGlobal.resultadoDetracaoResumo = resultados.detracaoResumo.innerHTML;
+              estadoGlobal.resultadoDetracaoDetalhes = resultados.detracaoDetalhes.textContent;
+              estadoGlobal.resultadoPenaCumprir = resultados.penaCumprir.innerHTML;
+              estadoGlobal.resultadoRegime = resultados.regimeTexto.innerHTML;
+          }
+          
+          function gerarResumo() {
+              // Garante que o estado está atualizado
+              salvarEstadoGlobal();
+              const s = estadoGlobal; // Alias
+              
+              // Gera o "código de restauração" (JSON Base64)
+              const estadoJson = JSON.stringify(s);
+              const codigoRestauracao = btoa(unescape(encodeURIComponent(estadoJson)));
+
+              let html = `
+                  <style>
+                      body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; margin: 0; padding: 32px; background-color: #f9f9f9; color: #333; }
+                      .container { max-width: 800px; margin: 0 auto; background-color: #fff; border: 1px solid #ddd; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.05); }
+                      header { background-color: #0d47a1; color: white; padding: 24px; border-radius: 8px 8px 0 0; }
+                      header h1 { margin: 0; font-size: 28px; }
+                      header p { margin: 4px 0 0; font-size: 16px; opacity: 0.9; }
+                      .secao { padding: 24px; border-bottom: 1px solid #eee; }
+                      .secao:last-child { border-bottom: none; }
+                      h2 { font-size: 22px; color: #0d47a1; border-bottom: 2px solid #0d47a1; padding-bottom: 8px; margin-top: 0; margin-bottom: 16px; }
+                      h3 { font-size: 18px; color: #1565c0; margin-top: 20px; margin-bottom: 12px; }
+                      p, li { font-size: 16px; line-height: 1.6; }
+                      ul { padding-left: 24px; margin: 0; }
+                      .resultado-final { background-color: #e3f2fd; border: 1px solid #90caf9; padding: 20px; border-radius: 8px; margin-top: 16px; }
+                      .resultado-final p { font-size: 18px; font-weight: 500; margin: 0; }
+                      .codigo { background-color: #eee; padding: 16px; border-radius: 8px; font-family: monospace; font-size: 12px; line-height: 1.4; word-break: break-all; margin-top: 24px; }
+                      .codigo h4 { margin: 0 0 12px 0; }
+                      .info-processo { background-color: #f5f5f5; padding: 16px; border-radius: 8px; margin-bottom: 20px; }
+                      .info-processo p { margin: 8px 0; }
+                  </style>
+              `;
+              
+              html += '<div class="container">';
+              html += `<header><h1>Resumo da Dosimetria</h1><p>Pena: ${s.penaMinima} ${s.unidadeMinima} a ${s.penaMaxima} ${s.unidadeMaxima}</p></header>`;
+              
+              // Informações do Processo
+              html += '<div class="secao">';
+              html += '<h2>Informações do Processo</h2>';
+              html += '<div class="info-processo">';
+              if (s.numeroProcesso) html += `<p><strong>Número do Processo:</strong> ${s.numeroProcesso}</p>`;
+              if (s.nomeReu) html += `<p><strong>Nome do Réu:</strong> ${s.nomeReu}</p>`;
+              if (s.crimeJulgamento) html += `<p><strong>Crime sob Julgamento:</strong> ${s.crimeJulgamento}</p>`;
+              html += '</div>';
+              html += '</div>';
+              
+              // Fase 1
+              html += '<div class="secao"><h2>1ª Fase: Pena-Base</h2>';
+              html += `<p>Base de incidência: <strong>${s.baseIncidencia === 'minima' ? 'Pena Mínima' : 'Intervalo (Max-Min)'}</strong></p>`;
+              if (s.leiDeDrogas) html += `<p>Considerado: <strong>Art. 42 da Lei de Drogas</strong></p>`;
+              if (s.circunstancias.length > 0) {
+                  html += '<h3>Circunstâncias Valoradas:</h3><ul>';
+                  s.circunstancias.forEach(c => {
+                      html += `<li><strong>${c.label} (${c.avaliacao}):</strong> ${c.fracaoTexto} (${c.resultado})</li>`;
+                  });
+                  html += '</ul>';
+              } else {
+                  html += '<p>Nenhuma circunstância judicial valorada negativamente.</p>';
+              }
+              html += `<div class="resultado-final"><p>${s.penaBase}</p></div>`;
+              html += '</div>';
+              
+              // Fase 2
+              html += '<div class="secao"><h2>2ª Fase: Pena Intermediária</h2>';
+              if (s.atenuantes.length > 0) {
+                  html += '<h3>Atenuantes:</h3><ul>';
+                  s.atenuantes.forEach(a => {
+                      html += `<li>${a.label} (Fração: ${a.fracaoTexto})</li>`;
+                  });
+                  html += '</ul>';
+              }
+              if (s.agravantes.length > 0) {
+                  html += '<h3>Agravantes:</h3><ul>';
+                  s.agravantes.forEach(a => {
+                      html += `<li>${a.label} (Fração: ${a.fracaoTexto})</li>`;
+                  });
+                  html += '</ul>';
+              }
+              if (s.atenuantes.length === 0 && s.agravantes.length === 0) {
+                  html += '<p>Nenhuma atenuante ou agravante aplicada.</p>';
+              }
+              html += `<div class="resultado-final"><p>${s.penaIntermediaria}</p></div>`;
+              html += '</div>';
+
+              // Fase 3
+              html += '<div class="secao"><h2>3ª Fase: Pena Definitiva</h2>';
+              if (s.causasDiminuicao.length > 0) {
+                  html += '<h3>Causas de Diminuição:</h3><ul>';
+                  s.causasDiminuicao.forEach(c => {
+                      html += `<li>${c.label} (Fração: ${c.fracaoTexto})</li>`;
+                  });
+                  html += '</ul>';
+              }
+              if (s.causasAumento.length > 0) {
+                  html += '<h3>Causas de Aumento:</h3><ul>';
+                  s.causasAumento.forEach(c => {
+                      html += `<li>${c.label} (Fração: ${c.fracaoTexto})</li>`;
+                  });
+                  html += '</ul>';
+              }
+              if (s.causasDiminuicao.length === 0 && s.causasAumento.length === 0) {
+                  html += '<p>Nenhuma causa de aumento ou diminuição aplicada.</p>';
+              }
+              html += `<div class="resultado-final"><p>${s.penaDefinitiva}</p></div>`;
+              html += '</div>';
+              
+              // Resultado
+              html += '<div class="secao"><h2>Resultado Final</h2>';
+              if (s.temMulta) {
+                  html += `<p>${s.resultadoMulta}</p>`;
+              }
+              if (s.temPrisao) {
+                  html += `<p>${s.resultadoDetracaoResumo}</p>`;
+                  if(s.resultadoDetracaoDetalhes) html += `<p><small>Detalhes: ${s.resultadoDetracaoDetalhes}</small></p>`;
+                  html += `<p>${s.resultadoPenaCumprir}</p>`;
+              }
+              html += `<div class="resultado-final" style="background-color: #fffde7; border-color: #fff176;"><p>${s.resultadoRegime}</p></div>`;
+              html += '</div>';
+              
+              // Código
+              html += `<div class="secao"><div class="codigo"><h4>Código de Restauração:</h4><p>${codigoRestauracao}</p></div></div>`;
+              
+              html += '</div>'; // Fim do .container
+              
+              const newWindow = window.open('', '_blank');
+              newWindow.document.write(html);
+              newWindow.document.close();
+          }
+
+          /**
+           * Limpa todos os campos e volta ao topo
+           */
+          function limparCampos() {
+              // Limpa campos de texto
+              inputs.numeroProcesso.value = '';
+              inputs.nomeReu.value = '';
+              inputs.crimeJulgamento.value = '';
+              
+              // Reseta penas mínima e máxima
+              inputs.penaMinima.value = '1';
+              inputs.unidadeMinima.value = 'anos';
+              inputs.penaMaxima.value = '5';
+              inputs.unidadeMaxima.value = 'anos';
+              
+              // Desmarca checkboxes
+              inputs.temMulta.checked = false;
+              inputs.temPrisao.checked = false;
+              inputs.leiDeDrogas.checked = false;
+              
+              // Esconde seções condicionais
+              sections.multa.classList.remove('active');
+              sections.prisao.classList.remove('active');
+              sections.circunstanciaDrogas.classList.add('hidden');
+              
+              // Reseta base de incidência
+              document.querySelector('input[name="baseIncidencia"][value="minima"]').checked = true;
+              
+              // Limpa períodos de prisão
+              containers.prisao.innerHTML = '';
+              periodoPrisaoCount = 0;
+              adicionarPeriodoPrisao(); // Adiciona um período vazio
+              
+              // Reseta circunstâncias
+              containers.circunstancias.querySelectorAll('.circunstancia-item').forEach(item => {
+                  item.querySelector('.valiacao-select').value = 'neutra';
+                  item.querySelector('.positiva-checkbox').checked = false;
+                  item.querySelector('.circunstancia-resultado').textContent = '';
+                  atualizarUICircunstancia(item);
+              });
+              
+              // Limpa tags das fases 2 e 3
+              containers.atenuantes.innerHTML = '';
+              containers.agravantes.innerHTML = '';
+              containers.aumento.innerHTML = '';
+              containers.diminuicao.innerHTML = '';
+              
+              // Desmarca checkboxes nos modais
+              document.querySelectorAll('.modal input[type="checkbox"]').forEach(chk => {
+                  chk.checked = false;
+              });
+              
+              // Recalcula
+              calcularDosimetria();
+              
+              // Volta ao topo da página
+              window.scrollTo({ top: 0, behavior: 'smooth' });
+          }
+
+          // --- Inicialização e Event Listeners ---
+          
+          // Toggles
+          setupToggle(inputs.temMulta, sections.multa);
+          setupToggle(inputs.temPrisao, sections.prisao);
+          
+          // Validações
+          [inputs.penaMinima, inputs.unidadeMinima, inputs.penaMaxima, inputs.unidadeMaxima].forEach(el => {
+              el.addEventListener('change', validarPenas);
+          });
+          [inputs.multaMinima, inputs.multaMaxima].forEach(el => {
+              el.addEventListener('change', validarMultas);
+          });
+          
+          // Lei de Drogas Toggle - REORDENA AS CIRCUNSTÂNCIAS
+          inputs.leiDeDrogas.addEventListener('change', () => {
+              const isChecked = inputs.leiDeDrogas.checked;
+              sections.circunstanciaDrogas.classList.toggle('hidden', !isChecked);
+              
+              // Reordena as circunstâncias: drogas primeiro se ativada
+              if (isChecked) {
+                  containers.circunstancias.prepend(sections.circunstanciaDrogas);
+              } else {
+                  // Se desativada, remove do início e deixa na ordem natural
+                  containers.circunstancias.appendChild(sections.circunstanciaDrogas);
+              }
+              
+              calcularDosimetria();
+          });
+          
+          // Inicializa circunstâncias
+          containers.circunstancias.querySelectorAll('.circunstancia-item').forEach(item => {
+              atualizarUICircunstancia(item);
+              item.querySelector('.valiacao-select').addEventListener('change', () => {
+                  atualizarUICircunstancia(item);
+                  calcularDosimetria();
+              });
+              item.querySelector('.positiva-checkbox').addEventListener('change', () => {
+                  togglePositivaFracao(item);
+                  calcularDosimetria();
+              });
+              item.querySelector('.fracao-select').addEventListener('change', () => calcularDosimetria());
+          });
+          
+          // Adicionar Período de Prisão
+          document.getElementById('addPeriodoBtn').addEventListener('click', adicionarPeriodoPrisao);
+          
+          // Modais
+          document.getElementById('openAtenuantesModal').addEventListener('click', () => toggleModal('modalAtenuantes', true));
+          document.getElementById('openAgravantesModal').addEventListener('click', () => toggleModal('modalAgravantes', true));
+          document.getElementById('openAumentoModal').addEventListener('click', () => toggleModal('modalAumento', true));
+          document.getElementById('openDiminuicaoModal').addEventListener('click', () => toggleModal('modalDiminuicao', true));
+          
+          document.querySelectorAll('.modal-close').forEach(btn => {
+              btn.addEventListener('click', () => toggleModal(btn.dataset.modalId, false));
+          });
+          
+          // Adicionar/Remover Tags via Modal Checkbox
+          document.querySelectorAll('.modal-body').forEach(body => {
+              body.addEventListener('change', (e) => {
+                  if (e.target.tagName === 'INPUT' && e.target.type === 'checkbox') {
+                      const { key, tipo } = e.target.dataset;
+                      if (e.target.checked) {
+                          adicionarTag(e.target);
+                      } else {
+                          removerTag(key, tipo);
+                      }
+                      calcularDosimetria();
+                  }
+              });
+          });
+
+          // Listener Global para Recálculo e Remoções
+          document.body.addEventListener('change', (e) => {
+              if (e.target.matches('[data-calc-trigger]')) {
+                  if (e.target.classList.contains('prisao-inicio') || e.target.classList.contains('prisao-fim')) {
+                      validarPeriodosPrisao();
+                      atualizarContadorPeriodo();
+                  }
+                  calcularDosimetria();
+              }
+          });
+          
+          document.body.addEventListener('click', (e) => {
+              const removePeriodoBtn = e.target.closest('[data-remove-periodo]');
+              if (removePeriodoBtn) {
+                  removerPeriodoPrisao(removePeriodoBtn.dataset.removePeriodo);
+              }
+              
+              const removeTagBtn = e.target.closest('[data-remove-tag]');
+              if (removeTagBtn) {
+                  removerTag(removeTagBtn.dataset.removeTag, removeTagBtn.dataset.tipo);
+              }
+          });
+          
+          // Gerar Resumo
+          document.getElementById('gerarResumoBtn').addEventListener('click', gerarResumo);
+          
+          // Limpar Campos
+          document.getElementById('limparCamposBtn').addEventListener('click', limparCampos);
+
+          // --- Inicialização ---
+          adicionarPeriodoPrisao(); // Adiciona o primeiro período de prisão
+          calcularDosimetria(); // Calcula no carregamento da página
+      });
+  </script>
+</body>
+</html>
