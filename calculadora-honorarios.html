@@ -44,10 +44,10 @@
     /* FORMS */
     .campo { margin-bottom: var(--space-24); }
     label { display: block; margin-bottom: var(--space-8); font-weight: var(--font-weight-medium); color: var(--color-text); font-size: var(--font-size-base); }
-    input[type="text"], input[type="number"], input[type="date"] {
+    input[type="text"], input[type="number"], input[type="date"], textarea {
       display: block; width: 100%; padding: var(--space-12); font-size: var(--font-size-base); line-height: 1.5; color: var(--color-text); background-color: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--radius-base); transition: border-color var(--duration-normal), box-shadow var(--duration-normal);
     }
-    input:focus, input:focus-visible { outline: none; border-color: var(--color-primary); box-shadow: 0 0 0 3px var(--color-focus-ring); }
+    input:focus, input:focus-visible, textarea:focus { outline: none; border-color: var(--color-primary); box-shadow: 0 0 0 3px var(--color-focus-ring); }
     .input-prefix-container { position: relative; }
     .input-prefix { position: absolute; left: var(--space-12); top: 50%; transform: translateY(-50%); color: var(--color-text-secondary); font-size: var(--font-size-base); pointer-events: none; }
     input.has-prefix { padding-left: var(--space-32); }
@@ -117,7 +117,7 @@
     .certidao-preview table th { background: #f0f0f0; font-weight: bold; }
     .certidao-preview .assinatura { margin-top: 60px; text-align: center; }
     .certidao-preview .assinatura-linha { border-top: 1px solid #000; width: 300px; margin: 0 auto 10px; }
-    .alvara-preview { white-space: pre-wrap; font-size: 14px; }
+    .alvara-textarea { width: 100%; min-height: 400px; font-family: 'Times New Roman', serif; font-size: 14px; line-height: 1.8; padding: 15px; border: 1px solid #ccc; border-radius: 4px; resize: vertical; white-space: pre-wrap; }
     /* PRINT STYLES */
     @media print {
       body { background: white; padding: 0; --color-text: #000; }
@@ -128,6 +128,7 @@
       .modal-body { padding: 40px; }
       .certidao-preview, .alvara-preview { font-size: 12pt; color: #000; }
       .certidao-preview *, .alvara-preview * { color: #000 !important; }
+      .alvara-textarea { border: none; min-height: auto; }
     }
   </style>
 </head>
@@ -236,6 +237,11 @@
           </div>
           
           <div class="campo">
+            <label for="contaBancariaParte">Dados bancários da parte<span class="campo-opcional">(opcional)</span></label>
+            <input type="text" id="contaBancariaParte" placeholder="Informe banco, agência e conta para transferência">
+          </div>
+          
+          <div class="campo">
             <label for="nomeAdvogado">Nome do(a) advogado(a)</label>
             <input type="text" id="nomeAdvogado" placeholder="Nome completo">
           </div>
@@ -243,6 +249,11 @@
           <div class="campo">
             <label for="oabAdvogado">OAB</label>
             <input type="text" id="oabAdvogado" placeholder="Ex: 12345/PI">
+          </div>
+          
+          <div class="campo">
+            <label for="contaBancariaAdvogado">Dados bancários do(a) advogado(a) <span class="campo-opcional">(opcional)</span></label>
+            <input type="text" id="contaBancariaAdvogado" placeholder="Informe banco, agência e conta para transferência">
           </div>
           
           <div class="campo">
@@ -299,11 +310,11 @@
   <div id="modalAlvara" class="modal">
     <div class="modal-content">
       <div class="modal-header">
-        <h2>Minuta de Alvará de Liberação</h2>
+        <h2>Minuta de alvará de liberação</h2>
         <button class="modal-close" onclick="document.getElementById('modalAlvara').classList.remove('ativo')">&times;</button>
       </div>
       <div class="modal-body">
-        <div id="alvaraConteudo" class="alvara-preview"></div>
+        <textarea id="alvaraTextarea" class="alvara-textarea"></textarea>
       </div>
       <div class="modal-buttons">
         <button class="btn-secondary" onclick="document.getElementById('modalAlvara').classList.remove('ativo')">Fechar</button>
@@ -340,6 +351,7 @@
     const certidaoCampos = document.getElementById('certidaoCampos');
     const btnGerarCertidao = document.getElementById('btnGerarCertidao');
     const btnGerarAlvara = document.getElementById('btnGerarAlvara');
+    const alvaraTextarea = document.getElementById('alvaraTextarea');
     
     function getHoje() {
       const h = new Date();
@@ -690,6 +702,8 @@
       const cpf = document.getElementById('cpfParte').value;
       const advogado = document.getElementById('nomeAdvogado').value;
       const oab = document.getElementById('oabAdvogado').value;
+      const contaAdvogado = document.getElementById('contaBancariaAdvogado').value;
+      const contaParte = document.getElementById('contaBancariaParte').value;
       const data = document.getElementById('dataCertidao').value;
       
       let tipoHon = '';
@@ -699,13 +713,22 @@
       
       let texto = `Por meio do presente alvará o MM. Juiz da ${orgao} autoriza a liberação de recursos mantidos na conta judicial nº ${conta}, vinculada ao depósito judicial ID ${idDep}, nos autos do processo nº ${processo}, com os devidos acréscimos legais, da seguinte forma:\n\n`;
       
-      texto += `a) ${fmt.format(d.totalHon)} (${valorPorExtenso(d.totalHon)}), referente a ${tipoHon}, em favor de ${advogado}, OAB/${oab};\n\n`;
+      texto += `a) ${fmt.format(d.totalHon)} (${valorPorExtenso(d.totalHon)}), referente a ${tipoHon}, em favor de ${advogado}, OAB/${oab}`;
+      if (contaAdvogado) {
+        texto += `, a serem transferidos para a conta bancária: ${contaAdvogado}`;
+      }
+      texto += `;\n\n`;
       
-      texto += `b) ${fmt.format(d.valorParte)} (${valorPorExtenso(d.valorParte)}), correspondente ao saldo remanescente da condenação, em favor de ${parte}, CPF ${cpf}.\n\n`;
+      texto += `b) ${fmt.format(d.valorParte)} (${valorPorExtenso(d.valorParte)}), correspondente ao saldo remanescente da condenação, em favor de ${parte}, CPF ${cpf}`;
+      if (contaParte) {
+        texto += `, a serem transferidos para a conta bancária: ${contaParte}`;
+      }
+      texto += `.\n\n`;
       
       texto += `${formatarData(data)}.`;
       
-      document.getElementById('alvaraConteudo').textContent = texto;
+      // Preencher a textarea com o texto gerado
+      alvaraTextarea.value = texto;
       document.getElementById('modalAlvara').classList.add('ativo');
     });
     
