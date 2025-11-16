@@ -237,7 +237,7 @@
           </div>
           
           <div class="campo">
-            <label for="contaBancariaParte">Dados bancários da parte<span class="campo-opcional">(opcional)</span></label>
+            <label for="contaBancariaParte">Dados bancários da parte <span class="campo-opcional">(opcional)</span></label>
             <input type="text" id="contaBancariaParte" placeholder="Informe banco, agência e conta para transferência">
           </div>
           
@@ -677,7 +677,7 @@
       html += `</table>`;
       
       html += `<div class="corpo"><strong>Beneficiários:</strong></div>`;
-      html += `<div class="corpo">• Advogado(a): <strong>${advogado}</strong>, OAB/${oab} - Valor: <strong>${fmt.format(d.totalHon)}</strong> (${valorPorExtenso(d.totalHon)})</div>`;
+      html += `<div class="corpo">• Advogado(a): <strong>${advogado}</strong>, OAB ${oab} - Valor: <strong>${fmt.format(d.totalHon)}</strong> (${valorPorExtenso(d.totalHon)})</div>`;
       html += `<div class="corpo">• Parte: <strong>${parte}</strong>, CPF ${cpf} - Valor: <strong>${fmt.format(d.valorParte)}</strong> (${valorPorExtenso(d.valorParte)})</div>`;
       
       html += `<div class="corpo" style="margin-top:30px;">A presente certidão foi emitida na comarca acima indicada, em ${formatarData(data)}.</div>`;
@@ -715,13 +715,13 @@
       
       texto += `a) ${fmt.format(d.totalHon)} (${valorPorExtenso(d.totalHon)}), referente a ${tipoHon}, em favor de ${advogado}, OAB/${oab}`;
       if (contaAdvogado) {
-        texto += `, a serem transferidos para a conta bancária: ${contaAdvogado}`;
+        texto += `, mediante transferência à conta bancária de sua titularidade, a saber: ${contaAdvogado}`;
       }
       texto += `;\n\n`;
       
       texto += `b) ${fmt.format(d.valorParte)} (${valorPorExtenso(d.valorParte)}), correspondente ao saldo remanescente da condenação, em favor de ${parte}, CPF ${cpf}`;
       if (contaParte) {
-        texto += `, a serem transferidos para a conta bancária: ${contaParte}`;
+        texto += `, mediante transferência à conta bancária de sua titularidade, a saber: ${contaParte}`;
       }
       texto += `.\n\n`;
       
