@@ -117,18 +117,71 @@
     .certidao-preview table th { background: #f0f0f0; font-weight: bold; }
     .certidao-preview .assinatura { margin-top: 60px; text-align: center; }
     .certidao-preview .assinatura-linha { border-top: 1px solid #000; width: 300px; margin: 0 auto 10px; }
-    .alvara-textarea { width: 100%; min-height: 400px; font-family: 'Times New Roman', serif; font-size: 14px; line-height: 1.8; padding: 15px; border: 1px solid #ccc; border-radius: 4px; resize: vertical; white-space: pre-wrap; }
-    /* PRINT STYLES */
+    .alvara-textarea { 
+      width: 100%; 
+      min-height: 500px; 
+      font-family: 'Times New Roman', serif; 
+      font-size: 14px; 
+      line-height: 1.8; 
+      padding: 20px; 
+      border: 1px solid #ccc; 
+      border-radius: 4px; 
+      resize: vertical; 
+      white-space: pre-wrap;
+    }
+    /* PRINT STYLES - CORRIGIDOS */
     @media print {
-      body { background: white; padding: 0; --color-text: #000; }
-      .container, .voltar, .modal-header, .modal-buttons { display: none; }
-      .modal { display: block !important; position: static; background: white; backdrop-filter: none; }
-      .modal.ativo { display: block !important; }
-      .modal-content { margin: 0; max-width: 100%; box-shadow: none; border: none; max-height: none; }
-      .modal-body { padding: 40px; }
-      .certidao-preview, .alvara-preview { font-size: 12pt; color: #000; }
-      .certidao-preview *, .alvara-preview * { color: #000 !important; }
-      .alvara-textarea { border: none; min-height: auto; }
+      body * {
+        visibility: hidden;
+      }
+      .modal.ativo,
+      .modal.ativo * {
+        visibility: visible;
+      }
+      .modal {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: auto;
+        background: white;
+        display: block !important;
+        overflow: visible;
+      }
+      .modal-content {
+        margin: 0;
+        max-width: 100%;
+        box-shadow: none;
+        border: none;
+        max-height: none;
+        display: block;
+      }
+      .modal-header,
+      .modal-buttons,
+      .modal-close {
+        display: none !important;
+      }
+      .modal-body {
+        padding: 20mm;
+        overflow: visible;
+      }
+      .certidao-preview, 
+      .alvara-preview,
+      .alvara-textarea {
+        font-size: 12pt;
+        color: #000;
+        line-height: 1.6;
+      }
+      .certidao-preview *,
+      .alvara-preview * {
+        color: #000 !important;
+      }
+      .alvara-textarea {
+        border: none;
+        min-height: auto;
+        height: auto;
+        padding: 0;
+      }
     }
   </style>
 </head>
@@ -237,8 +290,8 @@
           </div>
           
           <div class="campo">
-            <label for="contaBancariaParte">Dados bancários da parte <span class="campo-opcional">(opcional)</span></label>
-            <input type="text" id="contaBancariaParte" placeholder="Informe banco, agência e conta para transferência">
+            <label for="contaBancariaParte">Conta bancária da parte <span class="campo-opcional">(opcional)</span></label>
+            <input type="text" id="contaBancariaParte" placeholder="Informe os dados bancários para transferência">
           </div>
           
           <div class="campo">
@@ -252,8 +305,8 @@
           </div>
           
           <div class="campo">
-            <label for="contaBancariaAdvogado">Dados bancários do(a) advogado(a) <span class="campo-opcional">(opcional)</span></label>
-            <input type="text" id="contaBancariaAdvogado" placeholder="Informe banco, agência e conta para transferência">
+            <label for="contaBancariaAdvogado">Conta bancária do(a) advogado(a) <span class="campo-opcional">(opcional)</span></label>
+            <input type="text" id="contaBancariaAdvogado" placeholder="Informe os dados bancários para transferência">
           </div>
           
           <div class="campo">
@@ -301,7 +354,7 @@
       </div>
       <div class="modal-buttons">
         <button class="btn-secondary" onclick="document.getElementById('modalCertidao').classList.remove('ativo')">Fechar</button>
-        <button onclick="window.print()">Imprimir / Salvar PDF</button>
+        <button onclick="imprimirModal('modalCertidao')">Imprimir / Salvar PDF</button>
       </div>
     </div>
   </div>
@@ -318,7 +371,7 @@
       </div>
       <div class="modal-buttons">
         <button class="btn-secondary" onclick="document.getElementById('modalAlvara').classList.remove('ativo')">Fechar</button>
-        <button onclick="window.print()">Imprimir / Salvar PDF</button>
+        <button onclick="copiarTextoAlvara()">Copiar texto</button>
       </div>
     </div>
   </div>
@@ -353,6 +406,43 @@
     const btnGerarAlvara = document.getElementById('btnGerarAlvara');
     const alvaraTextarea = document.getElementById('alvaraTextarea');
     
+    // Função para impressão melhorada
+    function imprimirModal(modalId) {
+      const modal = document.getElementById(modalId);
+      if (modal) {
+        // Garantir que o modal está visível para impressão
+        modal.classList.add('ativo');
+        
+        // Pequeno delay para garantir que o DOM esteja atualizado
+        setTimeout(() => {
+          window.print();
+        }, 100);
+      }
+    }
+    
+    // Função para copiar o texto do alvará
+    function copiarTextoAlvara() {
+    const textarea = document.getElementById('alvaraTextarea');
+    
+    // Seleciona o texto
+    textarea.select();
+    textarea.setSelectionRange(0, 99999); // Para mobile
+    
+    try {
+        // Tenta copiar usando a API moderna
+        navigator.clipboard.writeText(textarea.value).then(() => {
+        alert('Texto copiado para a área de transferência!');
+        }).catch(err => {
+        // Fallback para método antigo
+        document.execCommand('copy');
+        alert('Texto copiado para a área de transferência!');
+        });
+    } catch (err) {
+        // Último fallback
+        alert('Não foi possível copiar o texto automaticamente. Selecione e copie manualmente (Ctrl+C).');
+    }
+    }
+
     function getHoje() {
       const h = new Date();
       return h.getFullYear() + '-' + String(h.getMonth()+1).padStart(2,'0') + '-' + String(h.getDate()).padStart(2,'0');
@@ -677,7 +767,7 @@
       html += `</table>`;
       
       html += `<div class="corpo"><strong>Beneficiários:</strong></div>`;
-      html += `<div class="corpo">• Advogado(a): <strong>${advogado}</strong>, OAB ${oab} - Valor: <strong>${fmt.format(d.totalHon)}</strong> (${valorPorExtenso(d.totalHon)})</div>`;
+      html += `<div class="corpo">• Advogado(a): <strong>${advogado}</strong>, OAB/${oab} - Valor: <strong>${fmt.format(d.totalHon)}</strong> (${valorPorExtenso(d.totalHon)})</div>`;
       html += `<div class="corpo">• Parte: <strong>${parte}</strong>, CPF ${cpf} - Valor: <strong>${fmt.format(d.valorParte)}</strong> (${valorPorExtenso(d.valorParte)})</div>`;
       
       html += `<div class="corpo" style="margin-top:30px;">A presente certidão foi emitida na comarca acima indicada, em ${formatarData(data)}.</div>`;
@@ -715,13 +805,13 @@
       
       texto += `a) ${fmt.format(d.totalHon)} (${valorPorExtenso(d.totalHon)}), referente a ${tipoHon}, em favor de ${advogado}, OAB/${oab}`;
       if (contaAdvogado) {
-        texto += `, mediante transferência à conta bancária de sua titularidade, a saber: ${contaAdvogado}`;
+        texto += `, a serem transferidos para a conta bancária: ${contaAdvogado}`;
       }
       texto += `;\n\n`;
       
       texto += `b) ${fmt.format(d.valorParte)} (${valorPorExtenso(d.valorParte)}), correspondente ao saldo remanescente da condenação, em favor de ${parte}, CPF ${cpf}`;
       if (contaParte) {
-        texto += `, mediante transferência à conta bancária de sua titularidade, a saber: ${contaParte}`;
+        texto += `, a serem transferidos para a conta bancária: ${contaParte}`;
       }
       texto += `.\n\n`;
       
