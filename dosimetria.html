@@ -1399,7 +1399,7 @@
             <div class="modal-body" id="modalAumentoBody">
                 <div class="modal-option"><label><input type="checkbox" data-tipo="aumento" data-key="concursoFormal" data-label="Concurso formal (art. 70, CP)" data-fracoes="1/6,1/5,1/4,1/3,1/2"> Concurso formal (art. 70, CP)</label></div>
                 <div class="modal-option"><label><input type="checkbox" data-tipo="aumento" data-key="crimeContinuadoSimples" data-label="Crime continuado simples (art. 71, caput, CP)" data-fracoes="1/6,1/5,1/4,1/3,1/2,2/3"> Crime continuado simples (art. 71, caput, CP)</label></div>
-                <div class="modal-option"><label><input type="checkbox" data-tipo="aumento" data-key="crimeContinuadoQualificado" data-label="Crime continuado qualificado (art. 71, p. único, CP)" data-fracoes="1/6,1/5,1/4,1/3,1/2,2/3,1,2,3"> Crime continuado qualificado (art. 71, p. único, CP)</label></div>
+                <div class="modal-option"><label><input type="checkbox" data-tipo="aumento" data-key="crimeContinuadoQualificado" data-label="Crime continuado qualificado (art. 71, p. único, CP)" data-fracoes="1/6,1/5,1/4,1/3,1/2,2/3,dobro,triplo"> Crime continuado qualificado (art. 71, p. único, CP)</label></div>
                 <div class="modal-option"><label><input type="checkbox" data-tipo="aumento" data-key="resultadoDiverso" data-label="Agente pretendeu crime mais leve (art. 29, § 2º, CP)" data-fracoes="1/6,1/5,1/4,1/3,1/2"> Agente pretendeu crime mais leve (art. 29, § 2º, CP)</label></div>
                 <div class="modal-option"><label><input type="checkbox" data-tipo="aumento" data-key="majoranteNaoDefinida" data-label="Majorante não definida" data-fracoes="custom_aumento"> Majorante não definida - Inclua os dados</label></div>
             </div>
@@ -1507,7 +1507,7 @@
               { v: 0.1, t: "1/10" }, { v: 0.11111, t: "1/9" }, { v: 0.125, t: "1/8" },
               { v: 0.14285, t: "1/7" }, { v: 0.16667, t: "1/6" }, { v: 0.2, t: "1/5" },
               { v: 0.25, t: "1/4" }, { v: 0.33333, t: "1/3" }, { v: 0.5, t: "1/2" },
-              { v: 1, t: "1x" }, { v: 2, t: "2x" }, { v: 3, t: "3x" }, { v: 4, t: "4x" }, { v: 5, t: "5x" }
+              { v: 2, t: "2x" }, { v: 3, t: "3x" }
           ];
           
           const fracoesPositivas = fracoesNegativas.slice(0, 9); // De 1/10 a 1/2
@@ -1519,15 +1519,15 @@
           ];
           
           const fracoesTerceiraFase = {
-              "custom_aumento": [
-                  { v: 0.16667, t: "1/6" }, { v: 0.2, t: "1/5" }, { v: 0.25, t: "1/4" }, { v: 0.33333, t: "1/3" },
-                  { v: 0.5, t: "1/2" }, { v: 0.66667, t: "2/3" }, { v: 1, t: "1x" }, { v: 2, t: "2x" }, { v: 3, t: "3x" }
-              ],
-              "custom_diminuicao": [
-                  { v: 0.16667, t: "1/6" }, { v: 0.2, t: "1/5" }, { v: 0.25, t: "1/4" }, { v: 0.33333, t: "1/3" },
-                  { v: 0.5, t: "1/2" }, { v: 0.66667, t: "2/3" }, { v: 0.8, t: "4/5" }
-              ]
-          };
+                "custom_aumento": [
+                    { v: 0.16667, t: "1/6" }, { v: 0.2, t: "1/5" }, { v: 0.25, t: "1/4" }, { v: 0.33333, t: "1/3" },
+                    { v: 0.5, t: "1/2" }, { v: 0.66667, t: "2/3" }, { v: 2, t: "dobro" }, { v: 3, t: "triplo" }
+                ],
+                "custom_diminuicao": [
+                    { v: 0.16667, t: "1/6" }, { v: 0.2, t: "1/5" }, { v: 0.25, t: "1/4" }, { v: 0.33333, t: "1/3" },
+                    { v: 0.5, t: "1/2" }, { v: 0.66667, t: "2/3" }
+                ]
+            };
 
           // --- Observações das Circunstâncias Judiciais ---
           const observacoesCircunstancias = {
@@ -1896,10 +1896,34 @@
           /**
            * Multiplica uma pena por um fator (para causas de aumento)
            */
-          const multiplicarPena = (pena, fator) => {
-              const totalDias = toDias(pena) * fator;
-              return converterDiasParaAnosMesesDias(Math.round(totalDias));
-          };
+          const multiplicarPenaInteligente = (pena, fator) => {
+                // fator já é o multiplicador total (ex: para dobro = 2, para triplo = 3)
+                // Para frações normais: 1.16667 para 1/6, 1.33333 para 1/3, etc.
+                
+                // CASO ESPECIAL: Para multiplicação simples (dobro, triplo)
+                if (fator >= 2) {
+                    return {
+                        anos: pena.anos * fator,
+                        meses: pena.meses * fator,
+                        dias: pena.dias * fator
+                    };
+                }
+                
+                // Para frações normais (1/6, 1/3, etc.)
+                // Calcula o total em MESES para maior precisão
+                const totalMeses = (pena.anos * 12) + pena.meses + (pena.dias / 30);
+                
+                // Aplica o fator
+                const resultadoMeses = totalMeses * fator;
+                
+                // Converte de volta para anos, meses, dias
+                const anos = Math.floor(resultadoMeses / 12);
+                const mesesRestantes = resultadoMeses % 12;
+                const meses = Math.floor(mesesRestantes);
+                const dias = Math.round((mesesRestantes - meses) * 30);
+                
+                return normalizarPena({ anos, meses, dias });
+            };
 
           // ============ NOVAS FUNÇÕES PARA CÁLCULO DE PERÍODOS ============
 
@@ -2040,24 +2064,33 @@
            * Popula um <select> da 3ª fase com base em chaves (ex: "1/3,1/2,2/3").
            */
           const popularFracoesTerceiraFase = (selectEl, key) => {
-              if (fracoesTerceiraFase[key]) {
-                  popularFracoes(selectEl, fracoesTerceiraFase[key]);
-                  return;
-              }
-              
-              const fracoes = key.split(',').map(f => {
-                  let v;
-                  if (f.includes('/')) {
-                      const [num, den] = f.split('/').map(Number);
-                      v = num / den;
-                  } else {
-                      v = Number(f);
-                  }
-                  const t = f.includes('/') ? f : `${f}x`;
-                  return { v, t };
-              });
-              popularFracoes(selectEl, fracoes, fracoes[0].v);
-          };
+                if (fracoesTerceiraFase[key]) {
+                    popularFracoes(selectEl, fracoesTerceiraFase[key]);
+                    return;
+                }
+                
+                const fracoes = key.split(',').map(f => {
+                    let v;
+                    if (f.includes('/')) {
+                        const [num, den] = f.split('/').map(Number);
+                        v = num / den;
+                        return { v, t: f };
+                    } else if (f === 'dobro') {
+                        v = 2; // 2 = dobrar
+                        return { v, t: 'dobro' };
+                    } else if (f === 'triplo') {
+                        v = 3; // 3 = triplicar
+                        return { v, t: 'triplo' };
+                    } else {
+                        v = Number(f);
+                        // Se for 2 ou 3, já trata como dobro/triplo
+                        if (v === 2) return { v: 2, t: 'dobro' };
+                        if (v === 3) return { v: 3, t: 'triplo' };
+                        return { v, t: `${f}x` };
+                    }
+                });
+                popularFracoes(selectEl, fracoes, fracoes[0].v);
+            };
 
           // --- Validações Iniciais ---
 
@@ -2551,18 +2584,22 @@
                   resultados.penaIntermediaria.innerHTML = `A pena intermediária é de <strong>${formatarPena(penaIntermediaria)}</strong>.`;
 
                   // --- 4. CÁLCULO DA 3ª FASE (PENA DEFINITIVA) ---
-                  
-                  let penaDefinitiva = penaIntermediaria;
-                  
-                  containers.aumento.querySelectorAll('.tag').forEach(tag => {
-                      const fracao = parseFloat(tag.querySelector('.tag-fracao').value) || 0;
-                      penaDefinitiva = multiplicarPena(penaDefinitiva, 1 + fracao);
-                  });
-                  
-                  containers.diminuicao.querySelectorAll('.tag').forEach(tag => {
-                      const fracao = parseFloat(tag.querySelector('.tag-fracao').value) || 0;
-                      penaDefinitiva = multiplicarPena(penaDefinitiva, 1 - fracao);
-                  });
+
+                    let penaDefinitiva = penaIntermediaria;
+
+                    containers.aumento.querySelectorAll('.tag').forEach(tag => {
+                        const fracao = parseFloat(tag.querySelector('.tag-fracao').value) || 0;
+                        // Para "dobro" (2) e "triplo" (3), usa o valor diretamente
+                        // Para frações normais (1/6, 1/3, etc.), soma 1
+                        const fator = (fracao >= 2) ? fracao : (1 + fracao);
+                        penaDefinitiva = multiplicarPenaInteligente(penaDefinitiva, fator);
+                    });
+
+                    containers.diminuicao.querySelectorAll('.tag').forEach(tag => {
+                        const fracao = parseFloat(tag.querySelector('.tag-fracao').value) || 0;
+                        // Para diminuição, sempre subtrai da unidade (1 - fração)
+                        penaDefinitiva = multiplicarPenaInteligente(penaDefinitiva, 1 - fracao);
+                    });
                   
                   resultados.penaDefinitiva.innerHTML = `A pena definitiva é de <strong>${formatarPena(penaDefinitiva)}</strong>.`;
 
